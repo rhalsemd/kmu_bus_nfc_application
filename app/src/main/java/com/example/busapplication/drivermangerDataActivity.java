@@ -6,16 +6,16 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -30,28 +30,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+public class drivermangerDataActivity extends AppCompatActivity  implements View.OnClickListener, Dialog.OnCancelListener {
 
-public class AppMembershipActivity extends AppCompatActivity  implements View.OnClickListener, Dialog.OnCancelListener {
+    String value;
+    String ad="3";
 
-    String talk;
-    //DB저장 변수
-    String NameTextsId;
-    String IdTextsId;
-    String PWTextsld;
-
-    int ch=10;
-
+    //DB에 저장할 휴대폰 변경 변수
+    String changPho;
     //다이얼오그 커스텀
     /*Dialog에 관련된 필드*/
     LayoutInflater dialog; //LayoutInflater
@@ -67,101 +52,62 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
     final int MILLISINFUTURE = 300 * 1000; //총 시간 (300초 = 5분)
     final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
 
-    String b;//랜덤문자열 넣기
+    TextView phoneChangText;
+
+    String b;//랜덤 문자 넣기
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_membership);
+        setContentView(R.layout.activity_driver_manger_data);
 
-        final EditText NameText = (EditText)findViewById(R.id.name);//이름
-        final EditText IdText = (EditText)findViewById(R.id.number);//학번, 버스기사
-        final EditText PWText = (EditText)findViewById(R.id.PwText);//pw
-        final EditText PwTextche = (EditText)findViewById(R.id.PwTextche);//pw
-        phone = (EditText)findViewById(R.id.phone);//휴대폰
-
-        final EditText RRNtext1 = (EditText)findViewById(R.id.RRNtext1);//주민번호 앞자리
-        final EditText RRNtext2 = (EditText)findViewById(R.id.RRNtext2);//주민번호 뒤자리
-
-         NameTextsId = NameText.getText().toString();//이름값 string에 저장
-         IdTextsId = IdText.getText().toString();//ID값 string에 저장
-         PWTextsld = PWText.getText().toString();//PW값 string에 저장
+        Intent intent = getIntent(); /*데이터 수신*/
+        value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
+        final TextView Datacheck12 = (TextView)findViewById(R.id.Datacheck12);//pw로그인
+        Datacheck12.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
 
 
-        Button approvalbutton=(Button)findViewById(R.id.approvalbutton);//회원가입 승인
-        Button membershipmain=(Button)findViewById(R.id.membershipmain);//메인화면으로 이동
+        Button driverbusMain2=(Button)findViewById(R.id.driverbusMain1);//메인화면으로가기
 
 
-        Button confirm=(Button)findViewById(R.id.confirm);//인증
-        ////아래의 onClick(View v)로 정의
-        confirm.setOnClickListener(this);
+        final TextView PWChangeche = (TextView)findViewById(R.id.PWChangeche);
+        final String PWChangechesId = PWChangeche.getText().toString();//변경할 ID값 string에 저장
 
 
-        approvalbutton.setOnClickListener(new View.OnClickListener() {
+        final TextView PWChange = (TextView)findViewById(R.id.PWChange);
+        final String PWChangesId = PWChange.getText().toString();//변경할 ID값 string에 저장
+
+        phoneChangText = (TextView)findViewById(R.id.phoneChangText);
+        final String phoneChangTextsId = PWChange.getText().toString();//변경할 휴대폰값 string에 저장
+
+
+        Button PWChangeButton=(Button)findViewById(R.id.PWChangeButton);//ID 변경버튼
+        Button phoneChangbutton=(Button)findViewById(R.id.phoneChangbutton);//휴대폰 변경버튼
+
+        driverbusMain2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (NameText.getText().toString().equals("1")) {
-                        //메인화면으로 이동
-                        //DB확인시 불편할까봐 막아둠
-                        //    Intent i = new Intent(AppMembershipActivity.this/*현재 액티비티 위치*/ , MainActivity.class/*이동 액티비티 위치*/);
-                        //   i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        //  startActivity(i);
-                        talk = "회원가입이 되었습니다.";
-                        dialog(talk);
-                    } else if (NameText.getText().toString().equals("2"))//ID가 DB에 없을때
-                    {
-                        talk = "계명대학교 사용자 정보에 정보가 없습니다. 관리자에게 문의해주세요.";
-                        dialog(talk);
-                    } else if (NameText.getText().toString().equals("3"))//중복 회원가입
-                    {
-                        talk = "이미 회원가입이 완료된 사용자 입니다.";
-                        dialog(talk);
-                    }
-
-                    //주민 번호 체크
-                    if (!(RRNtext1.getText().length()==6)){
-                        Edialog("앞자리 6자리 숫자를 정확하게 입력하세요");
-                    }
-                    else  if (!(RRNtext2.getText().length()==1)){
-                        Edialog("뒷자리 1자리 숫자를 정확하게 입력하세요");
-                    }
-                    //휴대폰 번호 체크 번호 체크
-                    if (!(phone.getText().length()==11)){
-                        Edialog("휴대폰 번호 를 정확하게 입력하세요");
-                    }
-                    else if(phone.getText().length()==0)
-                    {
-                        Edialog("휴대폰 번호 를 정확하게 입력하세요");
-                    }
-
-                    //전체 체크
-                    if(NameText.equals("")||IdText.equals("")||PWText.equals("")||PwTextche.equals("")||
-                            phone.equals("")||RRNtext1.equals("")||RRNtext2.equals(""))
-                    {
-                        //확인시 불편할까봐 막아둠
-                     //   Edialog("정보를 빠짐없이 입력하세요");
-                    }
-                }catch (Exception e)
-                {
-                    Excep(e);
-                }
-                //startActivity(intent);
+                Move();
+                //화면전환
             }
         });
 
-        membershipmain.setOnClickListener(new View.OnClickListener() {
+        PWChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent i = new Intent(AppMembershipActivity.this/*현재 액티비티 위치*/, MainActivity.class/*이동 액티비티 위치*/);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(i);
-                }catch (Exception e)
-                {
+                    if(PWChangechesId.equals(PWChangesId))
+                    {
+                        PWChange.setText("ok");//지워도 됨 - 값확인 하는 것
+                    }
+                    //화면전환
+                }catch (Exception e){
                     Excep(e);
+
                 }
             }
         });
+        //onClick(View v)로 정의
+        phoneChangbutton.setOnClickListener(this);
 
         //문자 서비스
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
@@ -173,47 +119,45 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         else {
 // Permission has already been granted
         }
-
-    }
-    void dialog(String talk)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("<알림>").setMessage(talk);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
     }
-    void Edialog(String talk)
+    void dialog(String who,String talk)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("<알림>").setMessage(talk);
+        builder.setTitle("<알림>").setMessage(who+" : "+talk);
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int id)
             {
-
+                Move();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    void Move()
-    {
-        Intent i = new Intent(AppMembershipActivity.this/*현재 액티비티 위치*/ , MainActivity.class/*이동 액티비티 위치*/);
+    void Move(){
+        Intent i = new Intent(drivermangerDataActivity.this/*현재 액티비티 위치*/ , DriverActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
     }
-    void Excep(Exception e)//예외처리를 부르는 코드
+    void Excep(Exception e)
     {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsStrting = sw.toString();
-        Edialog(exceptionAsStrting);
+        if(value.equals(ad))
+        {
+            dialog("기능고장",exceptionAsStrting);
+        }
+        else{
+            dialog("오류", exceptionAsStrting);
+        }
     }
+
     //여기서 문자 인증 다이얼로그 ~290
     public void countDownTimer() { //카운트 다운 메소드
         time_counter = (TextView) dialogLayout.findViewById(R.id.emailAuth_time_counter);
@@ -234,13 +178,11 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                 } else { //초가 10보다 작으면 앞에 '0' 붙여서 같이 출력. ex) 02,03,04...
                     time_counter.setText((emailAuthCount / 60) + " : 0" + (emailAuthCount - ((emailAuthCount / 60) * 60)));
                 }
-
                 //emailAuthCount은 종료까지 남은 시간임. 1분 = 60초 되므로,
                 // 분을 나타내기 위해서는 종료까지 남은 총 시간에 60을 나눠주면 그 몫이 분이 된다.
                 // 분을 제외하고 남은 초를 나타내기 위해서는, (총 남은 시간 - (분*60) = 남은 초) 로 하면 된다.
-
             }
-            //카운트가 끝나면 종료
+            //시간 종료시 다이얼로그 끄기
             @Override
             public void onFinish() { //시간이 다 되면 다이얼로그 종료
                 authDialog.cancel();
@@ -252,11 +194,11 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.confirm:
-                if(phone.getText().length()==11)
+            case R.id.phoneChangbutton:
+                if(phoneChangText.getText().length()==11)
                 {
                     //다이얼로그 출력
-                    String a=phone.getText().toString();
+                    String a=phoneChangText.getText().toString();
                     b=getRandomPassword(6);
                     sendSMS(a,b);
                     dialog = LayoutInflater.from(this);
@@ -264,35 +206,51 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     authDialog = new Dialog(this); //Dialog 객체 생성
                     authDialog.setContentView(dialogLayout); //Dialog에 inflate한 View를 탑재 하여줌
                     authDialog.setCanceledOnTouchOutside(false); //Dialog 바깥 부분을 선택해도 닫히지 않게 설정함.
-                    authDialog.setOnCancelListener(AppMembershipActivity.this); //다이얼로그를 닫을 때 일어날 일을 정의하기 위해 onCancelListener 설정
+                    authDialog.setOnCancelListener(this); //다이얼로그를 닫을 때 일어날 일을 정의하기 위해 onCancelListener 설정
                     authDialog.show(); //Dialog를 나타내어 준다.
                     countDownTimer();
                 }
                 else {
-                        Edialog("번호를 적어두세요");
-                    }
+                    Edialog("번호를 적어두세요");
+                }
                 break;
 
             case R.id.emailAuth_btn : //다이얼로그 내의 인증번호 인증 버튼을 눌렀을 시
                 try {
-                    if(emailAuth_number.getText().length()>0) {
+                    if( emailAuth_number.getText().length()>0) {
                         int user_answer = Integer.parseInt(emailAuth_number.getText().toString());
                         int App_answer = Integer.parseInt(b.toString());
                         if (user_answer == App_answer) {
                             Chedialog("문자 인증 성공");
+                            //자료넣기
+                            changPho=phoneChangText.getText().toString();
                         } else {
                             Chedialog("문자 인증 실패");
                         }
                     }
                     else {
-                        Edialog("번호를 적어두세요");
-                        }
+                        Chedialog("숫자를 적어주세요");
+                    }
                 }catch (Exception e)
                 {
                     Chedialog( "인증번호를 적어주세요");
                 }
                 break;
         }
+    }
+    void Edialog(String talk)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage(talk);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
     @Override
     public void onCancel(DialogInterface dialog) {
@@ -313,7 +271,6 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
     //여기서 문자 서비스
     private void sendSMS(String phoneNumber, String message) {
         String SENT = "SMS_SENT";
@@ -376,8 +333,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         // TODO Auto-generated method stub
         super.onDestroy();
     }
-//램덤함수
+    //램덤함수
     public String getRandomPassword( int length ){
+
         char[] charaters = {
                 '0','1','2','3','4','5','6','7','8','9'};
         StringBuffer sb = new StringBuffer();

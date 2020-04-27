@@ -20,7 +20,6 @@ public class DriverActivity extends AppCompatActivity {
 
     //예외처리 다이얼로그에 쓰임
     String whoSLD;
-    String checkUser="버스기사";
     int i=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +51,7 @@ public class DriverActivity extends AppCompatActivity {
         noticeDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_user = new Intent(DriverActivity.this, AppNoticeActivity.class);
-                intent_user.putExtra("checkuser", checkUser);
-                intent_user.putExtra("value", IDvalue);
-                startActivity(intent_user);
+                Noticedialog();
                 // TextView 클릭될 시 할 코드작성
             }
         });
@@ -94,10 +90,10 @@ public class DriverActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-                    Intent intent=new Intent(getApplicationContext(), drivermangerDataActivity.class);
-                    intent.putExtra("value1",IDvalue);
-                    startActivity(intent);
-                    //화면전환
+                Intent intent=new Intent(getApplicationContext(), drivermangerDataActivity.class);
+                intent.putExtra("value1",IDvalue);
+                startActivity(intent);
+                //화면전환
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -185,8 +181,8 @@ public class DriverActivity extends AppCompatActivity {
                     ADmove();
                 }
                 else {
-                    Move();
-                }
+                        Move();
+                    }
             }
         });
         AlertDialog alertDialog = builder.create();
@@ -216,5 +212,19 @@ public class DriverActivity extends AppCompatActivity {
         else{
             dialog("오류", exceptionAsStrting);
         }
+    }
+    void Noticedialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage("임시");
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
