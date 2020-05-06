@@ -11,6 +11,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,84 +44,122 @@ public class adRideDataActivity extends AppCompatActivity {
 
      String Timetext;
      String Bustext;
-
      int Timenum;
-    int Busnum;
+     int Busnum;
 
     String value;
     String text;
+
+    List<String> load_busName = new ArrayList<>(); //busspinner 값들
+    List<String> load_busType = new ArrayList<>(); //Timespinner 값들
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_ride_data);
 
         Intent intent = getIntent(); /*데이터 수신*/
-        value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck6 = (TextView)findViewById(R.id.Datacheck6);
-        Datacheck6.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+       // value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
+        // TextView Datacheck6 = (TextView)findViewById(R.id.Datacheck6);
+        //Datacheck6.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
         final TextView reasonWrite = (TextView)findViewById(R.id.reasonWrite);
         final TextView Datacheck18 = (TextView)findViewById(R.id.Datacheck18);
         final TextView Datacheck21 = (TextView)findViewById(R.id.datacheck21);
+
         //버스 운행불가
         Button stapBus=(Button)findViewById(R.id.stapBus);
         //버스 운행불가취소
         Button cancellation=(Button)findViewById(R.id.cancellation);
         Button ADbusMain3=(Button)findViewById(R.id.ADbusMain3);//메인화면으로 이동
 
-        //버스 spinner
-        List<String> data = new ArrayList<>();
-        data.add("1 ~ 10 호차 노선 선택"); data.add("1호차"); data.add("2호차"); data.add("3호차");
-        data.add("4호차");data.add("5호차"); data.add("6호차"); data.add("7호차");
-        data.add("8호차"); data.add("9호차");data.add("10호차");data.add("전체 버스 선택");
-
         //버스스피너
         BusSpinner = (Spinner)findViewById(R.id.busSpinner);
-        //Adapter
-        adapterSpinner2 = new spinnerRows(this, data);
-        //Adapter 적용
-        BusSpinner.setAdapter(adapterSpinner2);
+        try {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray array = new JSONArray(response);
+
+                        load_busName.add("노선 선택");
+                        for(int i=0; i<array.length();i++){
+                            JSONObject bus_name = array.getJSONObject(i);
+                            load_busName.add(bus_name.getString("bus_name"));
+                        }
+
+                        //Adapter
+                        adapterSpinner1 = new spinnerRows(adRideDataActivity.this, load_busName);
+                        //Adapter 적용
+                        BusSpinner.setAdapter(adapterSpinner1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            studentBookRequest_loadName loadname = new studentBookRequest_loadName(responseListener);
+            RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
+            queue.add(loadname);
+        }catch (Exception e){
+            Excep(e);
+        }
+        //시간 spinner
+        TimeSpinner = (Spinner)findViewById(R.id.timeSpinner);
 
         BusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                text = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
+                Bustext = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try{
-                    Timenum=position;
-                    Datacheck18.setText(text);
+                    Busnum=position;
+                    try {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
+
+                                    load_busType.clear();
+                                    load_busType.add("시간 선택");
+                                    for(int i=0; i<array.length();i++){
+                                        JSONObject bus_name = array.getJSONObject(i);
+                                        load_busType.add(bus_name.getString("bus_type"));
+                                    }
+
+                                    //Adapter
+                                    adapterSpinner2 = new spinnerRows(adRideDataActivity.this, load_busType);
+                                    //Adapter 적용
+                                    TimeSpinner.setAdapter(adapterSpinner2);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        studentBookRequest_loadType loadType = new studentBookRequest_loadType(BusSpinner.getSelectedItem().toString(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
+                        queue.add(loadType);
+                    }catch (Exception e){
+                        Excep(e);
+                    }
                 }catch (Exception e)
                 {
                     Excep(e);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //시간 spinner
-        List<String> data1 = new ArrayList<>();
-        data1.add("시간 선택");
-        data1.add("주간 등교 1");
-        data1.add("주간 등교 2");
-        data1.add("주간 하교 ");
-        data1.add("야간 하교 ");
-        //UI생성
-        //UI생성
-        //시간 스피너
-        TimeSpinner = (Spinner)findViewById(R.id.timeSpinner);
-        //Adapter
-        adapterSpinner1 = new spinnerRows(this, data1);
-        //Adapter 적용
-        TimeSpinner.setAdapter(adapterSpinner1);
-
         TimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                text = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
                 try{
-                    Busnum=position;
-                    Datacheck21.setText(text);
+                    Timenum=position;
+                    Datacheck21.setText(Timetext);
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -127,12 +174,49 @@ public class adRideDataActivity extends AppCompatActivity {
         stapBus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
                     //DB확인할때 불펼할까봐 화면 전환 막아둠
-                    Datacheck18.setText(Timetext + "-" + Bustext + "-" + reasonWrite.getText());
-                    //ADmove();
-                    //화면전환
+                    String userID = value; //메인에서 넘어온 유저ID 값
+                    String Reason = reasonWrite.getText().toString();
+                    if(Timenum != 0 && Busnum != 0 && !Reason.equals("")){
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Intent intent = new Intent(adRideDataActivity.this, administratorActivity.class);
+                                        dialog("등록되었습니다.");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "DB관리자에게 연락바랍니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
+                        queue.add(registerRequest);
+                    }
+                    else if(Busnum == 0)
+                    {
+                        Toast.makeText(getApplicationContext(), "호차를 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Timenum == 0)
+                    {
+                        Toast.makeText(getApplicationContext(), "시간을 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Reason.equals(""))
+                    {
+                        Toast.makeText(getApplicationContext(), "사유를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }catch (Exception e){
                     Excep(e);
                 }
@@ -170,6 +254,20 @@ public class adRideDataActivity extends AppCompatActivity {
     void dialog(String talk)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage(talk);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                ADmove();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    void Edialog(String talk)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("<알림>").setMessage("오류 : "+talk);
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
             @Override
@@ -186,6 +284,6 @@ public class adRideDataActivity extends AppCompatActivity {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsStrting = sw.toString();
-        dialog(exceptionAsStrting);
+        Edialog(exceptionAsStrting);
     }
 }

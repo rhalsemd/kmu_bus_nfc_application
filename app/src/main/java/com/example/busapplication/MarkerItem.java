@@ -5,6 +5,10 @@ public class MarkerItem {
     double lon;
     String destination;
 
+    public MarkerItem() {
+
+    }
+
     public MarkerItem(double lat, double lon, String destination) {
         this.lat = lat;
         this.lon = lon;

@@ -119,8 +119,8 @@
         app:layout_constraintVertical_bias="0.133" />
 
     <FrameLayout
-        android:layout_width="300dp"
-        android:layout_height="350dp"
+        android:layout_width="396dp"
+        android:layout_height="426dp"
         android:background="@drawable/bartext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,16 +130,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.790">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MainActivity" >
+            tools:context=".MainActivity">
 
             <fragment
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="448dp"
                 tools:context=".MapsActivity" />
         </LinearLayout>
     </FrameLayout>

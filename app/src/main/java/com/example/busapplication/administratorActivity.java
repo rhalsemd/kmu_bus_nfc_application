@@ -38,6 +38,14 @@ public class administratorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //화면전환
+                try {
+                    Intent i = new Intent(administratorActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(i);
+                    //화면전환
+                }catch (Exception e){
+                    Excep(e);
+                }
             }
         });
 
@@ -45,6 +53,9 @@ public class administratorActivity extends AppCompatActivity {
         studentData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), adStudentDataActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 //화면전환
             }
         });
@@ -55,8 +66,8 @@ public class administratorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //화면전환
                 try {
-                    Intent intent=new Intent(getApplicationContext(), adRideDataActivity.class);
-                    intent.putExtra("value1",datacheck);
+                    Intent intent=new Intent(getApplicationContext(), adBusDataActivity.class);
+                    intent.putExtra("value",datacheck);
                     startActivity(intent);
                     //화면전환
                 }catch (Exception e){
@@ -64,7 +75,6 @@ public class administratorActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         adlogout.setOnClickListener(new View.OnClickListener() {
             @Override

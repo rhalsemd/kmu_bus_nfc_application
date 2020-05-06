@@ -9,6 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,10 +49,31 @@ public class studentBookMangerActivity extends AppCompatActivity {
         final TextView bookDaychetext = (TextView)findViewById(R.id.bookDaychetext);//로그인
         final TextView bookBuschetext = (TextView)findViewById(R.id.bookBuschetext);//로그인
 
+        try {
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            daychetext.setText("일시 : "+jsonObject.getString("booked_time"));
+                            bookDaychetext.setText("예약 시간 : "+jsonObject.getString("bus_type"));
+                            bookBuschetext.setText("예약 노선 : "+jsonObject.getString("bus_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                //서버로 volley를 이용해서 요청
+                studentBookMangerRequest_getInfo getinfo = new studentBookMangerRequest_getInfo(value, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(studentBookMangerActivity.this);
+                queue.add(getinfo);
+
+        } catch (Exception e) {
+            Excep(e);
+        }
         //DB를 읽으면 화면이 켜질때 자동으로 출력
-        daychetext.setText("일시 : : "+day);
-        bookDaychetext.setText("예약 시간 : "+bookDay);
-        bookBuschetext.setText("예약 노선 : "+bookBus);
 
         buschoicebutton=(Button)findViewById(R.id.buschoicebutton);//버스보이는 것 버튼
         buschoicebutton.setEnabled(false);
@@ -63,19 +92,37 @@ public class studentBookMangerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (cheBookTime == false) {
-                        talk = "예약취소시간을 확인해주세요.";
-                        dialog(talk);
-                    } else {
-                        talk = "예약취소 되었습니다.";
-                        dialog(talk);
-                        //메인화면으로 전환
-                    }
-                    buschoicebutton.setText("BusCancellationButton2");//확인용
-                }catch (Exception e){
 
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    talk = "예약취소 되었습니다.";
+                                    dialog(talk);
+
+                                } else {
+                                    talk = "취소되지 않았습니다!";
+                                    dialog(talk);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    //서버로 volley를 이용해서 요청
+                    studentBookMangerRequest_cancelBook cancelbook = new studentBookMangerRequest_cancelBook(value, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(studentBookMangerActivity.this);
+                    queue.add(cancelbook);
+
+                } catch (Exception e) {
                     Excep(e);
                 }
+                    //if (cheBookTime == false) {
+                    //talk = "예약취소시간을 확인해주세요.";}
+
             }
         });
 

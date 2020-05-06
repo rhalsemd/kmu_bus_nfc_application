@@ -6,49 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.LocationManager;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.location.LocationRequest;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimerTask;
-import  java.util.Timer;
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
 import java.io.*;
-import java.util.*;
-import android.app.*;
-import android.os.Bundle;
+
 import android.content.*;
 import android.location.*;
-import android.util.Log;
-import android.view.*;
-import android.widget.Button;
-import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class driverBookActivity extends AppCompatActivity
 {
     //위치정보가 gps수신이라고 뜨면 gps 수신이 되므로 경도와 위도 등 정보 변경
@@ -59,7 +36,6 @@ public class driverBookActivity extends AppCompatActivity
     TextView GPStextView;//GPS확인
     Button go;
     //지도가 켜저있는 지 확인
-    boolean cheMap=false;
 
     //종점 확인
     int endlongitude=0;//종점 위도
@@ -70,9 +46,12 @@ public class driverBookActivity extends AppCompatActivity
     String latitudeDB;
     //버스가 종점에 욌는 지 확인
     boolean busStop=false;
+    boolean cheMap=false;
 
     String value;
     String ad="3";//관리자
+    String count_personnel="0"; //DB에서 불러오는 탑승인원 수 (예약수 X 실제 탑승인원수 표시)
+    String booked_personnel="0";
 
     String SpinnerValue;
     TextView Datacheck19;
@@ -91,7 +70,9 @@ public class driverBookActivity extends AppCompatActivity
         Button driverbusMain3=(Button)findViewById(R.id.driverbusMain3);//메인화면 전환
         //버스예약 - 수동승인 버튼
         final TextView count = (TextView)findViewById(R.id.count);
+        final TextView count2 = (TextView)findViewById(R.id.count2);
         Button permission=(Button)findViewById(R.id.permission);
+        Button cancelpermission =(Button)findViewById(R.id.cancelpermission);
 
        //예약자 명단
         final TextView resertList = (TextView)findViewById(R.id.resertList);
@@ -99,8 +80,6 @@ public class driverBookActivity extends AppCompatActivity
         //학번입력 editText
         final TextView editText = (TextView)findViewById(R.id.editText);
 
-        //수동승인이 실패 조건으로 chebook==false로 만듬
-        final boolean chebook=true;//
         textview_coordinate  = (TextView) findViewById(R.id.Datacheck15);
         //1초마다 현제위치 갱신
         textview_longitude = (TextView)findViewById(R.id.Datacheck16);
@@ -108,6 +87,72 @@ public class driverBookActivity extends AppCompatActivity
         GPStextView= (TextView)findViewById(R.id.GPStextView);
         textview_coordinate.setText("위치정보 미수신중");
         go=(Button)findViewById(R.id.go);
+
+        //버스 실제 탑승인원 체크
+
+        try {
+            String driverID = value;
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        String personnel = jsonObject.getString("personnel");
+                        if (success) {
+                            count_personnel = personnel;
+                            count2.setText(personnel);
+                        } else {
+                            //do nothing
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            driverBookRequest_setPersonnel setPersonnel = new driverBookRequest_setPersonnel(driverID, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
+            queue.add(setPersonnel);
+        }catch (Exception e){
+            Excep(e);
+        }
+
+        //해당 버스 예약 인원 불러오는 코드
+        try {
+            String driverID = value;
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        String personnel = jsonObject.getString("booked_personnel");
+                        if (success) {
+                            booked_personnel = personnel;
+                        } else {
+                            //do nothing
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            driverBookRequest_bookedPersonnel bookedPersonnel = new driverBookRequest_bookedPersonnel(driverID, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
+            queue.add(bookedPersonnel);
+
+            //화면전환
+        }catch (Exception e){
+            Excep(e);
+        }
+
+        /*checkVacant(); //버스 실탑승인원 DB에서 불러와서 초기화 시켜주는 코드
+        count2.setText(count_personnel);
+        checkBooked(); //해당 버스 예약인원 체크하는 코드*/
+
+
 
         // LocationManager 객체를 얻어온다
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -129,23 +174,98 @@ public class driverBookActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 try {
-                    //좌석수가 모질하면
-                    if (chebook == false) {
-                        book_warning();
-                    }
-                    else if(cou==45)
-                    {
-                        dialog("인원이 찼습니다.");
-                    }
-                    count.setText(String.valueOf(cou++) + "/45");
+                    String userID = editText.getText().toString();
+                    String driverID = value;
 
-                    //화면전환
+                    if (userID.length() != 0) {
+                            Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        boolean success = jsonObject.getBoolean("success");
+                                        boolean maxed_out = jsonObject.getBoolean("maxed_out");
+                                        boolean user_already = jsonObject.getBoolean("user_already");
+
+                                        if (success) {
+                                            Toast.makeText(getApplicationContext(), "승인되었습니다.", Toast.LENGTH_SHORT).show();
+                                            String personnel_after = jsonObject.getString("personnel_after");
+
+                                            count2.setText(personnel_after);
+
+                                        } else if(user_already){
+                                            Toast.makeText(getApplicationContext(), "이미 예약된 유저입니다.", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        } else if(maxed_out){
+                                            Toast.makeText(getApplicationContext(), "자리가 이미 다 찼습니다.", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                    } catch (JSONException e) {
+                                        Toast.makeText(getApplicationContext(), "catch!", Toast.LENGTH_SHORT).show();
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            };
+                        //서버로 volley를 이용해서 요청
+                        driverBookRequest_checkVacant checkVacant = new driverBookRequest_checkVacant(userID, driverID, responseListener); //승인하면서 동시에 현재탑승인원 갱신
+                        RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
+                        queue.add(checkVacant);
+                    }
+                    else if (userID.length() == 0)
+                    {
+                        Toast.makeText(getApplicationContext(), "ID를 제대로 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }catch (Exception e){
                     Excep(e);
-
                 }
             }
         });
+
+        cancelpermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                        String userID = editText.getText().toString();
+                        String driverID = value;
+
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                                        String personnel_after = jsonObject.getString("personnel_after");
+                                        count2.setText(personnel_after);
+
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "취소되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    Toast.makeText(getApplicationContext(), "catch!", Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        driverBookRequest_cancelPersonnel cancelpersonnel = new driverBookRequest_cancelPersonnel(userID, driverID, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
+                        queue.add(cancelpersonnel);
+
+                }catch(Exception e) {
+                    Excep(e);
+                }
+            }
+        });
+
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,11 +276,11 @@ public class driverBookActivity extends AppCompatActivity
                     textview_coordinate.setText("수신중..");
                         // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                                100, // 통지사이의 최소 시간간격 (miliSecond)
+                                500, // 통지사이의 최소 시간간격 (miliSecond)
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                                100, // 통지사이의 최소 시간간격 (miliSecond)
+                                500, // 통지사이의 최소 시간간격 (miliSecond)
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                 }catch(SecurityException ex){
@@ -227,6 +347,33 @@ public class driverBookActivity extends AppCompatActivity
             if(longitude==endlongitude&&latitude==endlatitude)
             {
                 busStop=true;
+            }
+
+
+            //위도 경도값 DB에 업데이트하는 코드
+            String driverID = value;
+            try {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            if (success) {
+                            } else {
+                                //do nothing
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                //서버로 volley를 이용해서 요청
+                driverBookRequest_driverDepart driverdepart = new driverBookRequest_driverDepart(driverID,latitudeDB,longitudeDB, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
+                queue.add(driverdepart);
+            }catch (Exception e){
+                Excep(e);
             }
         }
         public void onProviderDisabled(String provider) {
@@ -298,4 +445,5 @@ public class driverBookActivity extends AppCompatActivity
             dialog2("오류", exceptionAsStrting);
         }
     }
+
 }

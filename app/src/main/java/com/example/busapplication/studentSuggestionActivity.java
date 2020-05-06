@@ -10,14 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 public class studentSuggestionActivity extends AppCompatActivity {
-
-    String titleTextDB;
-    String suggestionsWriteDB;
 
     String talk;
     String ad="3";
@@ -39,32 +45,57 @@ public class studentSuggestionActivity extends AppCompatActivity {
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
         final TextView Datacheck14 = (TextView)findViewById(R.id.Datacheck14);//pw로그인
         Datacheck14.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
-
-        EditText titleText = (EditText)findViewById(R.id.titleText);//제출 내용
-        EditText suggestionsWrite = (EditText)findViewById(R.id.suggestionsWrite);//제출 내용
-
-        titleTextDB=titleText.getText().toString();
-        suggestionsWriteDB=suggestionsWrite.getText().toString();
+        final EditText titleText = (EditText)findViewById(R.id.titleText);//제출 내용
+        final EditText suggestionsWrite = (EditText)findViewById(R.id.suggestionsWrite);//제출 내용
 
         Button submitButton=(Button)findViewById(R.id.submitButton);//제출하는 버튼
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                try {
-                    //제목이나 내용이 비어있는 것을 확인한다.
-                    if (titleTextDB == "" || suggestionsWriteDB == "") {
-                        talk = "제목이나 내용을 적어주세요";
-                        dialog(talk);
-                    } else {
-                        Datacheck14.setText("as");//지워도 됨 - 값넘어온지 확인 하는 것
-                        //메인화면으로 감
-                        //db확인시 불편할까봐 막아둠
-                        //  Move();
-                    }
-                }catch (Exception e){
-                    Excep(e);
+          public void onClick(View v)
+          {
+            try{
+                long now = System.currentTimeMillis();
+                Date mDate = new Date(now);
+                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                String time = simpleDate.format(mDate);
+                String userID = value;
+                String title = titleText.getText().toString();
+                String content = suggestionsWrite.getText().toString();
+
+                if(title.length() != 0 && content.length() != 0) {
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    Toast.makeText(getApplicationContext(), "글등록완료!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "내용을 한번 더 확인해주세요!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    };
+                    //서버로 volley를 이용해서 요청
+                    studentSuggestionRequest studentsuggestionrequest = new studentSuggestionRequest(userID, title, content, time, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(studentSuggestionActivity.this);
+                    queue.add(studentsuggestionrequest);
                 }
+                //else if(PhoneCheck == false) {Toast.makeText(getApplicationContext(), "휴대폰인증을 해주세요!", Toast.LENGTH_SHORT).show(); }
+                else if(title.length() == 0 && content.length() != 0){Toast.makeText(getApplicationContext(), "제목을 입력해주세요!", Toast.LENGTH_SHORT).show();}
+                else if(content.length() == 0 && title.length() != 0){Toast.makeText(getApplicationContext(), "내용을 작성해주세요!", Toast.LENGTH_SHORT).show(); }
+                else {Toast.makeText(getApplicationContext(), "제대로 작성해주세요!", Toast.LENGTH_SHORT).show();}
+            }catch (Exception e)
+            {
+                Excep(e);
             }
+         }
+
         });
     }
     void dialog(String talk)

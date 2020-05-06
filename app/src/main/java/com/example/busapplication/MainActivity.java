@@ -12,6 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     //DB값 확인할때 불편할까봐 몇개의 화면은 메인화면으로 전화하는 기능 몇개는 막아둠
@@ -46,40 +55,56 @@ public class MainActivity extends AppCompatActivity {
         login1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Intent intent=new Intent(getApplicationContext(),SubActivity.class);
-                String s=IDText.getText().toString();
-                if(IDText.getText().toString().equals("1"))
-                {
-                    Intent intent=new Intent(getApplicationContext(),studentActivity.class);
-                    intent.putExtra("value",s);
-                    startActivity(intent);
-                    finish();
-                }
-                else if(IDText.getText().toString().equals("2"))
-                {
-                    Intent intent=new Intent(getApplicationContext(), DriverActivity.class);
-                    intent.putExtra("value",s);
-                    startActivity(intent);
-                    finish();
-                }
-                else if(IDText.getText().toString().equals("3"))
-                {
-                    Intent intent=new Intent(getApplicationContext(),administratorActivity.class);
-                    intent.putExtra("value",s);
-                    startActivity(intent);
-                    finish();
-                }
-                else if(IDText.getText().toString().equals("4"))//id와 pw틀렸을시
-                {
-                    talk="ID와 PW를 확인해주세요.";
-                    dialog(talk);
-                }
-                else if(IDText.getText().toString().equals("5"))//제제 횟수 초과
-                {
-                    talk="제제 횟수가 초과했습니다.\n 관리자에게 문의해주세요.";
-                    dialog(talk);
-                }
-                //startActivity(intent);
+                String userID =IDText.getText().toString();
+                String userPass = PWText.getText().toString();
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String userID = jsonObject.getString("userID");
+                            int admin = jsonObject.getInt("admin");
+                            int sanctions = jsonObject.getInt("sanctions");
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if(success&&sanctions<3) {
+                                //DB에서 받은 값 각 변수에 저장
+                                Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                switch(admin) {
+                                    case 0:
+                                        Intent intent_user = new Intent(MainActivity.this, studentActivity.class);
+                                        intent_user.putExtra("value", userID);
+                                        startActivity(intent_user);
+                                        break;
+                                    case 1:
+                                        Intent intent_driver = new Intent(MainActivity.this, DriverActivity.class);
+                                        intent_driver.putExtra("value", userID);
+                                        startActivity(intent_driver);
+                                        break;
+                                    case 2:
+                                        Intent intent_admin = new Intent(MainActivity.this, administratorActivity.class);
+                                        intent_admin.putExtra("value", userID);
+                                        startActivity(intent_admin);
+                                        break;
+                                }
+                            }
+                            else if(sanctions>=3)
+                            {
+                                Toast.makeText(getApplicationContext(), "제재횟수 초과입니다.\n관리자에게 문의해주세요.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                };
+                MainRequest mainRequest = new MainRequest(userID,userPass, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this) ;
+                queue.add(mainRequest);
+
             }
         });
 

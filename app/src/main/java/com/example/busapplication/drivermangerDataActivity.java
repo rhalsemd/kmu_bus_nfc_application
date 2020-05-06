@@ -26,6 +26,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
@@ -70,15 +77,9 @@ public class drivermangerDataActivity extends AppCompatActivity  implements View
 
 
         final TextView PWChangeche = (TextView)findViewById(R.id.PWChangeche);
-        final String PWChangechesId = PWChangeche.getText().toString();//변경할 ID값 string에 저장
-
-
         final TextView PWChange = (TextView)findViewById(R.id.PWChange);
-        final String PWChangesId = PWChange.getText().toString();//변경할 ID값 string에 저장
 
         phoneChangText = (TextView)findViewById(R.id.phoneChangText);
-        final String phoneChangTextsId = PWChange.getText().toString();//변경할 휴대폰값 string에 저장
-
 
         Button PWChangeButton=(Button)findViewById(R.id.PWChangeButton);//ID 변경버튼
         Button phoneChangbutton=(Button)findViewById(R.id.phoneChangbutton);//휴대폰 변경버튼
@@ -91,23 +92,83 @@ public class drivermangerDataActivity extends AppCompatActivity  implements View
             }
         });
 
+        //onClick(View v)로 정의
+        phoneChangbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String userID = value;
+                    String userPhone = phoneChangText.getText().toString();
+                    if(userPhone.length() == 11) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Toast.makeText(getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "휴대폰번호를 한번 더 확인해주세요!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        drivermangerDataRequest_ChangePhone changePhone = new drivermangerDataRequest_ChangePhone(userID, userPhone, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(drivermangerDataActivity.this);
+                        queue.add(changePhone);
+                    }
+                    else{Toast.makeText(getApplicationContext(), "휴대폰번호를 한번 더 확인해주세요!", Toast.LENGTH_SHORT).show();}
+                }catch (Exception e){
+                    Excep(e);
+                }
+            }
+        });
+
+
         PWChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    if(PWChangechesId.equals(PWChangesId))
-                    {
-                        PWChange.setText("ok");//지워도 됨 - 값확인 하는 것
+                    String PWChangechesId = PWChangeche.getText().toString();//변경할 PW값 string에 저장
+                    String PWChangesId = PWChange.getText().toString();//변경할 PW값 string에 저장
+                    String userID = value;
+                    String userPassword = PWChangesId;
+                    if(PWChangechesId.equals(PWChangesId) && (PWChangechesId.length()!=0)) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Toast.makeText(getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "제대로 로그인 되어있는지 확인해주세요!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        drivermangerDataRequest_ChangePW changePW = new drivermangerDataRequest_ChangePW(userID, userPassword, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(drivermangerDataActivity.this);
+                        queue.add(changePW);
                     }
-                    //화면전환
+                    else{Toast.makeText(getApplicationContext(), "비밀번호가 같지 않습니다.", Toast.LENGTH_SHORT).show();}
                 }catch (Exception e){
                     Excep(e);
-
                 }
             }
         });
-        //onClick(View v)로 정의
-        phoneChangbutton.setOnClickListener(this);
 
         //문자 서비스
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)

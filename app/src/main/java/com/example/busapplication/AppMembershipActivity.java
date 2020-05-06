@@ -30,17 +30,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AppMembershipActivity extends AppCompatActivity  implements View.OnClickListener, Dialog.OnCancelListener {
 
@@ -49,6 +44,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
     String NameTextsId;
     String IdTextsId;
     String PWTextsld;
+    Boolean PhoneCheck = false; //휴대폰 체크 불린값
+
+
 
     int ch=10;
 
@@ -95,52 +93,48 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         ////아래의 onClick(View v)로 정의
         confirm.setOnClickListener(this);
 
-
         approvalbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    if (NameText.getText().toString().equals("1")) {
-                        //메인화면으로 이동
-                        //DB확인시 불편할까봐 막아둠
-                        //    Intent i = new Intent(AppMembershipActivity.this/*현재 액티비티 위치*/ , MainActivity.class/*이동 액티비티 위치*/);
-                        //   i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        //  startActivity(i);
-                        talk = "회원가입이 되었습니다.";
-                        dialog(talk);
-                    } else if (NameText.getText().toString().equals("2"))//ID가 DB에 없을때
-                    {
-                        talk = "계명대학교 사용자 정보에 정보가 없습니다. 관리자에게 문의해주세요.";
-                        dialog(talk);
-                    } else if (NameText.getText().toString().equals("3"))//중복 회원가입
-                    {
-                        talk = "이미 회원가입이 완료된 사용자 입니다.";
-                        dialog(talk);
-                    }
 
-                    //주민 번호 체크
-                    if (!(RRNtext1.getText().length()==6)){
-                        Edialog("앞자리 6자리 숫자를 정확하게 입력하세요");
-                    }
-                    else  if (!(RRNtext2.getText().length()==1)){
-                        Edialog("뒷자리 1자리 숫자를 정확하게 입력하세요");
-                    }
-                    //휴대폰 번호 체크 번호 체크
-                    if (!(phone.getText().length()==11)){
-                        Edialog("휴대폰 번호 를 정확하게 입력하세요");
-                    }
-                    else if(phone.getText().length()==0)
-                    {
-                        Edialog("휴대폰 번호 를 정확하게 입력하세요");
-                    }
+                    String userName = NameText.getText().toString();
+                    String userID = IdText.getText().toString();
+                    String userPassword = PWText.getText().toString();
+                    String userPhone = phone.getText().toString();
+                    String userBirth = RRNtext1.getText().toString() + RRNtext2.getText().toString();
 
-                    //전체 체크
-                    if(NameText.equals("")||IdText.equals("")||PWText.equals("")||PwTextche.equals("")||
-                            phone.equals("")||RRNtext1.equals("")||RRNtext2.equals(""))
-                    {
-                        //확인시 불편할까봐 막아둠
-                     //   Edialog("정보를 빠짐없이 입력하세요");
+                    if(userName.length() != 0 && userID.length() != 0 && userPassword.length() != 0  && userPhone.length() != 0
+                        && userBirth.length() != 0 && /*PhoneCheck != false && */PWText.getText().toString().equals(PwTextche.getText().toString())) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Toast.makeText(getApplicationContext(), "회원등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(AppMembershipActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "중복된 회원이거나,없는 회원입니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        AppMembershipRequest appMembershipRequest = new AppMembershipRequest(userID, userPassword, userName, userBirth, userPhone, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(AppMembershipActivity.this);
+                        queue.add(appMembershipRequest);
                     }
+                    //else if(PhoneCheck == false) {Toast.makeText(getApplicationContext(), "휴대폰인증을 해주세요!", Toast.LENGTH_SHORT).show(); }
+                    else if(!(PWText.getText().toString().equals(PwTextche.getText().toString()))){Toast.makeText(getApplicationContext(), "비밀번호가 같지 않습니다.", Toast.LENGTH_SHORT).show();}
+                    else{Toast.makeText(getApplicationContext(), "제대로 입력해주세요!", Toast.LENGTH_SHORT).show(); }
+
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -280,6 +274,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                         int App_answer = Integer.parseInt(b.toString());
                         if (user_answer == App_answer) {
                             Chedialog("문자 인증 성공");
+                            PhoneCheck = true;
                         } else {
                             Chedialog("문자 인증 실패");
                         }

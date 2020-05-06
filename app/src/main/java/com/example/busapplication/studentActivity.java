@@ -17,7 +17,7 @@ public class studentActivity extends AppCompatActivity {
 
     String IDvalue;
     String ad="3";
-
+    String checkUser="학생";
     //예외처리 다이얼로그에 쓰임
     String whoSLD;
     @Override
@@ -43,7 +43,10 @@ public class studentActivity extends AppCompatActivity {
         noticeStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Noticedialog();
+                Intent intent_user = new Intent(studentActivity.this, AppNoticeActivity.class);
+                intent_user.putExtra("checkuser", checkUser);
+                intent_user.putExtra("value", IDvalue);
+                startActivity(intent_user);
                 // TextView 클릭될 시 할 코드작성
             }
         });
@@ -154,7 +157,7 @@ public class studentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(getApplicationContext(), studentNFCActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), adNFCNumberActivity.class);
                     //다른 화면으로 값 전달
                     intent.putExtra("value1", IDvalue);
                     startActivity(intent);
@@ -164,6 +167,7 @@ public class studentActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         studentlogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,19 +248,5 @@ public class studentActivity extends AppCompatActivity {
         else{
             dialog("오류", exceptionAsStrting);
         }
-    }
-    void Noticedialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("<알림>").setMessage("임시");
-        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
-
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 }
