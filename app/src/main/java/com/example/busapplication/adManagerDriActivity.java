@@ -2,8 +2,10 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,8 +23,19 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class adManagerDriActivity extends AppCompatActivity {
 
@@ -45,6 +58,14 @@ public class adManagerDriActivity extends AppCompatActivity {
 
     String Bustext;
     String Timetext;
+    int Busnum=0;
+    int Timenum=0;
+
+    private ArrayList<driverBusDTO> suggestions = new ArrayList<>();
+    driverBusDTO suggestion_check = new driverBusDTO();
+
+    List<String> load_busName = new ArrayList<>(); //busspinner 값들
+    List<String> load_busType = new ArrayList<>(); //Timespinner 값들
 
     int num;
     @Override
@@ -68,10 +89,34 @@ public class adManagerDriActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Bustext!=null&&Timetext!=null&&NameeditText.getText().length()!=0){
+                if(Busnum!=0&&Timenum!=0&&NameeditText.getText().length()!=0){
+                    String driver_ID = NameeditText.getText().toString();
                     //db자료넣기
-                    Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
-                    Refresh();
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if(success)
+                                {
+                                    Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Refresh();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "변경에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                        }
+                    };
+                    adManagerDriRequest admanagerdrirequest = new adManagerDriRequest(Bustext,Timetext, driver_ID,"add", responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adManagerDriActivity.this) ;
+                    queue.add(admanagerdrirequest);
+
                 }else{
                     Toast.makeText(getApplicationContext(), "정보를 적절하게 넣어주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -80,43 +125,115 @@ public class adManagerDriActivity extends AppCompatActivity {
         DelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Bustext!=null&&Timetext!=null&&NameeditText.getText().length()!=0){
+                if(Busnum!=0&&Timenum!=0){
+                    String driver_ID = NameeditText.getText().toString();
                     //db자료넣기
-                    Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
-                    Refresh();
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if(success)
+                                {
+                                    Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Refresh();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "삭제에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                        }
+                    };
+                    adManagerDriRequest admanagerdrirequest = new adManagerDriRequest(Bustext,Timetext,driver_ID,"del", responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adManagerDriActivity.this) ;
+                    queue.add(admanagerdrirequest);
+
                 }else{
                     Toast.makeText(getApplicationContext(), "정보를 적절하게 넣어주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         //버스 spinner
-        List<String> data2 = new ArrayList<>();
-        data2.add("1 ~ 10 호차 노선 선택"); data2.add("1호차"); data2.add("2호차"); data2.add("3호차");
-        data2.add("4호차");data2.add("5호차"); data2.add("6호차"); data2.add("7호차");
-        data2.add("8호차"); data2.add("9호차");data2.add("10호차");//data.add("전체 버스 선택");
-        //배열[]에 db값 넣기
-        /* for(int i=0;i<n;i++)
-        {
-            data2.add(배열[i]);
-        }*/
-        //버스스피너
         BusSpinner = (Spinner)findViewById(R.id.BUSSpinner3);
-        //Adapter
-        adapterSpinner1 = new spinnerRows(this, data2);
-        //Adapter 적용
-        BusSpinner.setAdapter(adapterSpinner1);
+        try {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray array = new JSONArray(response);
+
+                        load_busName.add("노선 선택");
+                        for(int i=0; i<array.length();i++){
+                            JSONObject bus_name = array.getJSONObject(i);
+                            load_busName.add(bus_name.getString("bus_name"));
+                        }
+
+                        //Adapter
+                        adapterSpinner1 = new spinnerRows(adManagerDriActivity.this, load_busName);
+                        //Adapter 적용
+                        BusSpinner.setAdapter(adapterSpinner1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            studentBookRequest_loadName loadname = new studentBookRequest_loadName(responseListener);
+            RequestQueue queue = Volley.newRequestQueue(adManagerDriActivity.this);
+            queue.add(loadname);
+        }catch (Exception e){
+            Excep(e);
+        }
+
+        //시간 spinner
+        TimeSpinner = (Spinner)findViewById(R.id.TIMESpinner3);
 
         BusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Bustext = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try{
-                    if(position!=0)
-                    {
-                        Bustext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                    Busnum=position;
+                    try {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
+
+                                    load_busType.clear();
+                                    load_busType.add("시간 선택");
+                                    for(int i=0; i<array.length();i++){
+                                        JSONObject bus_name = array.getJSONObject(i);
+                                        load_busType.add(bus_name.getString("bus_type"));
+                                    }
+
+                                    //Adapter
+                                    adapterSpinner2 = new spinnerRows(adManagerDriActivity.this, load_busType);
+                                    //Adapter 적용
+                                    TimeSpinner.setAdapter(adapterSpinner2);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        studentBookRequest_loadType loadType = new studentBookRequest_loadType(BusSpinner.getSelectedItem().toString(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(adManagerDriActivity.this);
+                        queue.add(loadType);
+                    }catch (Exception e){
+                        Excep(e);
                     }
                 }catch (Exception e)
                 {
-
+                    Excep(e);
                 }
             }
             @Override
@@ -124,33 +241,16 @@ public class adManagerDriActivity extends AppCompatActivity {
 
             }
         });
-        //시간 spinner
-        List<String> data3 = new ArrayList<>();
-        data3.add("시간 선택");
-        data3.add("주간등교1");
-        data3.add("주간등교2");
-        data3.add("주간하교");
-        data3.add("야간하교");
-        //UI생성
-        //UI생성
-        //시간 스피너
-        TimeSpinner = (Spinner)findViewById(R.id.TIMESpinner3);
-        //Adapter
-        adapterSpinner2 = new spinnerRows(this, data3);
-        //Adapter 적용
-        TimeSpinner.setAdapter(adapterSpinner2);
 
         TimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
                 try{
-                    if(position!=0)
-                    {
-                        Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                    }
+                    Timenum=position;
                 }catch (Exception e)
                 {
+                    Excep(e);
                 }
             }
             @Override
@@ -165,53 +265,89 @@ public class adManagerDriActivity extends AppCompatActivity {
         //db자료를 2차원 배열같은데 넣고 setText에 db가 들어간 배열 출력
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.DriverMagTable); // 테이블 id 명
 
-        for (int i = 0; i < 50; i++) {//  row 임 대신에 컬럼갯
-            final TableRow tableRow = new TableRow(this);//컬럼
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-            for(int j = 0 ; j < 3 ; j++){//컬럼임
-                final int cun=i;
-                final int row=j;
-                final Button rowButton = new Button(this);
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+
+                    for(int i=0; i<array.length();i++){
+                        JSONObject student_suggestions = array.getJSONObject(i);
+
+                        suggestions.add(new driverBusDTO(
+                                student_suggestions.getString("bus_type"),
+                                student_suggestions.getString("bus_name"),
+                                student_suggestions.getString("userID")
+                        ));
+                    }
+                    for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
+                        TableRow tableRow = new TableRow(adManagerDriActivity.this);//컬럼
+                        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
 
-                rowButton.setText(i+","+j);                   // 데이터삽입, 배열[i,j]
-                rowButton.setTextSize(18);                     // 폰트사이즈
-                rowButton.setGravity(Gravity.CENTER);    // 폰트정렬
+                        for(int j = 0 ; j < 3 ; j++){//컬럼임
+                            final int cun= i;
+                            Button rowButton = new Button(adManagerDriActivity.this);
+                            rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
+                            suggestion_check = suggestions.get(cun);
 
-                rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
-                rowButton.setWidth(100);
-                rowButton.setHeight(50);
-                rowButton.setTextColor(Color.BLUE);
-                if(j==0)
-                {
-                    rowButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //버튼 클릭될 시 할 코드작성
+                            if(j==0)
+                            {
+                                rowButton.setText(suggestion_check.getUserID());
+                                //rowButton.setText(suggestion_check.getTitle());
+                                rowButton.setWidth(400);
+                                rowButton.setHeight(50);
 
-                            title=String.valueOf(cun);//제목 제목 DB값
-                            //  Content=String.valueOf(cun);//내용
-                            callNameDialog(title,adManagerDriActivity.this);
+                                rowButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //버튼 클릭될 시 할 코드작성
+
+                                        callNameDialog(suggestion_check.getUserID(),adManagerDriActivity.this);
+                                    }
+                                });
+                            }
+
+                            else if(j==1)
+                            {
+
+                                rowButton.setText(suggestion_check.getBus_name());
+                                rowButton.setWidth(10);
+                                rowButton.setHeight(50);
+
+                            }
+
+                            else if(j==2)
+                            {
+
+                                rowButton.setText(suggestion_check.getBus_type());
+                                rowButton.setWidth(10);
+                                rowButton.setHeight(50);
+
+                            }
+
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                            rowButton.setTypeface(null, Typeface.BOLD);
+                            rowButton.setEnabled(true);
+
+                            tableRow.addView(rowButton);
                         }
-                    });
-                }
-                else  if(j==1||j==2)
-                {
-                    rowButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //버튼 클릭될 시 할 코드작성
-                            title=String.valueOf(cun);//제목 제목 DB값
-                            //  Content=String.valueOf(cun);//내용
+                        tableLayout.addView(tableRow);
+                    }
 
-                            callBusDialog(row,title,adManagerDriActivity.this);
-                        }
-                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                tableRow.addView(rowButton);
+
             }
-            tableLayout.addView(tableRow);
-        }
+        };
+//서버로 volley를 이용해서 요청
+
+        adManagerDriRequest_driverlist driverlistrequest = new adManagerDriRequest_driverlist(responseListener);
+        RequestQueue queue = Volley.newRequestQueue(adManagerDriActivity.this);
+        queue.add(driverlistrequest);
+
     }
     void Refresh()//세로고침
     {
@@ -332,6 +468,29 @@ public class adManagerDriActivity extends AppCompatActivity {
                 Mapdlg2.dismiss();
             }
         });
+    }
+
+    void Excep(Exception e)//예외처리를 부르는 코드
+    {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String exceptionAsStrting = sw.toString();
+        Edialog(exceptionAsStrting);
+    }
+
+    void Edialog(String talk)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage("오류 : "+talk);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
