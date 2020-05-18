@@ -295,7 +295,7 @@ public class adManagerDriActivity extends AppCompatActivity {
                             {
                                 rowButton.setText(suggestion_check.getUserID());
                                 //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(400);
+                                rowButton.setWidth(10);
                                 rowButton.setHeight(50);
 
                                 rowButton.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +303,7 @@ public class adManagerDriActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         //버튼 클릭될 시 할 코드작성
 
-                                        callNameDialog(suggestion_check.getUserID(),adManagerDriActivity.this);
+                                      //  callNameDialog(suggestion_check.getUserID(),suggestion_check.getBus_name(),suggestion_check.getBus_type(), adManagerDriActivity.this);
                                     }
                                 });
                             }
@@ -400,75 +400,6 @@ public class adManagerDriActivity extends AppCompatActivity {
         });
     }
 
-    // 호출할 다이얼로그 함수를 정의한다.
-    public void callBusDialog(int num,String title,Context context) {
-        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog Mapdlg2 = new Dialog(context);
-        //모드 spinner
-        // 액티비티의 타이틀바를 숨긴다.
-        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        Mapdlg2.setContentView(R.layout.movedialog);
-
-        // 커스텀 다이얼로그를 노출한다.
-        Mapdlg2.show();
-
-        List<String> data1 = new ArrayList<>();
-        if(num==1){
-            data1.add("시간 선택");
-            data1.add("주간등교1");
-            data1.add("주간등교2");
-            data1.add("주간하교");
-            data1.add("야간하교");
-        }
-        else if(num==2){
-            data1.add("1 ~ 10 호차 노선 선택"); data1.add("1호차"); data1.add("2호차"); data1.add("3호차");
-            data1.add("4호차");data1.add("5호차"); data1.add("6호차"); data1.add("7호차");
-            data1.add("8호차"); data1.add("9호차");data1.add("10호차");
-        }
-        Dialogspinner = (Spinner) Mapdlg2.findViewById(R.id.MODspinner2);
-        //Adapter
-        adapterSpinner3 = new spinnerRows(context, data1);
-        //Adapter 적용
-        Dialogspinner.setAdapter(adapterSpinner3);
-
-        Dialogspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    modStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        final Button okButton3 = (Button) Mapdlg2.findViewById(R.id.okButton3);//변경 버튼
-        final Button cancelButton3 = (Button) Mapdlg2.findViewById(R.id.cancelButton3);//취소버튼
-        final TextView TTtitle3 = (TextView) Mapdlg2.findViewById(R.id.TTtitle3);//지도 변경 입력칸
-        TTtitle3.setText(title);
-        okButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //DB변경코드 넣기
-                Refresh();
-                Mapdlg2.dismiss();
-            }
-        });
-        cancelButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(adManagerDriActivity.this, "취소 했습니다.", Toast.LENGTH_SHORT).show();
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-    }
 
     void Excep(Exception e)//예외처리를 부르는 코드
     {

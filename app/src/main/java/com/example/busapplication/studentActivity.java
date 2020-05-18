@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,8 +21,10 @@ public class studentActivity extends AppCompatActivity {
     String checkUser="학생";
     //예외처리 다이얼로그에 쓰임
     String whoSLD;
+    boolean timeche=true;// 버스시간 확인
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
@@ -39,7 +42,7 @@ public class studentActivity extends AppCompatActivity {
 
 
         //공지사항
-        final TextView noticeStudent = (TextView)findViewById(R.id.noticeStudent);
+        final Button noticeStudent = (Button)findViewById(R.id.noticeStudent);
         noticeStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,11 +114,16 @@ public class studentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    //화면전환
-                    Intent intent = new Intent(getApplicationContext(), studentBookActivity.class);
-                    //다른 화면으로 값 전달
-                    intent.putExtra("value1", IDvalue);
-                    startActivity(intent);
+                    if(timeche==true){
+                        //화면전환
+                        Intent intent = new Intent(getApplicationContext(), studentBookActivity.class);
+                        //다른 화면으로 값 전달
+                        intent.putExtra("value1", IDvalue);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "지금은 예약시간이 아닙니다,", Toast.LENGTH_SHORT).show();
+                    }
                 }catch (Exception e){
                     Excep(e);
                 }

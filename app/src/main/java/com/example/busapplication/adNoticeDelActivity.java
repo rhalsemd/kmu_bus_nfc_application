@@ -91,23 +91,37 @@ public class adNoticeDelActivity extends AppCompatActivity {
 
                             if(j==0)
                             {
-                                rowButton.setText(suggestion_check.getTitle());
+                                rowButton.setText(String.valueOf(cun));
                                 //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(400);
+                                rowButton.setWidth(30);
                                 rowButton.setHeight(50);
                             }
 
                             else if(j==1)
                             {
-                                rowButton.setText(suggestion_check.getTime());
-                                rowButton.setWidth(10);
+                                rowButton.setText(suggestion_check.getTitle());
+                                rowButton.setWidth(50);
                                 rowButton.setHeight(50);
+                                rowButton.setTextColor(Color.RED);
+                                rowButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //버튼 클릭될 시 할 코드작성
+                                        title=suggestion_check.getTitle();//제목 제목 DB값
+                                        Content= suggestion_check.getContent();
+                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                        // 커스텀 다이얼로그를 호출한다.
+                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                        // customDialog.callFunction();
+                                        callFunction(adNoticeDelActivity.this,cun);
+                                    }
+                                });
 
                             }
                             else if(j==2)
                             {
                                 rowButton.setText(suggestion_check.getuserID());
-                                rowButton.setWidth(10);
+                                rowButton.setWidth(50);
                                 rowButton.setHeight(50);
 
                             }
@@ -115,19 +129,6 @@ public class adNoticeDelActivity extends AppCompatActivity {
                             rowButton.setTextColor(Color.BLACK);     // 폰트컬러
                             rowButton.setTypeface(null, Typeface.BOLD);
                             rowButton.setEnabled(true);
-                            rowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //버튼 클릭될 시 할 코드작성
-                                    title=suggestion_check.getTitle();//제목 제목 DB값
-                                    Content= suggestion_check.getContent();
-                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                    // 커스텀 다이얼로그를 호출한다.
-                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                    // customDialog.callFunction();
-                                    callFunction(adNoticeDelActivity.this,cun);
-                                }
-                            });
                             tableRow.addView(rowButton);
                         }
                         tableLayout.addView(tableRow);

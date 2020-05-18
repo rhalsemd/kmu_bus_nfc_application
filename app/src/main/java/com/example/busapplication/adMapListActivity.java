@@ -128,8 +128,6 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
 
         //지도 변경이나 지도 추가시에 필요함
         title_map_editText=(EditText)findViewById(R.id.title_map_editText);
-        //노선 삭제
-        TextView del_map_textView= (TextView)findViewById(R.id.del_map_textView);
         //표로 이동
         TextView list_map_textView= (TextView)findViewById(R.id.list_map_textView);
         final Button Cancel_map_button = (Button)findViewById(R.id.Cancel_map_button);//취소버튼
@@ -259,14 +257,7 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
 
             }
         });
-        del_map_textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //노선 삭제
-                // TextView 클릭될 시 할 코드작성
 
-            }
-        });
         list_map_textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,59 +331,6 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
                 camera_longitude = arg0.target.longitude;
             }
         });
-        // 맵 터치 이벤트 구현 //
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
-            @Override
-            public void onMapClick(LatLng point) {
-                if(oneche==false&&MODEvalue.equals("지도추가삭제"))
-                {
-                    oneche=true;
-                    final Marker m;
-                    MarkerOptions mOptions = new MarkerOptions();
-                    // 마커 타이틀
-                    mOptions.title("마커 좌표");
-                    latitude = point.latitude; // 위도
-                    longitude = point.longitude; // 경도
-                    // 마커의 스니펫(간단한 텍스트) 설정
-                    mOptions.snippet("위도"+latitude.toString() + ",경도" + longitude.toString());
-                    // LatLng: 위도 경도 쌍을 나타냄
-                    mOptions.position(new LatLng(latitude, longitude));
-                    savetitle=mOptions.getTitle();
-                    // 마커(핀) 추가
-                    m= googleMap.addMarker(mOptions);
-                    //마커 클릭 리스너
-                    // mMap.setOnMarkerClickListener(markerClickListener);
-                }
-                else if(towche==true&&MODEvalue.equals("지도변경")&&che1==true)
-                {
-                    final Marker m;
-                    towche=false;
-                    MarkerOptions mOptions = new MarkerOptions();
-                    // 마커 타이틀
-                    mOptions.title("마커 좌표");
-                    latitude = point.latitude; // 위도
-                    longitude = point.longitude; // 경도
-                    // 마커의 스니펫(간단한 텍스트) 설정
-                    mOptions.snippet("위도"+latitude.toString() + ",경도" + longitude.toString());
-                    // LatLng: 위도 경도 쌍을 나타냄
-                    mOptions.position(new LatLng(latitude, longitude));
-                    // 마커(핀) 추가
-                    m= googleMap.addMarker(mOptions);
-                    //마커 클릭 리스너
-                    mMap.setOnMarkerClickListener(markerClickListener);
-                    //marker1.remove();
-                    title_map_editText.setText(savetitle+"변경");
-                }
-                else if(MODEvalue.equals("좌표확인및카메라변경"))
-                {
-                    Toast.makeText(getBaseContext(), "좌표 확인 및 카메라 변경 입니다.", Toast.LENGTH_SHORT).show();
-                }
-                else if(oneche==true||towche==false)
-                {
-                    Toast.makeText(getBaseContext(), "마커를 추가하거나 삭제할 수 없습니다. \n 변경이나 취소, 마크 삭제를 해주세요", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -446,39 +384,6 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
         queue.add(maprequest);
     }
     Marker marker1;
-    //마커 클릭 리스너
-    GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            if(oneche==false&&MODEvalue.equals("지도추가삭제"))
-            {
-                oneche=true;
-                latitude = marker.getPosition().latitude; // 위도
-                longitude = marker.getPosition().longitude; // 경도
-
-
-                list_map_textView1.setText( Double.toString(latitude));//확인용
-                list_map_textView2.setText( Double.toString(longitude));//확인용
-                savetitle=marker.getTitle();
-                Toast.makeText(getBaseContext(), savetitle, Toast.LENGTH_SHORT).show();
-                marker.remove();
-            }
-            else if(towche==false&&MODEvalue.equals("지도변경")&&che1==false)
-            {
-                towche=true;
-                che1=true;
-                savetitle=marker.getTitle();
-                title_map_editText.setText(savetitle);
-                marker.remove();
-                marker1=marker;
-            }
-            else if(oneche==true&&MODEvalue.equals("지도추가삭제")||towche==true&&MODEvalue.equals("지도변경"))
-            {
-                Toast.makeText(getBaseContext(), "추가로 마커를 삭제할 수 없습니다. 변경이나 취소, 마크 삭제를 해주세요", Toast.LENGTH_SHORT).show();
-            }
-            return false;
-        }
-    };
 
     //마커 색깔
     private Marker addMarker(MarkerItem markerItem, boolean isSelectedMarker) {

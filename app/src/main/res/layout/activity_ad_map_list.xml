@@ -85,19 +85,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.087" />
 
-    <TextView
-        android:id="@+id/del_map_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="노선삭제"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.805"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
-
     <EditText
         android:id="@+id/title_map_editText"
         android:layout_width="wrap_content"
