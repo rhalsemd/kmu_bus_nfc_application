@@ -54,7 +54,7 @@ public class adNoticeAddActivity extends AppCompatActivity {
                 String title = NoticeTitleEd.getText().toString();
                 String content = NoticeWriteEd.getText().toString();
 
-                if(user.equals("버스기사")||user.equals("학생")||user.equals("전체"))
+                if(user.equals("버스기사")||user.equals("학생"))
                 {
                     if (title == "" || content == "")
                     {
@@ -102,7 +102,7 @@ public class adNoticeAddActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(), "버스기사나 학생 또는 전체를 선택해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "버스기사나 학생을 선택해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,7 +111,6 @@ public class adNoticeAddActivity extends AppCompatActivity {
         data1.add("유저 선택");
         data1.add("버스기사");
         data1.add("학생");
-        data1.add("전체");
         //UI생성
         //시간 스피너
         UserSpinner = (Spinner)findViewById(R.id.UserSpinner);

@@ -2,12 +2,10 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,7 +35,7 @@ public class driverBookActivity extends AppCompatActivity
     TextView textview_latitude;//위도
 
     TextView GPStextView;//GPS확인
-    Button go;
+    Button go,tutorial;
     //지도가 켜저있는 지 확인
 
     //종점 확인
@@ -60,11 +58,38 @@ public class driverBookActivity extends AppCompatActivity
     TextView Datacheck19;
     String text;
     int cou;
-    String cun;
+    //todo 튜토리얼 체크
+    public boolean CheckAppFirstExecute() {
+        SharedPreferences pref = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
+        boolean isFirst = pref.getBoolean("isFirst", false);
+        if (!isFirst) {//최초 실행시 true저장
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isFirst", true);
+            editor.commit();
+        }
+        return !isFirst;
+    }
+
+    public void tutorial_click(View v){
+        startActivity(new Intent(this,Driver_toturial.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_book);
+        tutorial = (Button)findViewById(R.id.tutorial_button);
+        //여기서부터 첫실행시 튜토리얼 부분 실행문
+        //txtFirst = (TextView)findViewById(R.id.textView2);
+        //txtFirst.setText(""+CheckAppFirstExecute());
+        //todo CheckAppFirstExecute() 를 활용해서 처음인지를 체크한다.
+        if(CheckAppFirstExecute()){
+            startActivity(new Intent(this,Driver_toturial.class));
+
+        }
+
+        //여기까지 튜토리얼
+
+
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
@@ -306,15 +331,7 @@ public class driverBookActivity extends AppCompatActivity
         resertList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 // TextView 클릭될 시 할 코드작성
-                for(int i=0;i<100;i++){
-                     cun+="이름 : "+Integer.toString(i)+"학번 : "+Integer.toString(i)+"\n";
-
-                }
-                callFunction(driverBookActivity.this,cun);
-
 
             }
         });
@@ -456,45 +473,6 @@ public class driverBookActivity extends AppCompatActivity
         else{
             dialog2("오류", exceptionAsStrting);
         }
-    }
-
-    // 호출할 다이얼로그 함수를 정의한다.
-    public void callFunction(Context context,String subscriber ) {
-
-        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog dlg = new Dialog(context);
-
-        // 액티비티의 타이틀바를 숨긴다.
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        dlg.setContentView(R.layout.custom_dialog_read);
-
-        // 커스텀 다이얼로그를 노출한다.
-        dlg.show();
-
-        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        final TextView message = (TextView) dlg.findViewById(R.id.mesgase);
-        final TextView title = (TextView) dlg.findViewById(R.id.TTtitle);
-        final Button okButton = (Button) dlg.findViewById(R.id.okButton);
-
-        title.setMovementMethod(ScrollingMovementMethod.getInstance());
-
-        message.setMovementMethod(new ScrollingMovementMethod());
-
-
-        title.setText("예약자명단");
-        message.setText(subscriber );
-
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
-                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
-                // 커스텀 다이얼로그를 종료한다.
-                dlg.dismiss();
-            }
-        });
     }
 
 }
