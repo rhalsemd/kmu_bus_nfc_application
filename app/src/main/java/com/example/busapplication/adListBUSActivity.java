@@ -144,7 +144,6 @@ public class adListBUSActivity extends AppCompatActivity {
                             final String destination = markeritem.getdestination();
                             final String latitude = Double.toString(markeritem.getLat());
                             final String longtitude = Double.toString(markeritem.getLon());
-                            final String destinationTen;
                             final String lat_column = "route"+ (i+1) + "_la";
                             final String long_column = "route"+ (i+1) + "_lo";
                             final String route_column = "route"+ (i+1);
@@ -153,16 +152,9 @@ public class adListBUSActivity extends AppCompatActivity {
                                 rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
 
                                 if (j == 0) {
-                                    if(destination.length()>=10){
-                                        destinationTen=destination.substring(0, 10);
-                                    }
-                                    else{
-                                        destinationTen=destination;
-                                    }
-                                    rowButton.setText(destinationTen);
-
-                                    rowButton.setWidth(300);
-                                    rowButton.setHeight(100);
+                                    rowButton.setText(destination);
+                                    rowButton.setWidth(10);
+                                    rowButton.setHeight(50);
                                     rowButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -174,8 +166,8 @@ public class adListBUSActivity extends AppCompatActivity {
                                 }
                                 else if (j == 1) {
                                     rowButton.setText(latitude);
-                                    rowButton.setWidth(150);
-                                    rowButton.setHeight(100);
+                                    rowButton.setWidth(400);
+                                    rowButton.setHeight(50);
                                     rowButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -185,8 +177,8 @@ public class adListBUSActivity extends AppCompatActivity {
                                     });
                                 } else if (j == 2) {
                                     rowButton.setText(longtitude);
-                                    rowButton.setWidth(150);
-                                    rowButton.setHeight(100);
+                                    rowButton.setWidth(10);
+                                    rowButton.setHeight(50);
                                     rowButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

@@ -23,8 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -50,18 +48,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 public class adNFCNumberActivity extends AppCompatActivity {
-
-    Intent intent = getIntent();
-    String IDvalue = intent.getExtras().getString("value1");
 
     NdefMessage message;
     public static final String ERROR_DETECTED = "No NFC tag detected!";
@@ -258,34 +249,12 @@ public class adNFCNumberActivity extends AppCompatActivity {
         TextView readone = (TextView)findViewById(R.id.readone);
         TextView foruse = (TextView)findViewById(R.id.foruse);
 
-        if(text!=null) {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        if(readone!=null)
+            readone.setText( text);
 
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(getApplicationContext(), "탑승완료!", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "탑승실패!", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                        return;
-                    }
 
-                }
-            };
-            adNFCNumberRequest nfcrequest = new adNFCNumberRequest(IDvalue,text, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(adNFCNumberActivity.this);
-            queue.add(nfcrequest);
-        }
-        else if (text==null) {
-            Toast.makeText(getApplicationContext(), "탑승실패! 기사에게 문의하세요!", Toast.LENGTH_SHORT).show();
-        } else {
-        }
-
+        if(foruse!=null)
+            foruse.setText( text);
     }
 
 

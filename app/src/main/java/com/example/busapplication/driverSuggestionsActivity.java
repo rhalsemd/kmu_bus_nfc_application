@@ -119,7 +119,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
 
-                        for(int j = 0 ; j < 2 ; j++){//컬럼임
+                        for(int j = 0 ; j < 3 ; j++){//컬럼임
                             final int cun=i;
                             Button rowButton = new Button(driverSuggestionsActivity.this);
                             rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
@@ -129,13 +129,21 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             {
                                 rowButton.setText(suggestion_check.getTitle());
                                 //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(150);
+                                rowButton.setWidth(400);
                                 rowButton.setHeight(50);
                             }
+
                             else if(j==1)
                             {
+                                rowButton.setText(suggestion_check.getTime());
+                                rowButton.setWidth(10);
+                                rowButton.setHeight(50);
+
+                            }
+                            else if(j==2)
+                            {
                                 rowButton.setText(suggestion_check.getuserID());
-                                rowButton.setWidth(150);
+                                rowButton.setWidth(10);
                                 rowButton.setHeight(50);
 
                             }
