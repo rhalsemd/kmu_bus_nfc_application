@@ -91,7 +91,7 @@ public class adStudentDataActivity extends AppCompatActivity {
                             {
                                 rowButton.setText(suggestion_check.getUserID());
                                 rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(400);
+                                rowButton.setWidth(100);
                                 rowButton.setHeight(50);
                             }
 
@@ -99,7 +99,7 @@ public class adStudentDataActivity extends AppCompatActivity {
                             {
                                 rowButton.setText(suggestion_check.getUserName());
                                 rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(10);
+                                rowButton.setWidth(100);
                                 rowButton.setHeight(50);
 
                             }
@@ -107,7 +107,7 @@ public class adStudentDataActivity extends AppCompatActivity {
                             {
                                 rowButton.setText(suggestion_check.getSanctions());
                                 rowButton.setTextColor(Color.RED);     // 폰트컬러
-                                rowButton.setWidth(10);
+                                rowButton.setWidth(100);
                                 rowButton.setHeight(50);
 
                             }
@@ -223,5 +223,15 @@ public class adStudentDataActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+
+    //뒤로가기 버튼 막기
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent i = new Intent(adStudentDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
+        finish();
     }
 }

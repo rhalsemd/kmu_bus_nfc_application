@@ -153,8 +153,8 @@ public class adListBUSActivity extends AppCompatActivity {
                                 rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
 
                                 if (j == 0) {
-                                    if(destination.length()>=10){
-                                        destinationTen=destination.substring(0, 10);
+                                    if(destination.length()>=7){
+                                        destinationTen=destination.substring(0, 7)+"...";
                                     }
                                     else{
                                         destinationTen=destination;
@@ -465,5 +465,14 @@ public class adListBUSActivity extends AppCompatActivity {
                 Mapdlg2.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(adListBUSActivity.this/*현재 액티비티 위치*/ , adBusDataActivity.class/*이동 액티비티 위치*/);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
+        finish();
+        // 코드 작성
     }
 }

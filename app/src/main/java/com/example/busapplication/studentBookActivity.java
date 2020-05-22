@@ -307,6 +307,7 @@ public class studentBookActivity extends AppCompatActivity {
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        Move();
         //super.onBackPressed();
     }
     void Excep(Exception e)

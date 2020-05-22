@@ -184,6 +184,7 @@ public class drivermangerDataActivity extends AppCompatActivity  implements View
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        Move();
         //super.onBackPressed();
     }
     void dialog(String who,String talk)

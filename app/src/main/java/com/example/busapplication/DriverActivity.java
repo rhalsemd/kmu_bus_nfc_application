@@ -169,6 +169,30 @@ public class DriverActivity extends AppCompatActivity {
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        try {
+            //화면전환
+            if (IDvalue.equals(ad))//3은 관리자 ID, 관리자인 경우
+            {
+                new AlertDialog.Builder(DriverActivity.this)
+                        .setMessage("원하는 기능을 확인했습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                ADmove();
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                            }
+                        }).show();
+            } else {
+                //회원인 경우
+                Move();
+            }
+        }catch (Exception e)
+        {
+            Excep(e);
+        }
         //super.onBackPressed();
     }
     void dialog(String who,String talk)

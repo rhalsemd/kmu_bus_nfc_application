@@ -122,6 +122,7 @@ public class studentSuggestionActivity extends AppCompatActivity {
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        Move();
         //super.onBackPressed();
     }
     void Move()

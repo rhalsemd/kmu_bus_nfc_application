@@ -76,7 +76,14 @@ public class adBusDataActivity extends AppCompatActivity {
         TextView ListBUtextView = (TextView)findViewById(R.id.ListBUtextView);//지도로 버스 좌표변경
         changeditText = (EditText)findViewById(R.id.changeditText);//edit 시간 추가
 
+        Button TimeDel_button=(Button)findViewById(R.id.TimeDel_button);//시간 삭제
+        TimeDel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+            }
+        });
         BUSAddbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,8 +210,6 @@ public class adBusDataActivity extends AppCompatActivity {
         //모드 spinner
         List<String> data1 = new ArrayList<>();
         data1.add("모드 선택");
-        data1.add("지도추가삭제");
-        data1.add("지도변경");
         data1.add("좌표확인및카메라변경");
         //배열[]에 db값 넣기
         /* for(int i=0;i<n;i++)
@@ -364,5 +369,12 @@ public class adBusDataActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
+        // 코드 작성
     }
 }

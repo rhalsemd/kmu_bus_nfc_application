@@ -154,8 +154,6 @@ public class adNFCNumberActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    final TextView Datacheck11 = (TextView) findViewById(R.id.Datacheck11);//로그인
-                    Datacheck11.setText("ok");//지워도 됨 - 값확인 하는 것
                     if (cheNFC == false) {
                         talk = "예약시간이나 버스를 확인해 주세요";
                         dialog(talk);
@@ -201,6 +199,7 @@ public class adNFCNumberActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        Move();
     }
     void  Excep(Exception e)
     {
@@ -363,5 +362,4 @@ public class adNFCNumberActivity extends AppCompatActivity {
         writeMode = false;
         nfcAdapter.disableForegroundDispatch(this);
     }
-
 }

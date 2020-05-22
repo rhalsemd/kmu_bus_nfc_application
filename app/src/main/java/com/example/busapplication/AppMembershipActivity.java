@@ -179,6 +179,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        Intent i = new Intent(AppMembershipActivity.this/*현재 액티비티 위치*/, MainActivity.class/*이동 액티비티 위치*/);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
         //super.onBackPressed();
     }
     void Edialog(String talk)

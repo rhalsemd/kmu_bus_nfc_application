@@ -1,9 +1,14 @@
 package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -61,8 +66,10 @@ public class driverBookActivity extends AppCompatActivity
     String text;
     int cou;
     String cun;
+    int countFinsh=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_book);
 
@@ -158,8 +165,13 @@ public class driverBookActivity extends AppCompatActivity
 
 
 
+
+
+
         // LocationManager 객체를 얻어온다
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
         driverbusMain3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,18 +287,26 @@ public class driverBookActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 try{
-                    cheMap=true;
-                    //아래의 minTime으로 시간 변경
-                    textview_coordinate.setText("수신중..");
+                    if ( Build.VERSION.SDK_INT >= 23 &&
+                            ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+                        ActivityCompat.requestPermissions( driverBookActivity.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
+                                0 );
+                    }
+                    else {
+                        cheMap=true;
+                        //아래의 minTime으로 시간 변경
+                        textview_coordinate.setText("수신중..");
                         // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                                500, // 통지사이의 최소 시간간격 (miliSecond)
+                                5000, // 통지사이의 최소 시간간격 (miliSecond)
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                                500, // 통지사이의 최소 시간간격 (miliSecond)
+                                5000, // 통지사이의 최소 시간간격 (miliSecond)
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
+                    }
+
                 }catch(SecurityException ex){
                     //ex.printStackTrace();
                     StringWriter sw = new StringWriter();
@@ -322,6 +342,7 @@ public class driverBookActivity extends AppCompatActivity
         //목적지 도착시 gps종료
        if(busStop==true)
        {
+           countFinsh=0;
            GPStextView.setText("GPS 수신전...");
            lm.removeUpdates(mLocationListener);
        }
@@ -334,6 +355,7 @@ public class driverBookActivity extends AppCompatActivity
     private final LocationListener mLocationListener = new LocationListener() {
 
         public void onLocationChanged(Location location) {
+            countFinsh++;
             //여기서 위치값이 갱신되면 이벤트가 발생한다.
             //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
             Log.d("test", "onLocationChanged, location:" + location);
@@ -356,7 +378,7 @@ public class driverBookActivity extends AppCompatActivity
 
             GPStextView.setText("GPS 수신중...");
             //목적지 도착시 gps종료
-            if(longitude==endlongitude&&latitude==endlatitude)
+            if(countFinsh>=7200)
             {
                 busStop=true;
             }
@@ -423,6 +445,14 @@ public class driverBookActivity extends AppCompatActivity
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        busStop=true;
+        if(cheMap==true) {
+            Move();
+        }
+        else if(cheMap==false)
+        {
+            Move();
+        }
         //super.onBackPressed();
     }
     void dialog2(String who,String talk)
@@ -443,6 +473,7 @@ public class driverBookActivity extends AppCompatActivity
         Intent i = new Intent(driverBookActivity.this/*현재 액티비티 위치*/ , DriverActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
+        finish();
     }
     void Excep(Exception e)//예외처리를 부르는 코드
     {

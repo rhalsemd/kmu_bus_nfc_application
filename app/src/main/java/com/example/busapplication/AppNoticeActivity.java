@@ -84,17 +84,18 @@ public class AppNoticeActivity extends AppCompatActivity {
 
                             if(j==0)
                             {
-                                rowButton.setText(suggestion_check.getTitle());
-                                //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(400);
+                                rowButton.setText(String.valueOf(cun));
+                                rowButton.setWidth(10);
                                 rowButton.setHeight(50);
                             }
 
                             else if(j==1)
                             {
-                                rowButton.setText(suggestion_check.getTime());
-                                rowButton.setWidth(10);
+                                rowButton.setText(suggestion_check.getTitle());
+                                //rowButton.setText(suggestion_check.getTitle());
+                                rowButton.setWidth(400);
                                 rowButton.setHeight(50);
+                                rowButton.setTextColor(Color.BLACK);
 
                             }
 
@@ -150,7 +151,22 @@ public class AppNoticeActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        if(strValue.equals("버스기사"))
+        {
+            Intent i = new Intent(AppNoticeActivity.this/*현재 액티비티 위치*/ , DriverActivity.class/*이동 액티비티 위치*/);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
+        else if(strValue.equals("학생"))
+        {
+            Intent i = new Intent(AppNoticeActivity.this/*현재 액티비티 위치*/ , studentActivity.class/*이동 액티비티 위치*/);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
+        // 코드 작성
+    }
     public void callFunction(Context context, int i) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.

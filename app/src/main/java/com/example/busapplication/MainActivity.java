@@ -76,16 +76,19 @@ public class MainActivity extends AppCompatActivity {
                                         Intent intent_user = new Intent(MainActivity.this, studentActivity.class);
                                         intent_user.putExtra("value", userID);
                                         startActivity(intent_user);
+                                        finish();
                                         break;
                                     case 1:
                                         Intent intent_driver = new Intent(MainActivity.this, DriverActivity.class);
                                         intent_driver.putExtra("value", userID);
                                         startActivity(intent_driver);
+                                        finish();
                                         break;
                                     case 2:
                                         Intent intent_admin = new Intent(MainActivity.this, administratorActivity.class);
                                         intent_admin.putExtra("value", userID);
                                         startActivity(intent_admin);
+                                        finish();
                                         break;
                                 }
                             }

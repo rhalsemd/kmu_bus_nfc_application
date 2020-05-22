@@ -192,6 +192,13 @@ public class driverSuggestionsActivity extends AppCompatActivity {
     //뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
+        if(check_admin.equals("버스기사")){excep();}//화면이동
+        else if(check_admin.equals("어드민"))
+        {
+            Intent i = new Intent(driverSuggestionsActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
         //super.onBackPressed();
     }
     void excep(){

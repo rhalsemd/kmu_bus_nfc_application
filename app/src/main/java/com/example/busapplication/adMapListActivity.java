@@ -396,5 +396,12 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
         markerOptions.position(position);
         return mMap.addMarker(markerOptions);
     }
-
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(adMapListActivity.this/*현재 액티비티 위치*/ , adBusDataActivity.class/*이동 액티비티 위치*/);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
+        finish();
+        // 코드 작성
+    }
 }

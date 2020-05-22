@@ -151,4 +151,9 @@ public class administratorActivity extends AppCompatActivity {
         String exceptionAsStrting = sw.toString();
         dialog(exceptionAsStrting);
     }
+    @Override
+    public void onBackPressed() {
+        Move();
+        // 코드 작성
+    }
 }

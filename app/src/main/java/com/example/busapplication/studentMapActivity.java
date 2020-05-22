@@ -582,6 +582,13 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
     }
     //뒤로가기 막음
     public void onBackPressed() {
+        try {
+            Move();
+            finish();
+            //화면전환
+        }catch (Exception e){
+            Excep(e);
+        }
         //super.onBackPressed();
     }
     void Excep(Exception e)
