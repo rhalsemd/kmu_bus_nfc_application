@@ -52,6 +52,8 @@ public class adBusDataActivity extends AppCompatActivity {
     int Busnum=0;
     int Timenum=0;
 
+    EditText changeditText;
+
     List<String> load_busName = new ArrayList<>(); //busspinner 값들
     List<String> load_busType = new ArrayList<>(); //Timespinner 값들
 
@@ -72,18 +74,43 @@ public class adBusDataActivity extends AppCompatActivity {
         Button ADbusMain4=(Button)findViewById(R.id.ADbusMain4);//메인화면으로
 
         TextView ListBUtextView = (TextView)findViewById(R.id.ListBUtextView);//지도로 버스 좌표변경
-        EditText changeditText = (EditText)findViewById(R.id.changeditText);//edit 시간 추가
+        changeditText = (EditText)findViewById(R.id.changeditText);//edit 시간 추가
+
 
         BUSAddbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TextView 클릭될 시 할 코드작성
-                //화면전환
-                if(Busnum!=0&&Timenum!=0)
-                {
+
+                if(load_busName.size()!=0&&Timenum!=0) {
+                    String add_bus = Integer.toString(load_busName.size()) + "호차";
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    Toast.makeText(getApplicationContext(), "호차가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Refresh();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(), "호차 추가 실패!", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                                return;
+                            }
+
+                        }
+                    };
+                    adBusDataRequest_addBus busdatarequest_addBus = new adBusDataRequest_addBus(Timetext, add_bus, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adBusDataActivity.this);
+                    queue.add(busdatarequest_addBus);
                 }
-                else {
+                else if (Timenum == 0) {
+                    Toast.makeText(getApplicationContext(), "새로운 호차를 선택할시에는 무조건 시간을 선택하여야합니다. 시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
                 }
+
             }
         });
 
@@ -123,18 +150,43 @@ public class adBusDataActivity extends AppCompatActivity {
             }
         });
 
-        BUSAddbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         TimeAddbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //changeditText에서 추가
+                if(changeditText.getText().length()!=0&&Busnum!=0) {
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    Toast.makeText(getApplicationContext(), "시간이 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Refresh();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(), "시간 추가 실패!", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                                return;
+                            }
+
+                        }
+                    };
+                    adBusDataRequest_addTime busdatarequest_addtime = new adBusDataRequest_addTime(Bustext, changeditText.getText().toString(), responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adBusDataActivity.this);
+                    queue.add(busdatarequest_addtime);
+                }
+                else if (Busnum == 0) {
+                    Toast.makeText(getApplicationContext(), "호차를 선택해주세요!", Toast.LENGTH_SHORT).show();
+                } else if (changeditText.getText().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "시간을 제대로 입력해주세요!", Toast.LENGTH_SHORT).show();
+                } else if (Busnum == 0 && changeditText.getText().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "호차와 시간을 제대로 입력해주세요!", Toast.LENGTH_SHORT).show();
+                } else {
+                }
             }
+
         });
 
         ADbusMain4.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +246,7 @@ public class adBusDataActivity extends AppCompatActivity {
                     try {
                         JSONArray array = new JSONArray(response);
 
+                        load_busName.clear();
                         load_busName.add("노선 선택");
                         for(int i=0; i<array.length();i++){
                             JSONObject bus_name = array.getJSONObject(i);
@@ -305,5 +358,11 @@ public class adBusDataActivity extends AppCompatActivity {
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsStrting = sw.toString();
         Edialog(exceptionAsStrting);
+    }
+    void Refresh()//세로고침
+    {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }

@@ -48,7 +48,7 @@ public class DriverActivity extends AppCompatActivity {
 
 
         //공지사항
-        final TextView noticeDriver = (TextView)findViewById(R.id.noticeDriver);
+        final Button noticeDriver = (Button)findViewById(R.id.noticeDriver);
         noticeDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
