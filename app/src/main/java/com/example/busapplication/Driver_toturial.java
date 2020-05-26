@@ -20,6 +20,7 @@ public class Driver_toturial extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_toturial);
         myimage =(ImageView)findViewById(R.id.imageView);
         myimage.setVisibility(View.VISIBLE);
+        CheckAppFirstExecute();
         setContent();
         //첫실행 확인
     }
@@ -28,7 +29,7 @@ public class Driver_toturial extends Activity implements View.OnClickListener {
         boolean isFirst = pref.getBoolean("isFirst", false);
         if (!isFirst) {//최초 실행시 true저장
             SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirst", true);
+            editor.putBoolean("isFirst", false);
             editor.commit();
         }
         return !isFirst;

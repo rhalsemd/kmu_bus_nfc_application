@@ -40,7 +40,7 @@ public class driverBookActivity extends AppCompatActivity
     TextView textview_coordinate;//지도 전체 정보
     TextView textview_longitude;//경도
     TextView textview_latitude;//위도
-
+    Button tutorial_button;
     TextView GPStextView;//GPS확인
     Button go;
     //지도가 켜저있는 지 확인
@@ -67,6 +67,9 @@ public class driverBookActivity extends AppCompatActivity
     int cou;
     String cun;
     int countFinsh=0;
+    public void tutorial_click(View v){
+        startActivity(new Intent(this,Driver_toturial.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

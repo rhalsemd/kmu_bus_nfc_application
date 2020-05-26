@@ -2,9 +2,11 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -42,6 +44,18 @@ public class AppNoticeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_notice);
+
+
+        SharedPreferences refresh = getSharedPreferences("check_fresh", Activity.MODE_PRIVATE);
+        int old_refresh = refresh.getInt("check_fresh", 0);
+        //todo 11대신에 카운터 숫자 넣어주기
+            SharedPreferences.Editor editor = refresh.edit();
+            editor.putInt("check_fresh", 11);
+            editor.commit();
+
+
+
+
 
         Intent intent = getIntent(); /*데이터 수신*/
         String value = intent.getExtras().getString("checkuser"); //메인에서 넘어온 아이디값
