@@ -164,7 +164,7 @@ public class studentActivity extends AppCompatActivity {
         busride.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+               try {
                     Intent intent = new Intent(getApplicationContext(), adNFCNumberActivity.class);
                     //다른 화면으로 값 전달
                     intent.putExtra("value1", IDvalue);
