@@ -76,7 +76,7 @@ public class AppNoticeActivity extends AppCompatActivity {
         final TextView textView49 = (TextView)findViewById(R.id.textView49);//
         if(strValue.equals("버스기사"))
         {
-            mylayout.setBackgroundResource(R.drawable.background2);
+            mylayout.setBackgroundResource(R.drawable.background2dri);
             noticeMain.setBackgroundResource(R.drawable.mainscreen2);
             textView48.setBackgroundColor(Color.parseColor("#008E40"));
             textView49.setBackgroundColor(Color.parseColor("#008E40"));
