@@ -60,8 +60,7 @@ import java.io.UnsupportedEncodingException;
 
 public class adNFCNumberActivity extends AppCompatActivity {
 
-    Intent intent = getIntent();
-    String IDvalue = intent.getExtras().getString("value1");
+    String IDvalue;
 
     NdefMessage message;
     public static final String ERROR_DETECTED = "No NFC tag detected!";
@@ -108,6 +107,9 @@ public class adNFCNumberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_nfcnumber);
+
+        Intent intent = getIntent();
+        IDvalue = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
         context = this;
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -130,9 +132,6 @@ public class adNFCNumberActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ad_nfcnumber);
 
-
-        Intent intent = getIntent(); /*데이터 수신*/
-        value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
         final TextView Datacheck10 = (TextView)findViewById(R.id.Datacheck10);//로그인
         Datacheck10.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
 
