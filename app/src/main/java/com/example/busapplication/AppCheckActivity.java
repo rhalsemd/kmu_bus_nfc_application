@@ -229,6 +229,7 @@ public class AppCheckActivity extends AppCompatActivity implements View.OnClickL
                                     if (success)
                                     {
                                         String userPhone_check = jsonObject.getString("userPhone");
+                                        userPhone_check="01000000000";
                                         calldialog(userPhone_check,"ID");
 
                                     }

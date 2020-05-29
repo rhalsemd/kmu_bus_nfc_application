@@ -2,13 +2,16 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.PrintWriter;
@@ -17,7 +20,7 @@ import java.io.StringWriter;
 public class DriverActivity extends AppCompatActivity {
     String IDvalue;
     String ad="3";//관리자
-
+    ImageView myStar;
     //예외처리 다이얼로그에 쓰임
     String whoSLD;
     String checkUser="버스기사";
@@ -26,6 +29,25 @@ public class DriverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
+        //튜토리얼 실행부
+        SharedPreferences pref = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
+        boolean isFirst = pref.getBoolean("isFirst", true);
+        if(isFirst){
+            startActivity(new Intent(this,Driver_toturial.class));
+        }
+
+        //todo 공지사항 갯수 받아와서 new_refresh 에 넣어주기
+        myStar = (ImageView)findViewById(R.id.imageView2);
+        SharedPreferences refresh = getSharedPreferences("check_fresh", Activity.MODE_PRIVATE);
+        int old_refresh = refresh.getInt("check_fresh", 0);
+        int new_refresh = 10;//여기다가 넣어준다.
+        if(old_refresh > new_refresh)
+            myStar.setVisibility(View.INVISIBLE);
+        else
+            myStar.setVisibility(View.VISIBLE);
+
+
+
 
         Intent intent = getIntent(); /*데이터 수신*/
         String value = intent.getExtras().getString("value"); //메인에서 넘어온 아이디값

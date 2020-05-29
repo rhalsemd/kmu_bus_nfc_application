@@ -5,11 +5,12 @@
     android:background="#ffffff"
     android:scrollbars="vertical"
     >
+
     <TextView
         android:id="@+id/TTtitle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/colorAccent"
+        android:background="#7030A0"
         android:gravity="center"
         android:scrollbars="vertical"
         android:text="커스텀 다이얼로그"
@@ -43,12 +44,13 @@
 
         </LinearLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/okButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="1"
-        android:background="@color/colorAccent"
+        android:background="#7030A0"
         android:gravity="center"
         android:text="확인"
         android:textColor="@color/common_google_signin_btn_text_dark_default"

@@ -86,7 +86,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                         for(int j = 0 ; j < 3 ; j++){//컬럼임
                             final int cun=i;
                             Button rowButton = new Button(adNoticeDelActivity.this);
-                            rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
+                            rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
                             suggestion_check = suggestions.get(cun);
 
                             if(j==0)

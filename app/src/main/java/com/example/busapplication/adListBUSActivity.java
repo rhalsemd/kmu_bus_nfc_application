@@ -150,7 +150,7 @@ public class adListBUSActivity extends AppCompatActivity {
                             final String route_column = "route"+ (i+1);
 
                                 Button rowButton = new Button(adListBUSActivity.this);
-                                rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
+                                rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
 
                                 if (j == 0) {
                                     if(destination.length()>=7){
@@ -416,9 +416,8 @@ public class adListBUSActivity extends AppCompatActivity {
 
         List<String> data1 = new ArrayList<>();
         data1.add("모드 선택");
-        data1.add("지도추가삭제");
-        data1.add("지도변경");
         data1.add("좌표확인및카메라변경");
+        data1.add("지도확인");
         MODspinner = (Spinner) Mapdlg2.findViewById(R.id.MODspinner2);
         //Adapter
         adapterSpinner5 = new spinnerRows(context, data1);

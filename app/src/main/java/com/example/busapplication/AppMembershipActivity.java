@@ -13,14 +13,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.telephony.SmsManager;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,6 +68,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
     final int MILLISINFUTURE = 300 * 1000; //총 시간 (300초 = 5분)
     final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
 
+    boolean Useche=false;
     String b;//랜덤문자열 넣기
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,8 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         final EditText RRNtext1 = (EditText)findViewById(R.id.RRNtext1);//주민번호 앞자리
         final EditText RRNtext2 = (EditText)findViewById(R.id.RRNtext2);//주민번호 뒤자리
 
+        final TextView UseUsertext = (TextView)findViewById(R.id.UseUsertext);
+
          NameTextsId = NameText.getText().toString();//이름값 string에 저장
          IdTextsId = IdText.getText().toString();//ID값 string에 저장
          PWTextsld = PWText.getText().toString();//PW값 string에 저장
@@ -93,6 +99,17 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         ////아래의 onClick(View v)로 정의
         confirm.setOnClickListener(this);
 
+        UseUsertext.setOnClickListener(new View.OnClickListener() {//이용약관
+            @Override
+            public void onClick(View v) {
+                try {
+                    callFunction(AppMembershipActivity.this);
+                }catch (Exception e)
+                {
+                    Excep(e);
+                }
+            }
+        });
         approvalbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +122,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     String userBirth = RRNtext1.getText().toString() + RRNtext2.getText().toString();
 
                     if(userName.length() != 0 && userID.length() != 0 && userPassword.length() != 0  && userPhone.length() != 0
-                        && userBirth.length() != 0 && /*PhoneCheck != false && */PWText.getText().toString().equals(PwTextche.getText().toString())) {
+                        && userBirth.length() != 0 && /*PhoneCheck != false && */PWText.getText().toString().equals(PwTextche.getText().toString()) &&Useche==true) {
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -133,6 +150,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     }
                     //else if(PhoneCheck == false) {Toast.makeText(getApplicationContext(), "휴대폰인증을 해주세요!", Toast.LENGTH_SHORT).show(); }
                     else if(!(PWText.getText().toString().equals(PwTextche.getText().toString()))){Toast.makeText(getApplicationContext(), "비밀번호가 같지 않습니다.", Toast.LENGTH_SHORT).show();}
+                   else if(Useche==false){
+                        Toast.makeText(getApplicationContext(), "회원약관을 확인해주세요", Toast.LENGTH_SHORT).show();
+                    }
                     else{Toast.makeText(getApplicationContext(), "제대로 입력해주세요!", Toast.LENGTH_SHORT).show(); }
 
                 }catch (Exception e)
@@ -254,7 +274,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                 {
                     //다이얼로그 출력
                     String a=phone.getText().toString();
+
                     b=getRandomPassword(6);
+                    a="01000000000";
                     sendSMS(a,b);
                     dialog = LayoutInflater.from(this);
                     dialogLayout = dialog.inflate(R.layout.auth_dialog, null); // LayoutInflater를 통해 XML에 정의된 Resource들을 View의 형태로 반환 시켜 줌
@@ -384,5 +406,80 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
             sb.append( charaters[ rn.nextInt( charaters.length ) ] );
         }
         return sb.toString();
+    }
+
+    //이용약관
+    public void callFunction(Context context) {
+
+        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
+        final Dialog dlg = new Dialog(context);
+
+        // 액티비티의 타이틀바를 숨긴다.
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 커스텀 다이얼로그의 레이아웃을 설정한다.
+        dlg.setContentView(R.layout.del_dialog);
+
+        // 커스텀 다이얼로그를 노출한다.
+        dlg.show();
+
+        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
+        final TextView delmesgase1 = (TextView) dlg.findViewById(R.id.delmesgase1);
+        final TextView title3 = (TextView) dlg.findViewById(R.id.title3);
+        final Button delButton1 = (Button) dlg.findViewById(R.id.delButton1);//삭제 버튼
+        final Button cancelButton3 = (Button) dlg.findViewById(R.id.cancelButton3);//취소 버튼
+
+        title3.setMovementMethod(ScrollingMovementMethod.getInstance());
+        title3.setBackgroundColor(Color.parseColor("#003399"));
+
+
+        delmesgase1.setMovementMethod(new ScrollingMovementMethod());
+
+
+        final String title_call = "이용약관";
+        final String Content_call = "이용약관\n" +
+                "제1장 총칙\n" +
+                "\n" +
+                "제1조 (목적) 이 약관은 ________(이하 “회사”라 합니다)가 모바일 기기를 통해 제공하는 게임 서비스 및 이에 부수하는 네트워크, 웹사이트, 기타 서비스(이하 “서비스”라 합니다)의 이용에 대한 회사와 서비스 이용자의 권리ㆍ의무 및 책임사항입니다.\n" +
+                "\n" +
+                "제2조 (용어의 정의) ① 이 약관에서 사용하는 용어의 정의는 다음과 같습니다.\n" +
+                " 1. “회사”라 함은 모바일 기기를 통하여 서비스를 제공하는 사업자를 의미합니다.\n" +
+                " 2. “회원”이란 이 약관에 따라 이용계약을 체결하고, 회사가 제공하는 서비스를 이용하는 자를 의미합니다.\n" +
+                " 3. “임시회원”이란 일부 정보만 제공하고 회사가 제공하는 서비스의 일부만 이용하는 자를 의미합니다.\n" +
+                " 4. “모바일 기기”란 콘텐츠를 다운로드 받거나 설치하여 사용할 수 있는 기기로서, 휴대폰, 스마트폰, 휴대정보단말기(PDA), 태블릿 등을 의미합니다. \n" +
+                " 5. “계정정보”란 회원의 회원번호와 외부계정정보, 기기정보, 별명, 프로필 사진, 친구목록 등 회원이 회사에 제공한 정보와 게임이용정보 (캐릭터 정보, 아이템, 레벨 등), 이용요금 결제 정보 등을 통칭합니다.\n" +
+                " 6. “콘텐츠”란 모바일 기기로 이용할 수 있도록 회사가 서비스 제공과 관련하여 디지털 방식으로 제작한 유료 또는 무료의 내용물 일체(게임 및 네트워크 서비스, 애플리케이션, 게임 머니, 게임 아이템 등)를 의미합니다. \n" +
+                " 7. “오픈마켓”이란 모바일 기기에서 게임 콘텐츠를 설치하고 결제할 수 있도록 구축된 전자상거래 환경을 의미합니다.\n" +
+                "\n" +
+                "제3조 (회사정보 등의 제공) 회사는 다음 각 호의 사항을 회원이 알아보기 쉽도록 게임 서비스 내에 표시합니다. 다만, 개인정보처리방침과 약관은 회원이 연결화면을 통하여 볼 수 있도록 할 수 있습니다.\n" +
+                " 1. 상호 및 대표자의 성명 \n" +
+                " 2. 영업소 소재지 주소(회원의 불만을 처리할 수 있는 곳의 주소를 포함한다) \n" +
+                " 3. 전화번호, 전자우편주소\n" +
+                " 4. 사업자 등록번호\n" +
+                " 5. 통신판매업 신고번호 \n";
+
+        title3.setText(title_call);
+        delmesgase1.setText(Content_call);
+        delButton1.setText("취소");
+        cancelButton3.setText("확인");
+        cancelButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Useche=true;
+                Toast.makeText(getApplicationContext(), String.valueOf(Useche), Toast.LENGTH_SHORT).show();
+                dlg.dismiss();
+            }
+
+        });
+
+        delButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
+                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                // 커스텀 다이얼로그를 종료한다.
+                dlg.dismiss();
+            }
+        });
     }
 }

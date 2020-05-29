@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".drivermangerDataActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/background2">
 
 
     <Button
@@ -14,7 +14,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:foreground="@drawable/mainscreen"
+        android:foreground="@drawable/mainscreen2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -108,7 +108,7 @@
         android:id="@+id/PWChangeButton"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
+        android:background="#70AD47"
         android:text="Password 변경"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
@@ -178,7 +178,7 @@
         android:id="@+id/phoneChangbutton"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
+        android:background="#70AD47"
         android:text="휴대폰 번호 변경"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="18sp"

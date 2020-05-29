@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import android.app.AlertDialog;
@@ -40,7 +42,7 @@ public class driverBookActivity extends AppCompatActivity
     TextView textview_coordinate;//지도 전체 정보
     TextView textview_longitude;//경도
     TextView textview_latitude;//위도
-
+    Button tutorial_button;
     TextView GPStextView;//GPS확인
     Button go;
     //지도가 켜저있는 지 확인
@@ -67,11 +69,32 @@ public class driverBookActivity extends AppCompatActivity
     int cou;
     String cun;
     int countFinsh=0;
+    public void tutorial_click(View v){
+        startActivity(new Intent(this,Driver_toturial.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_book);
+
+
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox) ;
+
+        checkBox.setOnClickListener(new CheckBox.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox)v).isChecked()) {
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+                    // TODO : CheckBox is checked.
+                } else {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
+                    // TODO : CheckBox is unchecked.
+                }
+            }
+        }) ;
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값

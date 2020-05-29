@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backSuggestions5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background2"
     tools:context=".driverSuggestionsActivity">
 
     <TextView
@@ -26,8 +27,8 @@
         android:id="@+id/driverbusMain2"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:foreground="@drawable/mainscreen"
-        android:text="Button"
+        android:background="@drawable/mainscreen2"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.919"
@@ -53,38 +54,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.014" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="270dp"
-        android:layout_height="60dp"
-        android:clickable="false"
-        android:foreground="@drawable/listsuggestion"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.098" />
+
 
     <FrameLayout
         android:id="@+id/Ttable"
-        android:layout_width="308dp"
-        android:layout_height="532dp"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.622">
+        app:layout_constraintVertical_bias="0.700">
 
         <ScrollView
-            android:layout_width="304dp"
-            android:layout_height="530dp"
+            android:layout_width="300dp"
+            android:layout_height="350dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp">
 
@@ -97,5 +84,40 @@
         </ScrollView>
 
     </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/textView55"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="#70AD47"
+        android:gravity="center"
+        android:text="제목"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.151" />
+
+    <TextView
+        android:id="@+id/textView59"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:background="#70AD47"
+        android:gravity="center"
+        android:text="번호"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.151" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

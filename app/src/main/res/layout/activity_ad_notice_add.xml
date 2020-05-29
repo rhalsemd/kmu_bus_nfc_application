@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background3"
     tools:context=".adNoticeAddActivity">
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:foreground="@drawable/mainscreen"
+        android:foreground="@drawable/mainscreen3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -43,7 +43,7 @@
         android:id="@+id/submitNoticeButton"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
+        android:background="#7030A0"
         android:text="저장"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"

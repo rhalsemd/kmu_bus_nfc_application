@@ -1,6 +1,7 @@
 package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -79,6 +81,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
 
     private ArrayList<driverSuggestionsDTO> suggestions = new ArrayList<>();
     driverSuggestionsDTO suggestion_check = new driverSuggestionsDTO();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,21 @@ public class driverSuggestionsActivity extends AppCompatActivity {
         final TextView Datacheck9 = (TextView)findViewById(R.id.Datacheck9);//pw로그인
         Datacheck9.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
         Button driverbusMain2=(Button)findViewById(R.id.driverbusMain2);//메인화면으로
+        final TextView textView55 = (TextView)findViewById(R.id.textView55);//
+        final TextView textView59 = (TextView)findViewById(R.id.textView59);//
+        final ConstraintLayout mylayout = (ConstraintLayout)findViewById(R.id.backSuggestions5);
+        if(check_admin.equals("어드민"))
+        {
+            driverbusMain2.setBackgroundResource(R.drawable.mainscreen3);
+            mylayout.setBackgroundResource(R.drawable.background3);
+            textView59.setBackgroundColor(Color.parseColor("#7030A0"));
+            textView55.setBackgroundColor(Color.parseColor("#7030A0"));
+
+        }
+
+
+
+
         //checkButton
 
         //표
@@ -122,20 +140,27 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                         for(int j = 0 ; j < 2 ; j++){//컬럼임
                             final int cun=i;
                             Button rowButton = new Button(driverSuggestionsActivity.this);
-                            rowButton.setBackgroundResource(R.drawable.barrow);//버튼배경
+                        //    rowButton.setBackgroundResource(R.drawable.barrow2);//버튼배경
                             suggestion_check = suggestions.get(cun);
-
+                            if(check_admin.equals("어드민"))
+                            {
+                                rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
+                            }
+                            else if(check_admin.equals("버스기사"))
+                            {
+                                rowButton.setBackgroundResource(R.drawable.barrow2);//버튼배경
+                            }
                             if(j==0)
                             {
                                 rowButton.setText(suggestion_check.getTitle());
                                 //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(150);
+                                rowButton.setWidth(200);
                                 rowButton.setHeight(50);
                             }
                             else if(j==1)
                             {
                                 rowButton.setText(suggestion_check.getuserID());
-                                rowButton.setWidth(150);
+                                rowButton.setWidth(300);
                                 rowButton.setHeight(50);
 
                             }
@@ -283,7 +308,12 @@ public class driverSuggestionsActivity extends AppCompatActivity {
         title.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         message.setMovementMethod(new ScrollingMovementMethod());
+        if(check_admin.equals("어드민"))
+        {
+            title.setBackgroundColor(Color.parseColor("#7030A0"));
+            okButton.setBackgroundColor(Color.parseColor("#7030A0"));
 
+        }
 
         title.setText(title_call);
         message.setText(content_call);

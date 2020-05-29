@@ -120,7 +120,7 @@
 
     <FrameLayout
         android:layout_width="396dp"
-        android:layout_height="426dp"
+        android:layout_height="350dp"
         android:background="@drawable/bartext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +140,7 @@
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="448dp"
+                android:layout_height="350dp"
                 tools:context=".MapsActivity" />
         </LinearLayout>
     </FrameLayout>

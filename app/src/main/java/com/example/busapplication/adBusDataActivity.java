@@ -211,6 +211,7 @@ public class adBusDataActivity extends AppCompatActivity {
         List<String> data1 = new ArrayList<>();
         data1.add("모드 선택");
         data1.add("좌표확인및카메라변경");
+        data1.add("지도확인");
         //배열[]에 db값 넣기
         /* for(int i=0;i<n;i++)
         {

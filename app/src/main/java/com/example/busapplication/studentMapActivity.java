@@ -487,17 +487,17 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
         String formatted =destination;
         tv_marker.setText(formatted);
         if (isSelectedMarker) {
-            tv_marker.setBackgroundResource(R.drawable.ic_marker_phone_blue);
-            tv_marker.setTextColor(Color.WHITE);
+         //   tv_marker.setBackgroundResource(R.drawable.ic_marker_phone_blue);
+          //  tv_marker.setTextColor(Color.WHITE);
         } else {
-            tv_marker.setBackgroundResource(R.drawable.ic_marker_phone);
-            tv_marker.setTextColor(Color.BLACK);
+           // tv_marker.setBackgroundResource(R.drawable.ic_marker_phone);
+           // tv_marker.setTextColor(Color.BLACK);
         }
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title(destination);
         markerOptions.position(position);
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker_root_view)));
+        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker_root_view)));
         return mMap.addMarker(markerOptions);
     }
     // View를 Bitmap으로 변환, 마커 커스텀
