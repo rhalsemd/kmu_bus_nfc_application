@@ -86,7 +86,7 @@ public class adNFCNumberActivity extends AppCompatActivity {
             } else {
                 //todo nfc에 저장하는 함수로 하단에 write 함수를 만들어두었다. 관리자가 가져가야될 부분이다.
                 write(NFCChaeditText.getText().toString(), myTag);
-                Toast.makeText(context, WRITE_SUCCESS, Toast.LENGTH_LONG ).show();
+              //  Toast.makeText(context, WRITE_SUCCESS, Toast.LENGTH_LONG ).show();
             }
         } catch (IOException e) {
             Toast.makeText(context, WRITE_ERROR, Toast.LENGTH_LONG ).show();
@@ -115,11 +115,11 @@ public class adNFCNumberActivity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+         //   Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
             finish();
         }
         else if(nfcAdapter != null){
-            Toast.makeText(this, nfcAdapter.toString(), Toast.LENGTH_LONG).show();
+         //   Toast.makeText(this, nfcAdapter.toString(), Toast.LENGTH_LONG).show();
         }
         readFromIntent(getIntent());
 

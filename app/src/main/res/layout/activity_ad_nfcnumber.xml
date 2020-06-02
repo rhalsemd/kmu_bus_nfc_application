@@ -12,9 +12,9 @@
         android:id="@+id/readone2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="92dp"
-        android:layout_marginRight="92dp"
-        android:text="스마트폰을 스티커에 가깝게 대주세요."
+        android:layout_marginEnd="112dp"
+        android:layout_marginRight="112dp"
+        android:text="1. NFC를 카드모드로 켜주세요"
         android:textColor="@color/design_default_color_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.741" />
+        app:layout_constraintVertical_bias="0.74" />
 
     <Button
         android:id="@+id/studentbusMain5"
@@ -131,10 +131,11 @@
         android:id="@+id/textView53"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="휴대폰을 스티커에 가까이 찍어주세요 "
+        android:text="2. 핸드폰 뒷면을 스티커에 가까이 해주세요"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
