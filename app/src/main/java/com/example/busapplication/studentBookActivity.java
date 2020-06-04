@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 public class studentBookActivity extends AppCompatActivity {
     //bus spinner
@@ -52,8 +53,9 @@ public class studentBookActivity extends AppCompatActivity {
     int Timeche = 0;
     //버스 선택
     int Busche = 0;
+    String bookTime;
+    String bookName;
 
-    Boolean reserve_able = false;
     List<String> load_busName = new ArrayList<>();
     List<String> load_busType = new ArrayList<>();
 
@@ -200,56 +202,78 @@ public class studentBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    long now = System.currentTimeMillis();
-                    Date mDate = new Date(now);
-                    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-                    SimpleDateFormat simpleTime = new SimpleDateFormat("kk:mm:ss");
-                    String booked_date = simpleDate.format(mDate);
-                    String booked_time = simpleTime.format(mDate);
-                    Toast.makeText(getApplicationContext(), booked_time, Toast.LENGTH_SHORT).show();
-                    String bookTime = bookTimeSpinner.getSelectedItem().toString();
-                    String bookName = BookSpinner.getSelectedItem().toString();
+
+                    bookTime = bookTimeSpinner.getSelectedItem().toString();
+                    bookName = BookSpinner.getSelectedItem().toString();
+
+
                     if (Timeche != 0 && Busche != 0 && random.getText().toString().equals(randomInput.getText().toString())) {
 
-                        reserve_time(bookTime,bookName); //예약 가능한 시간인지 체크
-
-                            if(reserve_able == true) { //예약시간이 맞으면 예약값 디비에 들어간다
-                                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    Boolean reserve_able = false;
+                                    boolean success = jsonObject.getBoolean("success");
+                                    boolean is_before = jsonObject.getBoolean("is_before");
+                                    String start_time = jsonObject.getString("start_time");
+                                    String end_time = jsonObject.getString("end_time");
+                                    if (success) {
                                         try {
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            boolean success = jsonObject.getBoolean("success");
-                                            boolean maxed_out = jsonObject.getBoolean("maxed_out");
-                                            boolean bus_able = jsonObject.getBoolean("bus_able");
-                                            boolean user_already = jsonObject.getBoolean("user_already");
-                                            if (success) {
-                                                talk = "예약이 되었습니다.";
-                                                dialog_back(talk);
-                                                //Intent i = new Intent(studentBookActivity.this/*현재 액티비티 위치*/ , studentActivity.class/*이동 액티비티 위치*/);
-                                                // i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                                // startActivity(i);
-                                            } else if (user_already) {
-                                                talk = "이미 예약한 유저입니다.";
-                                                dialog_back(talk);
-                                            } else if (maxed_out) {
-                                                talk = "예약석이 만석입니다.";
-                                                dialog_back(talk);
-                                            } else if (bus_able) {
-                                                talk = "버스가 현재 운행불가입니다. 관리자와 연락바랍니다.";
-                                                dialog_back(talk);
+                                            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                            SimpleDateFormat for_date = new SimpleDateFormat("yyyy-MM-dd");
+
+                                            Calendar time = Calendar.getInstance();
+                                            Calendar before_time = Calendar.getInstance();
+
+                                            if(is_before){  //등교일때 하루를 빼주어 이전날짜의 시작시간부터 데이터 타입을 설정한다
+                                                before_time.add(Calendar.DATE, -1);
                                             }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
+                                            String date_type_before = for_date.format(before_time.getTime());
+                                            String date_type = for_date.format(time.getTime());
+
+                                            String time_start = date_type_before +" "+ start_time;
+                                            String time_end = date_type +" "+ end_time;
+
+                                            Date date_start = transFormat.parse(time_start);
+                                            Date date_end = transFormat.parse(time_end);
+
+                                            Calendar cal_start = Calendar.getInstance();
+                                            Calendar cal_end = Calendar.getInstance();
+                                            Calendar cal_now = Calendar.getInstance();
+
+                                            cal_start.setTime(date_start);
+                                            cal_end.setTime(date_end);
+                                            cal_end.add(Calendar.HOUR, -2);
+
+                                            String cal_now_text = transFormat.format(cal_now.getTime());
+                                            Date cal_now_date = transFormat.parse(cal_now_text);
+                                            cal_now.setTime(cal_now_date);
+
+                                            if (cal_now.after(cal_start) && cal_now.before(cal_end)) { //예약시간내에 있을시
+                                                reserve_able = true;
+                                            }else{reserve_able = false;}
+
+                                            reservation(bookTime, bookName, reserve_able);
                                         }
+                                        catch(Exception e){}
+
+                                    } else if (start_time.length() == 0) {
+                                        {Toast.makeText(getApplicationContext(), "오류! 관리자에게 연락부탁드립니다.", Toast.LENGTH_SHORT).show();}
                                     }
-                                };
-                                //서버로 volley를 이용해서 요청
-                                studentBookRequest_book book = new studentBookRequest_book(bookTime, bookName, value, booked_date, responseListener);
-                                RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
-                                queue.add(book);
+                                    else{}
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            else {Toast.makeText(getApplicationContext(), "현재 예약시간이 아닙니다!", Toast.LENGTH_SHORT).show();}  //예약시간이 맞지 않으면 띄운다.
+                        };
+                        //서버로 volley를 이용해서 요청
+                        studentBookRequest_reserveTime reserveTime = new studentBookRequest_reserveTime(bookTime, bookName, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
+                        queue.add(reserveTime);
+
+
 
                     } else if (!(random.getText().toString().equals(randomInput.getText().toString()))) {
                         Toast.makeText(getApplicationContext(), "보안문자를 한번 더 확인해주세요.", Toast.LENGTH_SHORT).show();
@@ -272,9 +296,16 @@ public class studentBookActivity extends AppCompatActivity {
         });
     }
 
-    void reserve_time(String bookTime, String bookName)
+    void reservation(String bookTime, String bookName, Boolean reserve_able)
     {
-        try {
+        //예약시간이 맞으면 예약값 디비에 들어간다
+        if(reserve_able == true) {
+            long now = System.currentTimeMillis();
+            Date mDate = new Date(now);
+            SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+            SimpleDateFormat simpleTime = new SimpleDateFormat("kk:mm:ss");
+            String booked_date = simpleDate.format(mDate);
+            String booked_time = simpleTime.format(mDate);
 
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
@@ -282,64 +313,39 @@ public class studentBookActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
-                        String start_time = jsonObject.getString("start_time");
-                        String end_time = jsonObject.getString("end_time");
-                        boolean is_before = jsonObject.getBoolean("is_before");
+                        boolean maxed_out = jsonObject.getBoolean("maxed_out");
+                        boolean bus_able = jsonObject.getBoolean("bus_able");
+                        boolean user_already = jsonObject.getBoolean("user_already");
                         if (success) {
-                            try {
-                                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                SimpleDateFormat for_date = new SimpleDateFormat("yyyy-MM-dd");
-
-                                Calendar time = Calendar.getInstance();
-                                Calendar before_time = Calendar.getInstance();
-
-                                if(is_before){  //등교일때 하루를 빼주어 이전날짜의 시작시간부터 데이터 타입을 설정한다
-                                    before_time.add(time.DATE, -1);
-                                }
-
-                                String date_type_before = for_date.format(before_time.getTime());
-                                String date_type = for_date.format(time.getTime());
-
-                                String time_start = date_type_before + start_time;
-                                String time_end = date_type + end_time;
-
-                                Date date_start = transFormat.parse(time_start);
-                                Date date_end = transFormat.parse(time_end);
-
-                                Calendar cal_start = Calendar.getInstance();
-                                Calendar cal_end = Calendar.getInstance();
-                                Calendar cal_now = Calendar.getInstance();
-
-                                cal_start.setTime(date_start);
-                                cal_end.setTime(date_end);
-
-                                String cal_now_text = transFormat.format(cal_now.getTime());
-                                Date cal_now_date = transFormat.parse(cal_now_text);
-                                cal_now.setTime(cal_now_date);
-
-                                if (cal_now.after(cal_start) && cal_now.before(cal_end)) {
-                                    reserve_able = true;
-                                }
-                            }
-                            catch(Exception e){}
-
-                        } else if (start_time.length() == 0) {
-                            {Toast.makeText(getApplicationContext(), "오류! 관리자에게 연락부탁드립니다.", Toast.LENGTH_SHORT).show();}
+                            talk = "예약이 되었습니다.";
+                            dialog_back(talk);
+                            //Intent i = new Intent(studentBookActivity.this/*현재 액티비티 위치*/, studentActivity.class/*이동 액티비티 위치*/);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            //startActivity(i);
+                        } else if (user_already) {
+                            talk = "이미 예약한 유저입니다.";
+                            dialog_back(talk);
+                        } else if (maxed_out) {
+                            talk = "예약석이 만석입니다.";
+                            dialog_back(talk);
+                        } else if (bus_able) {
+                            talk = "버스가 현재 운행불가입니다. 관리자와 연락바랍니다.";
+                            dialog_back(talk);
                         }
-                        else{}
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                 }
             };
             //서버로 volley를 이용해서 요청
-            studentBookRequest_reserveTime reserveTime = new studentBookRequest_reserveTime(bookTime, bookName, responseListener);
+            studentBookRequest_book book = new studentBookRequest_book(bookTime, bookName, value, booked_date, responseListener);
             RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
-            queue.add(reserveTime);
-
+            queue.add(book);
         }
-        catch(Exception e){}
-
+        else{
+            Toast.makeText(getApplicationContext(), "현재 예약시간이 아닙니다!", Toast.LENGTH_SHORT).show();
+        }  //예약시간이 맞지 않으면 띄운다.
     }
 
 
