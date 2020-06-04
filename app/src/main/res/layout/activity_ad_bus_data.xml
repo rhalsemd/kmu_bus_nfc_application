@@ -58,31 +58,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.116" />
 
-    <Button
-        android:id="@+id/TimeAddbutton"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:background="#7030A0"
-        android:text="시간 추가 및 변경"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.853" />
-
     <EditText
         android:id="@+id/changeditText"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:background="@drawable/barrow3"
         android:ems="10"
-        android:hint=" 원하는 시간을 적어주세요"
         android:gravity="center"
+        android:hint=" 원하는 시간을 적어주세요"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,21 +74,23 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintVertical_bias="0.716" />
 
-    <Spinner
-        android:id="@+id/TIMESpinner2"
+    <Button
+        android:id="@+id/MapCheckbutton"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:background="@drawable/bartext_purple"
+        android:background="#BA55D3"
+        android:text="버스 노선 확인"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.425" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/BUSAddbutton"
@@ -122,7 +107,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintVertical_bias="0.603" />
 
     <Spinner
         android:id="@+id/BUSSpinner2"
@@ -138,14 +123,30 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.292" />
 
     <Button
-        android:id="@+id/MapCheckbutton"
+        android:id="@+id/TimeDel_button"
+        android:layout_width="256dp"
+        android:layout_height="62dp"
+        android:text="시간 삭제"
+        android:textColor="@color/cardview_light_background"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.943" />
+
+    <Button
+        android:id="@+id/TimeAddbutton"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:background="#BA55D3"
-        android:text="버스 노선 확인"
+        android:background="#7030A0"
+        android:text="시간 추가 및 변경"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -155,7 +156,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintVertical_bias="0.825" />
 
     <Spinner
         android:id="@+id/MODESpinner"
@@ -169,15 +170,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.218" />
+        app:layout_constraintVertical_bias="0.19" />
 
-    <Button
-        android:id="@+id/TimeDel_button"
+    <Spinner
+        android:id="@+id/TIMESpinner2"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:text="시간 삭제"
-        android:textColor="@color/cardview_light_background"
-        android:textStyle="bold"
+        android:background="@drawable/bartext_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -185,6 +184,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
+        app:layout_constraintVertical_bias="0.397" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
