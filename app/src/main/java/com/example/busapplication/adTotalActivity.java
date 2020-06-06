@@ -21,6 +21,7 @@ public class adTotalActivity extends AppCompatActivity {
         Button ADbusMain10=(Button)findViewById(R.id.ADbusMain10);//메인화면으로
         Button cancelRunbutton=(Button)findViewById(R.id.cancelRunbutton);//버스운행
         Button NoticeAddbutton=(Button)findViewById(R.id.NoticeAddbutton);//공지사항 작성
+        Button Reverationbutton=(Button)findViewById(R.id.Reverationbutton);//공지사항 작성
         //추가
         Button MangerDributton=(Button)findViewById(R.id.MangerDributton);//공지사항 작성
         MangerDributton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +77,16 @@ public class adTotalActivity extends AppCompatActivity {
                 i.putExtra("value", "어드민");
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
-
+            }
+        });
+        //Reverationbutton
+        Reverationbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //화면전환
+                Intent i = new Intent(adTotalActivity.this/*현재 액티비티 위치*/ , adReservationActivity.class/*이동 액티비티 위치*/);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
             }
         });
     }

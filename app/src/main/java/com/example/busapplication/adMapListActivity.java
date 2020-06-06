@@ -120,14 +120,13 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
         camera_latitude=37.52487;
         camera_longitude=126.92723;
         Intent intent = getIntent(); /*데이터 수신*/
-        MODEvalue = intent.getStringExtra("MODEvalue"); //메인에서 넘어온 아이디값
+
         Busvalue = intent.getStringExtra("Busvalue"); //메인에서 넘어온 아이디값
         Timevalue = intent.getStringExtra("Timevalue"); //메인에서 넘어온 아이디값
         TextView che_textView = (TextView)findViewById(R.id.che_textView);//지도로 버스 좌표변경
-        che_textView.setText(Timevalue+" "+Busvalue+"\n"+MODEvalue);
+        che_textView.setText(Timevalue+" "+Busvalue+"\n");
 
-        //지도 변경이나 지도 추가시에 필요함
-        title_map_editText=(EditText)findViewById(R.id.title_map_editText);
+
         //표로 이동
         TextView list_map_textView= (TextView)findViewById(R.id.list_map_textView);
         final Button Cancel_map_button = (Button)findViewById(R.id.Cancel_map_button);//취소버튼
@@ -170,90 +169,40 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
             public void onClick(View view) {
                 //title_map_editText를 불러서쓰기/
                 // /좌표 추가나 변경시 필요
+                if(camera_latitude != 0.0&&camera_longitude != 0.0&& ZoomStr!="ZOOM")
+                {
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    //DB에서 받은 값 각 변수에 저장
+                                    Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = getIntent();
 
+                                    finish();
+                                    startActivity(intent);
 
-                    if(MODEvalue.equals("지도추가삭제"))
-                    {
-                        String route_id = "route"+marker_size;
-                        String latitude_id = "route"+marker_size+"_la";
-                        String longtitude_id = "route"+marker_size+"_lo";
-                        String route_value = title_map_editText.getText().toString();
-
-                        if(latitude != 0.0 && longitude != 0.0 && route_value.length() != 0 && marker_size <= 10)
-                        {
-                            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        boolean success = jsonObject.getBoolean("success");
-                                        if (success) {
-                                            //DB에서 받은 값 각 변수에 저장
-                                            Toast.makeText(getApplicationContext(), "추가되었습니다.", Toast.LENGTH_SHORT).show();
-                                            Intent intent = getIntent();
-
-                                            finish();
-                                            startActivity(intent);
-
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "오류!", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        return;
-                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "오류!", Toast.LENGTH_SHORT).show();
                                 }
-                            };
-                            adMapListRequest admaplistrequest = new adMapListRequest(Busvalue, Timevalue, route_id, route_value, latitude_id, latitude.toString(), longtitude_id, longitude.toString(), responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(adMapListActivity.this);
-                            queue.add(admaplistrequest);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return;
+                            }
                         }
-                        else if(marker_size>10){Toast.makeText(getApplicationContext(), "10개 이상 마커를 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();}
-                        else if(latitude == 0.0 && longitude == 0.0) {Toast.makeText(getApplicationContext(), "마커를 추가해주세요!", Toast.LENGTH_SHORT).show();}
-                        else if(route_value.length() == 0) {Toast.makeText(getApplicationContext(), "마커이름을 적어주세요!", Toast.LENGTH_SHORT).show();}
-                    }
-                    else if(MODEvalue.equals("지도확인"))
-                    {
-                        Toast.makeText(getApplicationContext(), "지도확인모드입니다.", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(MODEvalue.equals("좌표확인및카메라변경"))
-                    {
-                        if(camera_latitude != 0.0&&camera_longitude != 0.0&& ZoomStr!="ZOOM")
-                        {
-                            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        boolean success = jsonObject.getBoolean("success");
-                                        if (success) {
-                                            //DB에서 받은 값 각 변수에 저장
-                                            Toast.makeText(getApplicationContext(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
-                                            Intent intent = getIntent();
-
-                                            finish();
-                                            startActivity(intent);
-
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "오류!", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        return;
-                                    }
-                                }
-                            };
-                            adMapListRequest_camera admaplistrequest_camera = new adMapListRequest_camera(Busvalue, Timevalue, ZoomStr, Double.toString(camera_latitude), Double.toString(camera_longitude), responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(adMapListActivity.this);
-                            queue.add(admaplistrequest_camera);
-                        }
-                        else if(camera_latitude == 0.0 && camera_longitude == 0.0)
-                        {Toast.makeText(getApplicationContext(), "카메라 위치를 확인해주세요!", Toast.LENGTH_SHORT).show();}
-                        else if(ZoomStr=="ZOOM")
-                        {Toast.makeText(getApplicationContext(), "카메라 zoom을 선택하지 않으셨습니다.", Toast.LENGTH_SHORT).show();}
-                    }
+                    };
+                    adMapListRequest_camera admaplistrequest_camera = new adMapListRequest_camera(Busvalue, Timevalue, ZoomStr, Double.toString(camera_latitude), Double.toString(camera_longitude), responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adMapListActivity.this);
+                    queue.add(admaplistrequest_camera);
+                }
+                else if(camera_latitude == 0.0 && camera_longitude == 0.0)
+                {Toast.makeText(getApplicationContext(), "카메라 위치를 확인해주세요!", Toast.LENGTH_SHORT).show();}
+                else if(ZoomStr=="ZOOM")
+                {Toast.makeText(getApplicationContext(), "카메라 zoom을 선택하지 않으셨습니다.", Toast.LENGTH_SHORT).show();}
 
             }
         });

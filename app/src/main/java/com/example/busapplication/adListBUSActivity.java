@@ -92,7 +92,11 @@ public class adListBUSActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //이동
-                callFunction2(adListBUSActivity.this);
+                Intent intent_value = new Intent(adListBUSActivity.this/*현재 액티비티 위치*/ , adMapListActivity.class/*이동 액티비티 위치*/);
+                intent_value.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent_value.putExtra("Busvalue", Busvalue);//값전달
+                intent_value.putExtra("Timevalue", Timevalue);//값전달
+                startActivity(intent_value);
             }
         });
 
@@ -400,72 +404,6 @@ public class adListBUSActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void callFunction2(Context context) {
-        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog Mapdlg2 = new Dialog(context);
-        //모드 spinner
-        // 액티비티의 타이틀바를 숨긴다.
-        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        Mapdlg2.setContentView(R.layout.movedialog);
-
-        // 커스텀 다이얼로그를 노출한다.
-        Mapdlg2.show();
-
-        List<String> data1 = new ArrayList<>();
-        data1.add("모드 선택");
-        data1.add("좌표확인및카메라변경");
-        data1.add("지도확인");
-        MODspinner = (Spinner) Mapdlg2.findViewById(R.id.MODspinner2);
-        //Adapter
-        adapterSpinner5 = new spinnerRows(context, data1);
-        //Adapter 적용
-        MODspinner.setAdapter(adapterSpinner5);
-        MODspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    modStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        final Button okButton3 = (Button) Mapdlg2.findViewById(R.id.okButton3);//변경 버튼
-        final Button cancelButton3 = (Button) Mapdlg2.findViewById(R.id.cancelButton3);//취소버튼
-        okButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (modStr.equals("모드 선택")) {
-                    Toast.makeText(adListBUSActivity.this, "모드를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    // TextView 클릭될 시 할 코드작
-                    Intent intent_value = new Intent(adListBUSActivity.this/*현재 액티비티 위치*/ , adMapListActivity.class/*이동 액티비티 위치*/);
-                    intent_value.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent_value.putExtra("Busvalue", Busvalue);//값전달
-                    intent_value.putExtra("Timevalue", Timevalue);//값전달
-                    intent_value.putExtra("MODEvalue",modStr);//값전달
-                    startActivity(intent_value);
-                }
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-        cancelButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(adListBUSActivity.this, "취소 했습니다.", Toast.LENGTH_SHORT).show();
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         Intent i = new Intent(adListBUSActivity.this/*현재 액티비티 위치*/ , adBusDataActivity.class/*이동 액티비티 위치*/);

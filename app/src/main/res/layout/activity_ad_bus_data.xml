@@ -47,7 +47,7 @@
         android:id="@+id/ListBUtextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="표로 노선보기"
+        android:text="지도로 노선보기"
         android:textColor="#7030A0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -157,20 +157,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.825" />
-
-    <Spinner
-        android:id="@+id/MODESpinner"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:background="@drawable/bartext_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
 
     <Spinner
         android:id="@+id/TIMESpinner2"

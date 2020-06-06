@@ -14,8 +14,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import android.app.AlertDialog;
@@ -29,6 +31,8 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.*;
 import android.location.*;
@@ -69,6 +73,22 @@ public class driverBookActivity extends AppCompatActivity
     int cou;
     String cun;
     int countFinsh=0;
+
+    //Adapter
+    spinnerRows adAdapterSpinner1;
+    //버스 spinner
+    Spinner adBusSpinner;
+    //Adapter
+    spinnerRows adAdapterSpinner2;
+    //시간 spinner
+    Spinner adTimeSpinner;
+    String adBusStr;
+    String adTimeStr;
+    //Adapter
+    spinnerRows_green DriadapterSpinner1;
+    //버스 spinner
+    Spinner DriBusSpinner;
+    String DriStr;
     public void tutorial_click(View v){
         startActivity(new Intent(this,Driver_toturial.class));
     }
@@ -86,11 +106,9 @@ public class driverBookActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (((CheckBox)v).isChecked()) {
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
                     // TODO : CheckBox is checked.
                 } else {
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
                     // TODO : CheckBox is unchecked.
                 }
             }
@@ -349,15 +367,12 @@ public class driverBookActivity extends AppCompatActivity
         resertList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                // TextView 클릭될 시 할 코드작성
-                for(int i=0;i<100;i++){
-                     cun+="이름 : "+Integer.toString(i)+"학번 : "+Integer.toString(i)+"\n";
-
+                if(value.equals(ad)){
+                    adCallFunction(driverBookActivity.this);
                 }
-                callFunction(driverBookActivity.this,cun);
-
+                else{
+                    DriCallFunction(driverBookActivity.this);
+                }
 
             }
         });
@@ -512,43 +527,158 @@ public class driverBookActivity extends AppCompatActivity
         }
     }
 
-    // 호출할 다이얼로그 함수를 정의한다.
-    public void callFunction(Context context,String subscriber ) {
-
+    public void DriCallFunction(Context context ) {
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog dlg = new Dialog(context);
-
+        final Dialog Mapdlg2 = new Dialog(context);
+        //모드 spinner
         // 액티비티의 타이틀바를 숨긴다.
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        dlg.setContentView(R.layout.custom_dialog_read);
+        Mapdlg2.setContentView(R.layout.movedialog);
 
         // 커스텀 다이얼로그를 노출한다.
-        dlg.show();
+        Mapdlg2.show();
 
-        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        final TextView message = (TextView) dlg.findViewById(R.id.mesgase);
-        final TextView title = (TextView) dlg.findViewById(R.id.TTtitle);
-        final Button okButton = (Button) dlg.findViewById(R.id.okButton);
+        List<String> data1 = new ArrayList<>();
+        data1.add("노선 선택");
+        data1.add("주간등교1 1호차");
+        data1.add("주간등교2 2호차");
+        DriBusSpinner = (Spinner) Mapdlg2.findViewById(R.id.Drispinner);
+        //Adapter
+        DriadapterSpinner1 = new spinnerRows_green(context, data1);
+        //Adapter 적용
+        DriBusSpinner.setAdapter(DriadapterSpinner1);
+        DriBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    DriStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                } catch (Exception e) {
+                }
+            }
 
-        title.setMovementMethod(ScrollingMovementMethod.getInstance());
-
-        message.setMovementMethod(new ScrollingMovementMethod());
-
-
-        title.setText("예약자명단");
-        message.setText(subscriber );
-
-        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        final Button okButton3 = (Button) Mapdlg2.findViewById(R.id.okButton3);//변경 버튼
+        final Button cancelButton3 = (Button) Mapdlg2.findViewById(R.id.cancelButton3);//취소버튼
+        okButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
-                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                if (DriStr.equals("노선 선택")) {
+                    Toast.makeText(driverBookActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // TextView 클릭될 시 할 코드작
+                    Intent intent_user = new Intent(driverBookActivity.this, driverReservationActivity.class);
+                    intent_user.putExtra("value", value);
+                    intent_user.putExtra("adBusStr", "확인입니다");
+                    intent_user.putExtra("adTimeStr", "확인이예요");
+                    startActivity(intent_user);
+                }
                 // 커스텀 다이얼로그를 종료한다.
-                dlg.dismiss();
+                Mapdlg2.dismiss();
+            }
+        });
+        cancelButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 커스텀 다이얼로그를 종료한다.
+                Mapdlg2.dismiss();
             }
         });
     }
 
+    public void adCallFunction(Context context) {
+        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
+        final Dialog Mapdlg2 = new Dialog(context);
+        //모드 spinner
+        // 액티비티의 타이틀바를 숨긴다.
+        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 커스텀 다이얼로그의 레이아웃을 설정한다.
+        Mapdlg2.setContentView(R.layout.move_reser_dialog);
+
+        // 커스텀 다이얼로그를 노출한다.
+        Mapdlg2.show();
+
+        List<String> data1 = new ArrayList<>();
+        data1.add("노선 선택");
+        for(int i=0;i<10;i++){
+            data1.add(Integer.toString(i)+"호차");
+        }
+        adBusSpinner=(Spinner)Mapdlg2.findViewById(R.id.adBusspinner1);
+        //Adapter
+        adAdapterSpinner1 = new spinnerRows(context, data1);
+        //Adapter 적용
+        adBusSpinner.setAdapter(adAdapterSpinner1);
+        adBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    adBusStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                } catch (Exception e) {
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        List<String> data2 = new ArrayList<>();
+        data2.add("노선 선택");
+        data2.add("주간등교1");
+        data2.add("주간등교2");
+        data2.add("주간하교");
+        data2.add("야간하교");
+        adTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
+        //Adapter
+        adAdapterSpinner2 = new spinnerRows(context, data2);
+        //Adapter 적용
+        adTimeSpinner.setAdapter(adAdapterSpinner2);
+        adTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    adTimeStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                } catch (Exception e) {
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        final Button cancelAdButton = (Button) Mapdlg2.findViewById(R.id.cancelAdButton);//변경 버튼
+        final Button cheAdButton = (Button) Mapdlg2.findViewById(R.id.cheAdButton);//취소버튼
+        cheAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (adBusStr.equals("노선 선택")||adTimeStr.equals("노선 선택")) {
+                    Toast.makeText(driverBookActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // TextView 클릭될 시 할 코드작
+                    Intent intent_user = new Intent(driverBookActivity.this, driverReservationActivity.class);
+                    intent_user.putExtra("value", value);
+                    intent_user.putExtra("adBusStr", adBusStr);
+                    intent_user.putExtra("adTimeStr", adTimeStr);
+                    startActivity(intent_user);
+                }
+                // 커스텀 다이얼로그를 종료한다.
+                Mapdlg2.dismiss();
+            }
+        });
+        cancelAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 커스텀 다이얼로그를 종료한다.
+                Mapdlg2.dismiss();
+            }
+        });
+    }
 }

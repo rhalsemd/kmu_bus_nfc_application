@@ -5,12 +5,12 @@
     android:background="#ffffff">
 
     <TextView
-        android:id="@+id/TTtitle3"
+        android:id="@+id/TTtitle20"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#70AD47"
         android:gravity="center"
-        android:text="운행버스선택"
+        android:text="예약자명단"
         android:textColor="#ffffff"
         android:textSize="16dp" />
 
@@ -20,9 +20,10 @@
         android:layout_height="1dp"
         android:background="#000000"/>
 
-    <Spinner
-        android:id="@+id/Drispinner"
+    <TextView
+        android:id="@+id/IDreserText"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="50dp" />
 
     <View
@@ -36,12 +37,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/okButton3"
+            android:id="@+id/cancelReverButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="확인"
+            android:text="취소"
             android:textColor="#000000"
             android:textSize="16dp"
             android:background="#ffffff"/>
@@ -52,15 +53,16 @@
             android:background="#000000" />
 
         <Button
-            android:id="@+id/cancelButton3"
+            android:id="@+id/rideButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="취소"
+            android:text="탑승"
             android:textColor="#000000"
             android:textSize="16dp"
             android:background="#ffffff"/>
+
     </LinearLayout>
 
     <View

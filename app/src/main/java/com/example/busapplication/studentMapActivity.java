@@ -76,12 +76,12 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
     //지도 노선
     Spinner spinner1;
     //Adapter
-    spinnerRows adapterSpinner1;
+    spinnerRows_bule adapterSpinner1;
 
     //지도 시간
     Spinner TimeSpinner;
     //Adapter
-    spinnerRows adapterSpinner2;
+    spinnerRows_bule adapterSpinner2;
 
     studentMapDTO Maps_check = new studentMapDTO();
 
@@ -166,7 +166,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                         }
 
                         //Adapter
-                        adapterSpinner1 = new spinnerRows(studentMapActivity.this, load_busName);
+                        adapterSpinner1 = new spinnerRows_bule(studentMapActivity.this, load_busName);
                         //Adapter 적용
                         spinner1.setAdapter(adapterSpinner1);
 
@@ -217,7 +217,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                                     }
 
                                     //Adapter
-                                    adapterSpinner2 = new spinnerRows(studentMapActivity.this, load_busType);
+                                    adapterSpinner2 = new spinnerRows_bule(studentMapActivity.this, load_busType);
                                     //Adapter 적용
                                     TimeSpinner.setAdapter(adapterSpinner2);
 

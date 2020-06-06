@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.busapplication">
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷 권한 선언 -->
@@ -10,66 +11,89 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <application
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:ignore="LockedOrientationActivity"
+    <application xmlns:tools="http://schemas.android.com/tools"
         android:allowBackup="true"
         android:icon="@drawable/buspainting"
         android:label="BUS"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:usesCleartextTraffic="true">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <activity android:name=".administratorActivity"
-            android:screenOrientation="portrait"></activity>
+        android:usesCleartextTraffic="true"
+        tools:ignore="LockedOrientationActivity">
+        <activity android:name=".driverReservationActivity"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".adReservationActivity"
+            android:screenOrientation="portrait" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".administratorActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB3FL_gMSAq22shZV6i3tI0EGOToYeXqvs" />
 
-
-        <activity android:name=".adListBUSActivity"
+        <activity
+            android:name=".adListBUSActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan"/>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".adStudentDataActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan" />
-        <activity android:name=".studentSuggestionActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".studentBookMangerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".drivermangerDataActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".driverSuggestionsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".studentBookActivity"
+        <activity
+            android:name=".studentSuggestionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".adRideDataActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".driverBookActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".studentMapActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adBusDataActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adMapListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adNFCNumberActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adNoticeAddActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adNoticeDelActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adTotalActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AppNoticeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".adManagerDriActivity"
+        <activity
+            android:name=".studentBookMangerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".drivermangerDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".driverSuggestionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".studentBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adRideDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".driverBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".studentMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adBusDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adMapListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adNFCNumberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adNoticeAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adNoticeDelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adTotalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AppNoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adManagerDriActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan"/>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".DriverActivity"
             android:screenOrientation="portrait" />
@@ -88,20 +112,21 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
             android:name=".Driver_toturial"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

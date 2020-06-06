@@ -34,12 +34,12 @@ public class studentBookActivity extends AppCompatActivity {
     //bus spinner
     Spinner BookSpinner;
     //Adapter
-    spinnerRows adapterSpinner1;
+    spinnerRows_bule adapterSpinner1;
 
     //time spinner
     Spinner bookTimeSpinner;
     //Adapter
-    spinnerRows adapterSpinner2;
+    spinnerRows_bule adapterSpinner2;
 
     String talk;
     String value;
@@ -86,7 +86,7 @@ public class studentBookActivity extends AppCompatActivity {
                         }
 
                         //Adapter
-                        adapterSpinner1 = new spinnerRows(studentBookActivity.this, load_busName);
+                        adapterSpinner1 = new spinnerRows_bule(studentBookActivity.this, load_busName);
                         //Adapter 적용
                         BookSpinner.setAdapter(adapterSpinner1);
 
@@ -147,7 +147,7 @@ public class studentBookActivity extends AppCompatActivity {
                                     }
 
                                     //Adapter
-                                    adapterSpinner2 = new spinnerRows(studentBookActivity.this, load_busType);
+                                    adapterSpinner2 = new spinnerRows_bule(studentBookActivity.this, load_busType);
                                     //Adapter 적용
                                     bookTimeSpinner.setAdapter(adapterSpinner2);
 

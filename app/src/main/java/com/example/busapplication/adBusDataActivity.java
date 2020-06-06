@@ -32,18 +32,17 @@ public class adBusDataActivity extends AppCompatActivity {
     //모드 spinner
     Spinner MODESpinner;
     //Adapter
-    spinnerRows_purple adapterSpinner1;
+    spinnerRows adapterSpinner1;
     //버스 spinner
     Spinner BusSpinner;
     //Adapter
-    spinnerRows_purple adapterSpinner2;
+    spinnerRows adapterSpinner2;
     //시간 spinner
     Spinner TimeSpinner;
     //Adapter
-    spinnerRows_purple adapterSpinner3;
+    spinnerRows adapterSpinner3;
 
     //spinner 어떤것이 선택되었는 지를 보여준다
-    String MODEtext;
     String Bustext;
     String Timetext;
 
@@ -126,6 +125,22 @@ public class adBusDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TextView 클릭될 시 할 코드작성
                 //화면전환
+                if(Busnum!=0&&Timenum!=0) {
+                    Intent intent_value = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/, adMapListActivity.class/*이동 액티비티 위치*/);
+                    intent_value.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent_value.putExtra("Busvalue", Bustext);//값전달
+                    intent_value.putExtra("Timevalue", Timetext);//값전달
+                    startActivity(intent_value);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "버스노선과 버스시간, 모드를 선택헤주세요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        MapCheckbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if(Busnum!=0&&Timenum!=0)
                 {
                     Intent intent_value = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , adListBUSActivity.class/*이동 액티비티 위치*/);
@@ -136,23 +151,6 @@ public class adBusDataActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "버스노선과 버스시간을 선택헤주세요", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        MapCheckbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Busnum!=0&&Timenum!=0&&MODEnum!=0) {
-                    Intent intent_value = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/, adMapListActivity.class/*이동 액티비티 위치*/);
-                    intent_value.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent_value.putExtra("MODEvalue", MODEtext);//값전달
-                    intent_value.putExtra("Busvalue", Bustext);//값전달
-                    intent_value.putExtra("Timevalue", Timetext);//값전달
-                    startActivity(intent_value);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "버스노선과 버스시간, 모드를 선택헤주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -218,31 +216,7 @@ public class adBusDataActivity extends AppCompatActivity {
             data1.add(배열[i]);
         }*/
 
-        //UI생성
-        //UI생성
-        //시간 스피너
-        MODESpinner = (Spinner)findViewById(R.id.MODESpinner);
-        //Adapter
-        adapterSpinner1 = new spinnerRows_purple(this, data1);
-        //Adapter 적용
-        MODESpinner.setAdapter(adapterSpinner1);
 
-        MODESpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                MODEtext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                try{
-                    MODEnum=position;
-                }catch (Exception e)
-                {
-                    Excep(e);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //버스 spinner
         BusSpinner = (Spinner)findViewById(R.id.BUSSpinner2);
         try {
@@ -260,7 +234,7 @@ public class adBusDataActivity extends AppCompatActivity {
                         }
 
                         //Adapter
-                        adapterSpinner1 = new spinnerRows_purple(adBusDataActivity.this, load_busName);
+                        adapterSpinner1 = new spinnerRows(adBusDataActivity.this, load_busName);
                         //Adapter 적용
                         BusSpinner.setAdapter(adapterSpinner1);
 
@@ -301,7 +275,7 @@ public class adBusDataActivity extends AppCompatActivity {
                                     }
 
                                     //Adapter
-                                    adapterSpinner2 = new spinnerRows_purple(adBusDataActivity.this, load_busType);
+                                    adapterSpinner2 = new spinnerRows(adBusDataActivity.this, load_busType);
                                     //Adapter 적용
                                     TimeSpinner.setAdapter(adapterSpinner2);
 

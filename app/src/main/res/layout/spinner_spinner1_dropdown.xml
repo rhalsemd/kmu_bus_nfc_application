@@ -14,7 +14,7 @@
         android:alpha="0.87"
         android:gravity="center"
         android:paddingLeft="13dp"
-        android:textColor="@color/colorAccent"
+        android:textColor="#7030A0"
         android:textColorHint="#1f000000"
         android:textSize="15sp" />
 

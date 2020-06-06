@@ -39,7 +39,7 @@ public class spinnerRows extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView==null) {
-            convertView = inflater.inflate(R.layout.spinner_spinner1_normal, parent, false);
+            convertView = inflater.inflate(R.layout.spinner_purple, parent, false);
         }
 
         if(data!=null){

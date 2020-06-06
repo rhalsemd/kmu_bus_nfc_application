@@ -144,7 +144,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             suggestion_check = suggestions.get(cun);
                             if(check_admin.equals("어드민"))
                             {
-                                rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
+                                rowButton.setBackgroundResource(R.drawable.bartext_purple);//버튼배경
                             }
                             else if(check_admin.equals("버스기사"))
                             {
@@ -308,10 +308,10 @@ public class driverSuggestionsActivity extends AppCompatActivity {
         title.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         message.setMovementMethod(new ScrollingMovementMethod());
-        if(check_admin.equals("어드민"))
+        if(!check_admin.equals("어드민"))
         {
-            title.setBackgroundColor(Color.parseColor("#7030A0"));
-            okButton.setBackgroundColor(Color.parseColor("#7030A0"));
+            title.setBackgroundColor(Color.parseColor("#70AD47"));
+            okButton.setBackgroundColor(Color.parseColor("#70AD47"));
 
         }
 
