@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 public class studentBookActivity extends AppCompatActivity {
     //bus spinner
@@ -42,16 +43,19 @@ public class studentBookActivity extends AppCompatActivity {
 
     String talk;
     String value;
-    String ad="3";
+    String ad = "3";
 
     String SpinnerValue;
     TextView Datacheck20;
 
     String text;
     //시간 선택
-    int Timeche=0;
+    int Timeche = 0;
     //버스 선택
-    int Busche=0;
+    int Busche = 0;
+    String bookTime;
+    String bookName;
+
     List<String> load_busName = new ArrayList<>();
     List<String> load_busType = new ArrayList<>();
 
@@ -62,11 +66,11 @@ public class studentBookActivity extends AppCompatActivity {
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck7 = (TextView)findViewById(R.id.Datacheck7);
+        final TextView Datacheck7 = (TextView) findViewById(R.id.Datacheck7);
         Datacheck7.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
         //UI생성
-        BookSpinner = (Spinner)findViewById(R.id.bookBusSpinner);
-        bookTimeSpinner = (Spinner)findViewById(R.id.bookTimeSpinner);
+        BookSpinner = (Spinner) findViewById(R.id.bookBusSpinner);
+        bookTimeSpinner = (Spinner) findViewById(R.id.bookTimeSpinner);
 
         try {
             Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -76,7 +80,7 @@ public class studentBookActivity extends AppCompatActivity {
                         JSONArray array = new JSONArray(response);
 
                         load_busName.add("노선 선택");
-                        for(int i=0; i<array.length();i++){
+                        for (int i = 0; i < array.length(); i++) {
                             JSONObject bus_name = array.getJSONObject(i);
                             load_busName.add(bus_name.getString("bus_name"));
                         }
@@ -95,25 +99,25 @@ public class studentBookActivity extends AppCompatActivity {
             studentBookRequest_loadName loadname = new studentBookRequest_loadName(responseListener);
             RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
             queue.add(loadname);
-        }catch (Exception e){
+        } catch (Exception e) {
             Excep(e);
         }
 
 
         //버스 노선 표현
         final TextView BusTextView = (TextView) findViewById(R.id.BusTextView);
-        final TextView random = (TextView)findViewById(R.id.random);//렌덤문자열
+        final TextView random = (TextView) findViewById(R.id.random);//렌덤문자열
         random.setText(getRandomPassword(2));
 
-        final TextView randomInput = (TextView)findViewById(R.id.randomInput);//렌덤문자 입력
+        final TextView randomInput = (TextView) findViewById(R.id.randomInput);//렌덤문자 입력
         //서버에 확인 조건추가
 
         //버스예약 가능 시간
         //임의의 값 true로 지정
-        final boolean cheBook=true;//임의의 수 좌석이 있다고 가정하여 작성
-        final boolean cheBookTime=true;//예약시간이었다고 가정하여 작성
-        Button book=(Button)findViewById(R.id.book);//버스예약
-        Button studentbusMain2=(Button)findViewById(R.id.studentbusMain2);//메인화면으로
+        final boolean cheBook = true;//임의의 수 좌석이 있다고 가정하여 작성
+        final boolean cheBookTime = true;//예약시간이었다고 가정하여 작성
+        Button book = (Button) findViewById(R.id.book);//버스예약
+        Button studentbusMain2 = (Button) findViewById(R.id.studentbusMain2);//메인화면으로
 
 
         //버스 노선 표현
@@ -124,9 +128,9 @@ public class studentBookActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 text = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
-                try{
-                    Busche=position;
-                    Datacheck20 = (TextView)findViewById(R.id.Datacheck20);
+                try {
+                    Busche = position;
+                    Datacheck20 = (TextView) findViewById(R.id.Datacheck20);
                     Datacheck20.setText(String.valueOf(Busche));
                     try {
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -137,7 +141,7 @@ public class studentBookActivity extends AppCompatActivity {
 
                                     load_busType.clear();
                                     load_busType.add("시간 선택");
-                                    for(int i=0; i<array.length();i++){
+                                    for (int i = 0; i < array.length(); i++) {
                                         JSONObject bus_name = array.getJSONObject(i);
                                         load_busType.add(bus_name.getString("bus_type"));
                                     }
@@ -156,14 +160,14 @@ public class studentBookActivity extends AppCompatActivity {
                         studentBookRequest_loadType loadType = new studentBookRequest_loadType(BookSpinner.getSelectedItem().toString(), responseListener);
                         RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
                         queue.add(loadType);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Excep(e);
                     }
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     Excep(e);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -176,90 +180,172 @@ public class studentBookActivity extends AppCompatActivity {
         bookTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try{
-                    Timeche=position;
-                    Datacheck20 = (TextView)findViewById(R.id.Datacheck20);
+                try {
+                    Timeche = position;
+                    Datacheck20 = (TextView) findViewById(R.id.Datacheck20);
                     Datacheck20.setText(String.valueOf(Timeche));
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     Excep(e);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
-        final TextView Datacheck8 = (TextView)findViewById(R.id.Datacheck8);//
+        final TextView Datacheck8 = (TextView) findViewById(R.id.Datacheck8);//
         Datacheck8.setText("OK");//지워도 됨 - 값넘어온지 확인 하는 것
 
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    long now = System.currentTimeMillis();
-                    Date mDate = new Date(now);
-                    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm");
-                    SimpleDateFormat simpleTime = new SimpleDateFormat("kk:mm");
-                    String booked_date = simpleDate.format(mDate);
-                    String booked_time = simpleTime.format(mDate);
-                    Toast.makeText(getApplicationContext(), booked_time, Toast.LENGTH_SHORT).show();
-                    String bookTime = bookTimeSpinner.getSelectedItem().toString();
-                    String bookName = BookSpinner.getSelectedItem().toString();
-                    if (Timeche != 0 && Busche != 0 && random.getText().toString().equals(randomInput.getText().toString()))
-                    {
+
+                    bookTime = bookTimeSpinner.getSelectedItem().toString();
+                    bookName = BookSpinner.getSelectedItem().toString();
+
+
+                    if (Timeche != 0 && Busche != 0 && random.getText().toString().equals(randomInput.getText().toString())) {
+
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
+                                    Boolean reserve_able = false;
                                     boolean success = jsonObject.getBoolean("success");
-                                    boolean maxed_out = jsonObject.getBoolean("maxed_out");
-                                    boolean bus_able = jsonObject.getBoolean("bus_able");
-                                    boolean user_already = jsonObject.getBoolean("user_already");
+                                    boolean is_before = jsonObject.getBoolean("is_before");
+                                    String start_time = jsonObject.getString("start_time");
+                                    String end_time = jsonObject.getString("end_time");
                                     if (success) {
-                                        talk = "예약이 되었습니다.";
-                                        dialog_back(talk);
-                                        //Intent i = new Intent(studentBookActivity.this/*현재 액티비티 위치*/ , studentActivity.class/*이동 액티비티 위치*/);
-                                        // i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                       // startActivity(i);
-                                    } else if(user_already){
-                                        talk = "이미 예약한 유저입니다.";
-                                        dialog_back(talk);
-                                    } else if(maxed_out){
-                                        talk = "예약석이 만석입니다.";
-                                        dialog_back(talk);
-                                    } else if(bus_able) {
-                                        talk = "버스가 현재 운행불가입니다. 관리자와 연락바랍니다.";
-                                        dialog_back(talk);
+                                        try {
+                                            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                            SimpleDateFormat for_date = new SimpleDateFormat("yyyy-MM-dd");
+
+                                            Calendar time = Calendar.getInstance();
+                                            Calendar before_time = Calendar.getInstance();
+
+                                            if(is_before){  //등교일때 하루를 빼주어 이전날짜의 시작시간부터 데이터 타입을 설정한다
+                                                before_time.add(Calendar.DATE, -1);
+                                            }
+                                            String date_type_before = for_date.format(before_time.getTime());
+                                            String date_type = for_date.format(time.getTime());
+
+                                            String time_start = date_type_before +" "+ start_time;
+                                            String time_end = date_type +" "+ end_time;
+
+                                            Date date_start = transFormat.parse(time_start);
+                                            Date date_end = transFormat.parse(time_end);
+
+                                            Calendar cal_start = Calendar.getInstance();
+                                            Calendar cal_end = Calendar.getInstance();
+                                            Calendar cal_now = Calendar.getInstance();
+
+                                            cal_start.setTime(date_start);
+                                            cal_end.setTime(date_end);
+                                            cal_end.add(Calendar.HOUR, -2);
+
+                                            String cal_now_text = transFormat.format(cal_now.getTime());
+                                            Date cal_now_date = transFormat.parse(cal_now_text);
+                                            cal_now.setTime(cal_now_date);
+
+                                            if (cal_now.after(cal_start) && cal_now.before(cal_end)) { //예약시간내에 있을시
+                                                reserve_able = true;
+                                            }else{reserve_able = false;}
+
+                                            reservation(bookTime, bookName, reserve_able);
+                                        }
+                                        catch(Exception e){}
+
+                                    } else if (start_time.length() == 0) {
+                                        {Toast.makeText(getApplicationContext(), "오류! 관리자에게 연락부탁드립니다.", Toast.LENGTH_SHORT).show();}
                                     }
+                                    else{}
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         };
                         //서버로 volley를 이용해서 요청
-                        studentBookRequest_book book = new studentBookRequest_book(bookTime, bookName, value, booked_date, responseListener);
+                        studentBookRequest_reserveTime reserveTime = new studentBookRequest_reserveTime(bookTime, bookName, responseListener);
                         RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
-                        queue.add(book);
+                        queue.add(reserveTime);
+
+
+
+                    } else if (!(random.getText().toString().equals(randomInput.getText().toString()))) {
+                        Toast.makeText(getApplicationContext(), "보안문자를 한번 더 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (Timeche == 0 || Busche == 0) {
+                        Toast.makeText(getApplicationContext(), "항목을 제대로 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    } else {
                     }
-                    else if( !(random.getText().toString().equals( randomInput.getText().toString() ) ) ) {Toast.makeText(getApplicationContext(), "보안문자를 한번 더 확인해주세요.", Toast.LENGTH_SHORT).show();}
-                    else if(Timeche == 0 || Busche == 0){Toast.makeText(getApplicationContext(), "항목을 제대로 선택해주세요!", Toast.LENGTH_SHORT).show();}
-                    else {}
                 } catch (Exception e) {
                     Excep(e);
                 }
 
-           }
+            }
         });
-        studentbusMain2.setOnClickListener(new View.OnClickListener() {
+          studentbusMain2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //화면전환
                 Move();
             }
         });
+    }
+
+    void reservation(String bookTime, String bookName, Boolean reserve_able)
+    {
+        //예약시간이 맞으면 예약값 디비에 들어간다
+        if(reserve_able == true) {
+            long now = System.currentTimeMillis();
+            Date mDate = new Date(now);
+            SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+            SimpleDateFormat simpleTime = new SimpleDateFormat("kk:mm:ss");
+            String booked_date = simpleDate.format(mDate);
+            String booked_time = simpleTime.format(mDate);
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        boolean maxed_out = jsonObject.getBoolean("maxed_out");
+                        boolean bus_able = jsonObject.getBoolean("bus_able");
+                        boolean user_already = jsonObject.getBoolean("user_already");
+                        if (success) {
+                            talk = "예약이 되었습니다.";
+                            dialog_back(talk);
+                            //Intent i = new Intent(studentBookActivity.this/*현재 액티비티 위치*/, studentActivity.class/*이동 액티비티 위치*/);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            //startActivity(i);
+                        } else if (user_already) {
+                            talk = "이미 예약한 유저입니다.";
+                            dialog_back(talk);
+                        } else if (maxed_out) {
+                            talk = "예약석이 만석입니다.";
+                            dialog_back(talk);
+                        } else if (bus_able) {
+                            talk = "버스가 현재 운행불가입니다. 관리자와 연락바랍니다.";
+                            dialog_back(talk);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            studentBookRequest_book book = new studentBookRequest_book(bookTime, bookName, value, booked_date, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(studentBookActivity.this);
+            queue.add(book);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "현재 예약시간이 아닙니다!", Toast.LENGTH_SHORT).show();
+        }  //예약시간이 맞지 않으면 띄운다.
     }
 
 

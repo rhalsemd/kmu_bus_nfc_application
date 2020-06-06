@@ -32,15 +32,15 @@ public class adBusDataActivity extends AppCompatActivity {
     //모드 spinner
     Spinner MODESpinner;
     //Adapter
-    spinnerRows adapterSpinner1;
+    spinnerRows_purple adapterSpinner1;
     //버스 spinner
     Spinner BusSpinner;
     //Adapter
-    spinnerRows adapterSpinner2;
+    spinnerRows_purple adapterSpinner2;
     //시간 spinner
     Spinner TimeSpinner;
     //Adapter
-    spinnerRows adapterSpinner3;
+    spinnerRows_purple adapterSpinner3;
 
     //spinner 어떤것이 선택되었는 지를 보여준다
     String MODEtext;
@@ -223,7 +223,7 @@ public class adBusDataActivity extends AppCompatActivity {
         //시간 스피너
         MODESpinner = (Spinner)findViewById(R.id.MODESpinner);
         //Adapter
-        adapterSpinner1 = new spinnerRows(this, data1);
+        adapterSpinner1 = new spinnerRows_purple(this, data1);
         //Adapter 적용
         MODESpinner.setAdapter(adapterSpinner1);
 
@@ -260,7 +260,7 @@ public class adBusDataActivity extends AppCompatActivity {
                         }
 
                         //Adapter
-                        adapterSpinner1 = new spinnerRows(adBusDataActivity.this, load_busName);
+                        adapterSpinner1 = new spinnerRows_purple(adBusDataActivity.this, load_busName);
                         //Adapter 적용
                         BusSpinner.setAdapter(adapterSpinner1);
 
@@ -301,7 +301,7 @@ public class adBusDataActivity extends AppCompatActivity {
                                     }
 
                                     //Adapter
-                                    adapterSpinner2 = new spinnerRows(adBusDataActivity.this, load_busType);
+                                    adapterSpinner2 = new spinnerRows_purple(adBusDataActivity.this, load_busType);
                                     //Adapter 적용
                                     TimeSpinner.setAdapter(adapterSpinner2);
 
