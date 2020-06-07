@@ -155,9 +155,9 @@ public class adRideDataActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                Toast.makeText(getApplicationContext(),Timetext, Toast.LENGTH_SHORT).show();
                 try{
                     Timenum=position;
-                    Datacheck21.setText(Timetext);
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -228,7 +228,6 @@ public class adRideDataActivity extends AppCompatActivity {
                 //화면전환
             }
         });
-
         ADbusMain3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
