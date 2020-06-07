@@ -62,8 +62,6 @@ public class adRideDataActivity extends AppCompatActivity {
         // TextView Datacheck6 = (TextView)findViewById(R.id.Datacheck6);
         //Datacheck6.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
         final TextView reasonWrite = (TextView)findViewById(R.id.reasonWrite);
-        final TextView Datacheck18 = (TextView)findViewById(R.id.Datacheck18);
-        final TextView Datacheck21 = (TextView)findViewById(R.id.datacheck21);
 
         //버스 운행불가
         Button stapBus=(Button)findViewById(R.id.stapBus);

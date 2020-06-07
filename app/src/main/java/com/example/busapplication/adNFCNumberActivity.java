@@ -132,8 +132,6 @@ public class adNFCNumberActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ad_nfcnumber);
 
-        final TextView Datacheck10 = (TextView)findViewById(R.id.Datacheck10);//로그인
-        Datacheck10.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
 
         Button studentbusMain5=(Button)findViewById(R.id.studentbusMain5);//메인화면으로가기
         //nfc 실패시 뜨는 메시지 조건을 cheNFC=false로 함
@@ -253,8 +251,6 @@ public class adNFCNumberActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
             Log.e("UnsupportedEncoding", e.toString());
         }
-        TextView readone = (TextView)findViewById(R.id.readone);
-        TextView foruse = (TextView)findViewById(R.id.foruse);
 
         if(text!=null) {
             Response.Listener<String> responseListener = new Response.Listener<String>() {
