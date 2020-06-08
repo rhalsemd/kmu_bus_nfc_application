@@ -33,10 +33,12 @@ public class adReservationActivity extends AppCompatActivity {
     spinnerRows adapterSpinner1;
     //버스 spinner
     Spinner BusSpinner;
+    String busStr;
     //Adapter
     spinnerRows adapterSpinner2;
     //시간 spinner
     Spinner TimeSpinner;
+    String timeStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class adReservationActivity extends AppCompatActivity {
         ADbusMain15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(adReservationActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+                Intent i = new Intent(adReservationActivity.this/*현재 액티비티 위치*/ , adStudentActivity.class/*이동 액티비티 위치*/);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
                 finish();
@@ -75,6 +77,7 @@ public class adReservationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try{
 
+                    busStr=parent.getItemAtPosition(position).toString();
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -106,6 +109,7 @@ public class adReservationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try{
+                    timeStr=parent.getItemAtPosition(position).toString();
 
                 }catch (Exception e)
                 {
@@ -185,7 +189,7 @@ public class adReservationActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(adReservationActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+        Intent i = new Intent(adReservationActivity.this/*현재 액티비티 위치*/ , adStudentActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();

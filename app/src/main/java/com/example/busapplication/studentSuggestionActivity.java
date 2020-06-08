@@ -43,8 +43,8 @@ public class studentSuggestionActivity extends AppCompatActivity {
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck14 = (TextView)findViewById(R.id.Datacheck14);//pw로그인
-        Datacheck14.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+
+
         final EditText titleText = (EditText)findViewById(R.id.titleText);//제출 내용
         final EditText suggestionsWrite = (EditText)findViewById(R.id.suggestionsWrite);//제출 내용
 

@@ -43,9 +43,7 @@ import org.json.JSONObject;
 public class driverBookActivity extends AppCompatActivity
 {
     //위치정보가 gps수신이라고 뜨면 gps 수신이 되므로 경도와 위도 등 정보 변경
-    TextView textview_coordinate;//지도 전체 정보
-    TextView textview_longitude;//경도
-    TextView textview_latitude;//위도
+
     Button tutorial_button;
     TextView GPStextView;//GPS확인
     Button go;
@@ -74,24 +72,8 @@ public class driverBookActivity extends AppCompatActivity
     String cun;
     int countFinsh=0;
 
-    //Adapter
-    spinnerRows adAdapterSpinner1;
-    //버스 spinner
-    Spinner adBusSpinner;
-    //Adapter
-    spinnerRows adAdapterSpinner2;
-    //시간 spinner
-    Spinner adTimeSpinner;
-    String adBusStr;
-    String adTimeStr;
-    //Adapter
-    spinnerRows_green DriadapterSpinner1;
-    //버스 spinner
-    Spinner DriBusSpinner;
-    String DriStr;
-    public void tutorial_click(View v){
-        startActivity(new Intent(this,Driver_toturial.class));
-    }
+    String adBusStr1;//관리자인경우 스피너
+    String adTimeStr1;//관리자인경우 스피너
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -116,8 +98,12 @@ public class driverBookActivity extends AppCompatActivity
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck5 = (TextView)findViewById(R.id.Datacheck5);//pw로그인
-        Datacheck5.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+        adBusStr1 = intent.getExtras().getString("adBusStr1");
+        adTimeStr1 = intent.getExtras().getString("adTimeStr1");
+
+
+
+
 
         Button driverbusMain3=(Button)findViewById(R.id.driverbusMain3);//메인화면 전환
         //버스예약 - 수동승인 버튼
@@ -132,12 +118,9 @@ public class driverBookActivity extends AppCompatActivity
         //학번입력 editText
         final TextView editText = (TextView)findViewById(R.id.editText);
 
-        textview_coordinate  = (TextView) findViewById(R.id.Datacheck15);
-        //1초마다 현제위치 갱신
-        textview_longitude = (TextView)findViewById(R.id.Datacheck16);
-        textview_latitude = (TextView)findViewById(R.id.Datacheck17);
+
         GPStextView= (TextView)findViewById(R.id.GPStextView);
-        textview_coordinate.setText("위치정보 미수신중");
+
         go=(Button)findViewById(R.id.go);
 
         //버스 실제 탑승인원 체크
@@ -336,7 +319,7 @@ public class driverBookActivity extends AppCompatActivity
                     else {
                         cheMap=true;
                         //아래의 minTime으로 시간 변경
-                        textview_coordinate.setText("수신중..");
+
                         // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
                                 5000, // 통지사이의 최소 시간간격 (miliSecond)
@@ -367,12 +350,12 @@ public class driverBookActivity extends AppCompatActivity
         resertList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(value.equals(ad)){
-                    adCallFunction(driverBookActivity.this);
-                }
-                else{
-                    DriCallFunction(driverBookActivity.this);
-                }
+
+                Intent intent_user = new Intent(driverBookActivity.this, driverReservationActivity.class);
+                intent_user.putExtra("value", value);
+                intent_user.putExtra("adBusStr2", adBusStr1);
+                intent_user.putExtra("adTimeStr2", adTimeStr1);
+                startActivity(intent_user);
 
             }
         });
@@ -405,11 +388,7 @@ public class driverBookActivity extends AppCompatActivity
             //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
             //Network 위치제공자에 의한 위치변화
             //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
-            textview_coordinate.setText("위치정보 : " + provider + "\n위도 : " + longitude + "\n경도 : " + latitude
-                    + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
 
-            textview_longitude.setText("\n위도 : " + longitude );
-            textview_latitude.setText( "\n경도 : " + latitude );
 
             longitudeDB=Double.toString(longitude);
             latitudeDB=Double.toString(latitude);
@@ -527,158 +506,5 @@ public class driverBookActivity extends AppCompatActivity
         }
     }
 
-    public void DriCallFunction(Context context ) {
-        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog Mapdlg2 = new Dialog(context);
-        //모드 spinner
-        // 액티비티의 타이틀바를 숨긴다.
-        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        Mapdlg2.setContentView(R.layout.movedialog);
-
-        // 커스텀 다이얼로그를 노출한다.
-        Mapdlg2.show();
-
-        List<String> data1 = new ArrayList<>();
-        data1.add("노선 선택");
-        data1.add("주간등교1 1호차");
-        data1.add("주간등교2 2호차");
-        DriBusSpinner = (Spinner) Mapdlg2.findViewById(R.id.Drispinner);
-        //Adapter
-        DriadapterSpinner1 = new spinnerRows_green(context, data1);
-        //Adapter 적용
-        DriBusSpinner.setAdapter(DriadapterSpinner1);
-        DriBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    DriStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        final Button okButton3 = (Button) Mapdlg2.findViewById(R.id.okButton3);//변경 버튼
-        final Button cancelButton3 = (Button) Mapdlg2.findViewById(R.id.cancelButton3);//취소버튼
-        okButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (DriStr.equals("노선 선택")) {
-                    Toast.makeText(driverBookActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    // TextView 클릭될 시 할 코드작
-                    Intent intent_user = new Intent(driverBookActivity.this, driverReservationActivity.class);
-                    intent_user.putExtra("value", value);
-                    intent_user.putExtra("adBusStr", "확인입니다");
-                    intent_user.putExtra("adTimeStr", "확인이예요");
-                    startActivity(intent_user);
-                }
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-        cancelButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-    }
-
-    public void adCallFunction(Context context) {
-        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
-        final Dialog Mapdlg2 = new Dialog(context);
-        //모드 spinner
-        // 액티비티의 타이틀바를 숨긴다.
-        Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        Mapdlg2.setContentView(R.layout.move_reser_dialog);
-
-        // 커스텀 다이얼로그를 노출한다.
-        Mapdlg2.show();
-
-        List<String> data1 = new ArrayList<>();
-        data1.add("노선 선택");
-        for(int i=0;i<10;i++){
-            data1.add(Integer.toString(i)+"호차");
-        }
-        adBusSpinner=(Spinner)Mapdlg2.findViewById(R.id.adBusspinner1);
-        //Adapter
-        adAdapterSpinner1 = new spinnerRows(context, data1);
-        //Adapter 적용
-        adBusSpinner.setAdapter(adAdapterSpinner1);
-        adBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    adBusStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-
-        List<String> data2 = new ArrayList<>();
-        data2.add("노선 선택");
-        data2.add("주간등교1");
-        data2.add("주간등교2");
-        data2.add("주간하교");
-        data2.add("야간하교");
-        adTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
-        //Adapter
-        adAdapterSpinner2 = new spinnerRows(context, data2);
-        //Adapter 적용
-        adTimeSpinner.setAdapter(adAdapterSpinner2);
-        adTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    adTimeStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-
-        final Button cancelAdButton = (Button) Mapdlg2.findViewById(R.id.cancelAdButton);//변경 버튼
-        final Button cheAdButton = (Button) Mapdlg2.findViewById(R.id.cheAdButton);//취소버튼
-        cheAdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (adBusStr.equals("노선 선택")||adTimeStr.equals("노선 선택")) {
-                    Toast.makeText(driverBookActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    // TextView 클릭될 시 할 코드작
-                    Intent intent_user = new Intent(driverBookActivity.this, driverReservationActivity.class);
-                    intent_user.putExtra("value", value);
-                    intent_user.putExtra("adBusStr", adBusStr);
-                    intent_user.putExtra("adTimeStr", adTimeStr);
-                    startActivity(intent_user);
-                }
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-        cancelAdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 커스텀 다이얼로그를 종료한다.
-                Mapdlg2.dismiss();
-            }
-        });
-    }
 }

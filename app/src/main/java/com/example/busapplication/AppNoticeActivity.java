@@ -67,8 +67,7 @@ public class AppNoticeActivity extends AppCompatActivity {
 
         Button noticeMain=(Button)findViewById(R.id.noticeMain);//메인화면으로
         //공지사항
-        final TextView Datacheck101 = (TextView)findViewById(R.id.Datacheck101);
-        Datacheck101.setText(strValue);
+
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.AppNoticeTable); // 테이블 id 명
 
         final ConstraintLayout mylayout = (ConstraintLayout)findViewById(R.id.backNotice);

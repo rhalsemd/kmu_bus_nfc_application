@@ -31,11 +31,10 @@ public class driverReservationActivity extends AppCompatActivity {
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value"); //메인에서 넘어온 아이디값
-        advalue1 = intent.getExtras().getString("adBusStr"); //메인에서 넘어온 아이디값
-        advalue2 = intent.getExtras().getString("adTimeStr"); //메인에서 넘어온 아이디값
+        advalue1 = intent.getExtras().getString("adBusStr2"); //메인에서 넘어온 아이디값
+        advalue2 = intent.getExtras().getString("adTimeStr2"); //메인에서 넘어온 아이디값
 
-        final TextView textView102 = (TextView) findViewById(R.id.textView102);
-        textView102.setText(value+" "+advalue1+" "+advalue2);
+
         final Button ADbusMain15 = (Button)findViewById(R.id.ADbusMain15);//뒤로가기
         ADbusMain15.setOnClickListener(new View.OnClickListener() {
             @Override

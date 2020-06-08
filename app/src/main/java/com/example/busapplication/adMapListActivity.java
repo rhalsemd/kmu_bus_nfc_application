@@ -123,8 +123,6 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
 
         Busvalue = intent.getStringExtra("Busvalue"); //메인에서 넘어온 아이디값
         Timevalue = intent.getStringExtra("Timevalue"); //메인에서 넘어온 아이디값
-        TextView che_textView = (TextView)findViewById(R.id.che_textView);//지도로 버스 좌표변경
-        che_textView.setText(Timevalue+" "+Busvalue+"\n");
 
 
         //표로 이동
@@ -265,8 +263,6 @@ public class adMapListActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
 
 
-        list_map_textView1=(TextView)findViewById(R.id.textView50);
-        list_map_textView2=(TextView)findViewById(R.id.textView51);
     }
 
     @Override

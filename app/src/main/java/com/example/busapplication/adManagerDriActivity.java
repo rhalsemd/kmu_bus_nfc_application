@@ -79,7 +79,7 @@ public class adManagerDriActivity extends AppCompatActivity {
         ADbusMain17.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(adManagerDriActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+                Intent i = new Intent(adManagerDriActivity.this/*현재 액티비티 위치*/ , adDriverActivity.class/*이동 액티비티 위치*/);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
             }
@@ -427,7 +427,7 @@ public class adManagerDriActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Intent i = new Intent(adManagerDriActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+        Intent i = new Intent(adManagerDriActivity.this/*현재 액티비티 위치*/ , adDriverActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
     }

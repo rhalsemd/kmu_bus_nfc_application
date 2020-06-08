@@ -45,7 +45,7 @@ public class adStudentDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Intent i = new Intent(adStudentDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+                    Intent i = new Intent(adStudentDataActivity.this/*현재 액티비티 위치*/ , adStudentActivity.class/*이동 액티비티 위치*/);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(i);
                     finish();
@@ -229,7 +229,7 @@ public class adStudentDataActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Intent i = new Intent(adStudentDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+        Intent i = new Intent(adStudentDataActivity.this/*현재 액티비티 위치*/ , adStudentActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();

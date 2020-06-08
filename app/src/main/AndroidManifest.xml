@@ -20,9 +20,17 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".driverReservationActivity"
-            android:screenOrientation="portrait" ></activity>
-        <activity android:name=".adReservationActivity"
+        <activity android:name=".adDriverActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".adStudentStatsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".adStudentActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".driverReservationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".adReservationActivity"
             android:screenOrientation="portrait" />
 
         <uses-library
@@ -123,10 +131,6 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity
-            android:name=".Driver_toturial"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

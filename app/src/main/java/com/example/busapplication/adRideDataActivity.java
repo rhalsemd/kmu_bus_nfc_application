@@ -62,8 +62,6 @@ public class adRideDataActivity extends AppCompatActivity {
         // TextView Datacheck6 = (TextView)findViewById(R.id.Datacheck6);
         //Datacheck6.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
         final TextView reasonWrite = (TextView)findViewById(R.id.reasonWrite);
-        final TextView Datacheck18 = (TextView)findViewById(R.id.Datacheck18);
-        final TextView Datacheck21 = (TextView)findViewById(R.id.datacheck21);
 
         //버스 운행불가
         Button stapBus=(Button)findViewById(R.id.stapBus);
@@ -157,9 +155,9 @@ public class adRideDataActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                Toast.makeText(getApplicationContext(),Timetext, Toast.LENGTH_SHORT).show();
                 try{
                     Timenum=position;
-                    Datacheck21.setText(Timetext);
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -230,7 +228,6 @@ public class adRideDataActivity extends AppCompatActivity {
                 //화면전환
             }
         });
-
         ADbusMain3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +245,7 @@ public class adRideDataActivity extends AppCompatActivity {
     }
     void ADmove()
     {
-        Intent i = new Intent(adRideDataActivity.this/*현재 액티비티 위치*/ , adTotalActivity.class/*이동 액티비티 위치*/);
+        Intent i = new Intent(adRideDataActivity.this/*현재 액티비티 위치*/ , adDriverActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
     }

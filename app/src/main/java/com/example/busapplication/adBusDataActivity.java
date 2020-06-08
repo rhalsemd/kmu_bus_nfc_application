@@ -198,7 +198,7 @@ public class adBusDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //화면전환
-                Intent i = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+                Intent i = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , adDriverActivity.class/*이동 액티비티 위치*/);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
             }
@@ -347,7 +347,7 @@ public class adBusDataActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
+        Intent i = new Intent(adBusDataActivity.this/*현재 액티비티 위치*/ , adDriverActivity.class/*이동 액티비티 위치*/);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         // 코드 작성

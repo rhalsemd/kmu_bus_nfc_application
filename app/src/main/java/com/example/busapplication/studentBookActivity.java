@@ -66,8 +66,7 @@ public class studentBookActivity extends AppCompatActivity {
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck7 = (TextView) findViewById(R.id.Datacheck7);
-        Datacheck7.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+
         //UI생성
         BookSpinner = (Spinner) findViewById(R.id.bookBusSpinner);
         bookTimeSpinner = (Spinner) findViewById(R.id.bookTimeSpinner);
@@ -130,8 +129,7 @@ public class studentBookActivity extends AppCompatActivity {
                 text = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try {
                     Busche = position;
-                    Datacheck20 = (TextView) findViewById(R.id.Datacheck20);
-                    Datacheck20.setText(String.valueOf(Busche));
+
                     try {
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
@@ -182,8 +180,7 @@ public class studentBookActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     Timeche = position;
-                    Datacheck20 = (TextView) findViewById(R.id.Datacheck20);
-                    Datacheck20.setText(String.valueOf(Timeche));
+
                 } catch (Exception e) {
                     Excep(e);
                 }
@@ -195,8 +192,7 @@ public class studentBookActivity extends AppCompatActivity {
             }
         });
 
-        final TextView Datacheck8 = (TextView) findViewById(R.id.Datacheck8);//
-        Datacheck8.setText("OK");//지워도 됨 - 값넘어온지 확인 하는 것
+
 
         book.setOnClickListener(new View.OnClickListener() {
             @Override

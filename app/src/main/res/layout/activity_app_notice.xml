@@ -8,20 +8,6 @@
     android:background="@drawable/background"
     tools:context=".AppNoticeActivity">
 
-    <TextView
-        android:id="@+id/Datacheck101"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
-
 
     <Button
         android:id="@+id/noticeMain"

@@ -74,8 +74,6 @@ public class adListBUSActivity extends AppCompatActivity {
         Timevalue = intent.getStringExtra("Timevalue"); //메인에서 넘어온 아이디값
 
         TextView map_cha_textView = (TextView)findViewById(R.id.map_cha_textView);//지도로 버스 좌표변경
-        TextView CHECKtextView = (TextView)findViewById(R.id.CHECKtextView);//값넘어온것 확인
-        CHECKtextView.setText(Timevalue+" "+Busvalue);
 
         final Button camerabutton = (Button)findViewById(R.id.camerabutton);//카메라 변경
         final Button ADbusMain5 = (Button)findViewById(R.id.ADbusMain5);//뒤로가기

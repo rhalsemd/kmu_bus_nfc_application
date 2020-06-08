@@ -31,10 +31,10 @@ public class studentActivity extends AppCompatActivity {
         Intent intent = getIntent(); /*데이터 수신*/
         String value = intent.getExtras().getString("value"); //메인에서 넘어온 아이디값
         String value12 = intent.getStringExtra("value"); //메인에서 넘어온 아이디값
-        final TextView Datacheck1 = (TextView)findViewById(R.id.Datacheck1);//pw로그인
+
 
         IDvalue=value12;
-        Datacheck1.setText(IDvalue);//지워도 됨 - 값넘어온지 확인 하는 것
+
 
         //누구님 안녕하세요 칸
         final TextView StudenttextView = (TextView)findViewById(R.id.StudenttextView);

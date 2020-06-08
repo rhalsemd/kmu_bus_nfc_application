@@ -100,7 +100,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                             else if(j==1)
                             {
                                 rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(50);
+                                rowButton.setWidth(150);
                                 rowButton.setHeight(50);
                                 rowButton.setTextColor(Color.RED);
                                 rowButton.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                             else if(j==2)
                             {
                                 rowButton.setText(suggestion_check.getuserID());
-                                rowButton.setWidth(50);
+                                rowButton.setWidth(90);
                                 rowButton.setHeight(50);
 
                             }

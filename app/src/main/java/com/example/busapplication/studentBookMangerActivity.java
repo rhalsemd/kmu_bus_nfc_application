@@ -40,8 +40,8 @@ public class studentBookMangerActivity extends AppCompatActivity {
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck13 = (TextView)findViewById(R.id.Datacheck13);//로그인
-        Datacheck13.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+
+
 
 
         //DB받을 textview

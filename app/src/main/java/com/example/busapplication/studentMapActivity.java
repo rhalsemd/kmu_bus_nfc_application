@@ -123,8 +123,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck4 = (TextView) findViewById(R.id.Datacheck4);//pw로그인
-        Datacheck4.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+
         //지도 맵
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -184,14 +183,13 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
         }
 
         //spinner
-        final TextView Datacheck3 = (TextView) findViewById(R.id.Datacheck3);
-        // cheThread=false;
+
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String text = parent.getItemAtPosition(position).toString();
-                Datacheck3.setText(""+parent.getItemAtPosition(position));//값전달확인
+
 
                 text = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try {
@@ -262,7 +260,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        Datacheck3.setText(checkMap);
+
 
         Button mapbutton=(Button)findViewById(R.id.mapbutton);//PW찾기
         mapbutton.setOnClickListener(new View.OnClickListener() {

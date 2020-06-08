@@ -69,8 +69,7 @@ public class drivermangerDataActivity extends AppCompatActivity  implements View
 
         Intent intent = getIntent(); /*데이터 수신*/
         value = intent.getExtras().getString("value1"); //메인에서 넘어온 아이디값
-        final TextView Datacheck12 = (TextView)findViewById(R.id.Datacheck12);//pw로그인
-        Datacheck12.setText(value);//지워도 됨 - 값넘어온지 확인 하는 것
+
 
 
         Button driverbusMain2=(Button)findViewById(R.id.driverbusMain1);//메인화면으로가기
