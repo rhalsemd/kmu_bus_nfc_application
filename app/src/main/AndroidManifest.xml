@@ -123,10 +123,6 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity
-            android:name=".Driver_toturial"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

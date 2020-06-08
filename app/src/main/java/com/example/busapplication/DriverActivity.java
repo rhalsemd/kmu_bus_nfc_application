@@ -29,24 +29,6 @@ public class DriverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
-        //튜토리얼 실행부
-        SharedPreferences pref = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
-        boolean isFirst = pref.getBoolean("isFirst", true);
-        if(isFirst){
-            startActivity(new Intent(this,Driver_toturial.class));
-        }
-
-        //todo 공지사항 갯수 받아와서 new_refresh 에 넣어주기
-        myStar = (ImageView)findViewById(R.id.imageView2);
-        SharedPreferences refresh = getSharedPreferences("check_fresh", Activity.MODE_PRIVATE);
-        int old_refresh = refresh.getInt("check_fresh", 0);
-        int new_refresh = 10;//여기다가 넣어준다.
-        if(old_refresh > new_refresh)
-            myStar.setVisibility(View.INVISIBLE);
-        else
-            myStar.setVisibility(View.VISIBLE);
-
-
 
 
         Intent intent = getIntent(); /*데이터 수신*/

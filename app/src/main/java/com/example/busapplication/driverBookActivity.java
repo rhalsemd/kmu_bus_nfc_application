@@ -89,9 +89,7 @@ public class driverBookActivity extends AppCompatActivity
     //버스 spinner
     Spinner DriBusSpinner;
     String DriStr;
-    public void tutorial_click(View v){
-        startActivity(new Intent(this,Driver_toturial.class));
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
