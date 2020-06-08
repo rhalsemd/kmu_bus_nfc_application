@@ -129,7 +129,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
                         TimeSpinner10.setClickable(true);
 
                         busText1.setText("호차");
-                        peoText1.setText("탐승자수");
+                        peoText1.setText("탑승자수");
                         timeText1.setText("시간");
                     }
 

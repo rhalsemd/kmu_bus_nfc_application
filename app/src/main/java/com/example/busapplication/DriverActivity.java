@@ -275,7 +275,7 @@ public class DriverActivity extends AppCompatActivity {
         }
     }
 
-    public void DriCallFunction(Context context ) {
+    public void DriCallFunction(Context context) {
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog Mapdlg2 = new Dialog(context);
         //모드 spinner

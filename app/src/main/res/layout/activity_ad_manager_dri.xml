@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="194dp"
+        android:layout_width="211dp"
         android:layout_height="34dp"
         android:text="버스 기사 운행 시간"
         android:textColor="@android:color/background_light"

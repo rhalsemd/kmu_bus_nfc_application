@@ -2,6 +2,7 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,9 @@ import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class studentBookMangerActivity extends AppCompatActivity {
 
@@ -28,6 +32,7 @@ public class studentBookMangerActivity extends AppCompatActivity {
     String value;
     String ad="3";
     String talk;
+    Boolean reserve_able = false;
 
     //DB받을 변수
     String day;
@@ -57,9 +62,20 @@ public class studentBookMangerActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
-                            daychetext.setText("일시 : "+jsonObject.getString("booked_time"));
-                            bookDaychetext.setText("예약 시간 : "+jsonObject.getString("bus_type"));
-                            bookBuschetext.setText("예약 노선 : "+jsonObject.getString("bus_name"));
+
+                            if(success) {
+                                String booked_time = jsonObject.getString("booked_time");
+                                String bus_type = jsonObject.getString("bus_type");
+                                String bus_name = jsonObject.getString("bus_name");
+
+                                daychetext.setText(booked_time);
+                                bookDaychetext.setText(bus_type);
+                                bookBuschetext.setText(bus_name);
+                            }
+                            else{
+                                talk = "예약내역이 없습니다.";
+                                dialog_back(talk);}
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -92,30 +108,67 @@ public class studentBookMangerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 boolean success = jsonObject.getBoolean("success");
+                                boolean is_before = jsonObject.getBoolean("is_before");
+                                String start_time = jsonObject.getString("start_time");
+                                String end_time = jsonObject.getString("end_time");
                                 if (success) {
-                                    talk = "예약취소 되었습니다.";
-                                    dialog(talk);
+                                    try {
+                                        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        SimpleDateFormat for_date = new SimpleDateFormat("yyyy-MM-dd");
 
-                                } else {
-                                    talk = "취소되지 않았습니다!";
-                                    dialog(talk);
+                                        Calendar time = Calendar.getInstance();
+                                        Calendar before_time = Calendar.getInstance();
+
+                                        if(is_before){  //등교일때 하루를 빼주어 이전날짜의 시작시간부터 데이터 타입을 설정한다
+                                            before_time.add(Calendar.DATE, -1);
+                                        }
+                                        String date_type_before = for_date.format(before_time.getTime());
+                                        String date_type = for_date.format(time.getTime());
+
+                                        String time_start = date_type_before +" "+ start_time;
+                                        String time_end = date_type +" "+ end_time;
+
+                                        Date date_start = transFormat.parse(time_start);
+                                        Date date_end = transFormat.parse(time_end);
+
+                                        Calendar cal_start = Calendar.getInstance();
+                                        Calendar cal_end = Calendar.getInstance();
+                                        Calendar cal_now = Calendar.getInstance();
+
+                                        cal_start.setTime(date_start);
+                                        cal_end.setTime(date_end);
+                                        cal_end.add(Calendar.HOUR, -2);
+
+                                        String cal_now_text = transFormat.format(cal_now.getTime());
+                                        Date cal_now_date = transFormat.parse(cal_now_text);
+                                        cal_now.setTime(cal_now_date);
+
+                                        if (cal_now.after(cal_start) && cal_now.before(cal_end)) { //예약시간내에 있을시
+                                            cancel_reserve(); //취소 가능시간일때 실행
+                                        }else{dialog("예약취소 가능시간이 아닙니다!\n취소하고 싶으시면 버스기사에게\n직접 말해주세요!");}
+                                    }
+                                    catch(Exception e){}
+
+                                } else if (start_time.length() == 0) {
+                                    {Toast.makeText(getApplicationContext(), "오류! 관리자에게 연락부탁드립니다.", Toast.LENGTH_SHORT).show();}
                                 }
+                                else{}
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     };
                     //서버로 volley를 이용해서 요청
-                    studentBookMangerRequest_cancelBook cancelbook = new studentBookMangerRequest_cancelBook(value, responseListener);
+                    studentBookRequest_reserveTime reserveTime = new studentBookRequest_reserveTime(bookDaychetext.getText().toString(), bookBuschetext.getText().toString(), responseListener);
                     RequestQueue queue = Volley.newRequestQueue(studentBookMangerActivity.this);
-                    queue.add(cancelbook);
+                    queue.add(reserveTime);
+
 
                 } catch (Exception e) {
                     Excep(e);
@@ -126,6 +179,37 @@ public class studentBookMangerActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    void cancel_reserve(){
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean success = jsonObject.getBoolean("success");
+                    if (success) {
+                        talk = "예약취소 되었습니다.";
+                        dialog(talk);
+
+                    } else {
+                        talk = "취소되지 않았습니다!";
+                        dialog(talk);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        //서버로 volley를 이용해서 요청
+        long now = System.currentTimeMillis();
+        Date mDate = new Date(now);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        String canceled_time = simpleDate.format(mDate);
+
+        studentBookMangerRequest_cancelBook cancelbook = new studentBookMangerRequest_cancelBook(value, canceled_time, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(studentBookMangerActivity.this);
+        queue.add(cancelbook);
     }
     void Move(){
         Intent i = new Intent(studentBookMangerActivity.this/*현재 액티비티 위치*/ , studentActivity.class/*이동 액티비티 위치*/);
@@ -150,6 +234,21 @@ public class studentBookMangerActivity extends AppCompatActivity {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("<알림>").setMessage(who+" : "+talk);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                Move();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    void dialog_back(String talk)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage(talk);
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int id)
