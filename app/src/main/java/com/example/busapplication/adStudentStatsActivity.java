@@ -304,13 +304,13 @@ public class adStudentStatsActivity extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            if(month+1<9&&dayOfMonth>9){
+            if(month+1<=9&&dayOfMonth>=10){
                 daySave=String.valueOf(year)+"-0"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth);
             }
-            else if(dayOfMonth<9&&month+1>9){
+            else if(dayOfMonth<=9&&month+1>=10){
                 daySave=String.valueOf(year)+"-"+String.valueOf(month+1)+"-0"+String.valueOf(dayOfMonth);
             }
-            else if(month+1<9&&dayOfMonth<9){
+            else if(month+1<=9&&dayOfMonth<=9){
                 daySave=String.valueOf(year)+"-0"+String.valueOf(month+1)+"-0"+String.valueOf(dayOfMonth);
             }
             else{
