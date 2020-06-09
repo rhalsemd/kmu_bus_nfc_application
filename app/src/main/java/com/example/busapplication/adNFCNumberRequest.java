@@ -13,12 +13,13 @@ public class adNFCNumberRequest extends StringRequest {
     final static private String URL = "http://busapplication.dothome.co.kr/php/adNFCNumberRequest.php";
     private Map<String, String> map;
 
-    public adNFCNumberRequest(String IDvalue, String NFCvalue, Response.Listener<String> listener){
+    public adNFCNumberRequest(String userID, String nfcID, String seated_time, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
-        map.put("IDvalue", IDvalue);
-        map.put("NFCvalue", NFCvalue);
+        map.put("userID", userID);
+        map.put("nfcID", nfcID);
+        map.put("seated_time", seated_time);
     }
 
     @Override

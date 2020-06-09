@@ -30,7 +30,9 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -260,8 +262,32 @@ public class adNFCNumberActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
+                        boolean maxed_out = jsonObject.getBoolean("maxed_out");
+                        boolean maxed_out_not_booked = jsonObject.getBoolean(("maxed_out_not_booked"));
+                        boolean bus_not_able = jsonObject.getBoolean("bus_not_able");
+                        boolean user_already = jsonObject.getBoolean("user_already");
+                        boolean booking_check_fail = jsonObject.getBoolean("booking_check_fail");
+
                         if (success) {
                             Toast.makeText(getApplicationContext(), "탑승완료!", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (!success){
+                            if (user_already) {
+                                talk = "이미 탑승한 유저입니다.";
+                                dialog_back(talk);
+                            } else if (maxed_out || maxed_out_not_booked) {
+                                talk = "현재 만석입니다.";
+                                dialog_back(talk);
+                            } else if (bus_not_able) {
+                                talk = "버스가 현재 운행불가입니다.";
+                                dialog_back(talk);
+                            } else if (booking_check_fail) {
+                                talk = "예약한 버스와 현재버스가 다릅니다. 예약을 취소하고 현재버스에 탑승하거나, 예약한 버스에 탑승해주세요.";
+                                dialog_back(talk);
+                            }
+                            else{
+                            Toast.makeText(getApplicationContext(), "버스기사에게 정확한 NFC 스티커인지 확인부탁드립니다.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "탑승실패!", Toast.LENGTH_SHORT).show();
@@ -271,7 +297,12 @@ public class adNFCNumberActivity extends AppCompatActivity {
 
                 }
             };
-            adNFCNumberRequest nfcrequest = new adNFCNumberRequest(IDvalue, text, responseListener);
+            long now = System.currentTimeMillis();
+            Date mDate = new Date(now);
+            SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+            String seated_time  = simpleDate.format(mDate);
+
+            adNFCNumberRequest nfcrequest = new adNFCNumberRequest(IDvalue, text, seated_time, responseListener);
             RequestQueue queue = Volley.newRequestQueue(adNFCNumberActivity.this);
             queue.add(nfcrequest);
         }
@@ -356,5 +387,20 @@ public class adNFCNumberActivity extends AppCompatActivity {
     private void WriteModeOff(){
         writeMode = false;
         nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    void dialog_back(String talk)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("<알림>").setMessage(talk);
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                Move();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

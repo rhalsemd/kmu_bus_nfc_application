@@ -299,9 +299,8 @@ public class studentBookActivity extends AppCompatActivity {
             long now = System.currentTimeMillis();
             Date mDate = new Date(now);
             SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-            SimpleDateFormat simpleTime = new SimpleDateFormat("kk:mm:ss");
             String booked_date = simpleDate.format(mDate);
-            String booked_time = simpleTime.format(mDate);
+
 
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
@@ -310,7 +309,7 @@ public class studentBookActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
                         boolean maxed_out = jsonObject.getBoolean("maxed_out");
-                        boolean bus_able = jsonObject.getBoolean("bus_able");
+                        boolean bus_not_able = jsonObject.getBoolean("bus_not_able");
                         boolean user_already = jsonObject.getBoolean("user_already");
                         if (success) {
                             talk = "예약이 되었습니다.";
@@ -324,7 +323,7 @@ public class studentBookActivity extends AppCompatActivity {
                         } else if (maxed_out) {
                             talk = "예약석이 만석입니다.";
                             dialog_back(talk);
-                        } else if (bus_able) {
+                        } else if (bus_not_able) {
                             talk = "버스가 현재 운행불가입니다. 관리자와 연락바랍니다.";
                             dialog_back(talk);
                         }

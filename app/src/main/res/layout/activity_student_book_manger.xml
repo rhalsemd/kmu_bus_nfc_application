@@ -171,6 +171,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bookBuscheck_index"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.513" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
