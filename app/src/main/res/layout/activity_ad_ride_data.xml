@@ -36,6 +36,48 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.012" />
 
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:background="@drawable/bartext_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.54">
+
+        <EditText
+            android:id="@+id/reasonWrite"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:hint="사유를 입력하세요."
+            android:textSize="18dp" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="운행불가 사유"
+        android:textColor="#7030A0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.407" />
+
     <Spinner
         android:id="@+id/busSpinner"
         android:layout_width="250dp"
@@ -49,31 +91,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.124" />
-
-    <FrameLayout
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@drawable/bartext_purple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.534"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451">
-
-        <EditText
-            android:id="@+id/reasonWrite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@null"
-            android:hint="사유"
-            android:textSize="18dp" />
-
-    </FrameLayout>
+        app:layout_constraintVertical_bias="0.207" />
 
     <Button
         android:id="@+id/stapBus"
@@ -91,23 +109,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.627" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운행불가 사유"
-        android:textColor="#7030A0"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.328" />
+        app:layout_constraintVertical_bias="0.709" />
 
     <Spinner
         android:id="@+id/timeSpinner"
@@ -121,14 +123,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.223" />
+        app:layout_constraintVertical_bias="0.305" />
 
     <Button
         android:id="@+id/cancellation"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:background="@android:color/darker_gray"
-        android:text="취소"
+        android:text="운행재개"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -139,7 +141,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.738" />
+        app:layout_constraintVertical_bias="0.82" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

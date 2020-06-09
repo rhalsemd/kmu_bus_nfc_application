@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             int sanctions = jsonObject.getInt("sanctions");
                             boolean success = jsonObject.getBoolean("success");
 
-                            if(success&&sanctions<3) {
+                            if(success&&sanctions<5) {
                                 //DB에서 받은 값 각 변수에 저장
                                 Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                                 switch(admin) {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                 }
                             }
-                            else if(sanctions>=3)
+                            else if(sanctions>=5)
                             {
                                 Toast.makeText(getApplicationContext(), "제재횟수 초과입니다.\n관리자에게 문의해주세요.", Toast.LENGTH_SHORT).show();
                             }

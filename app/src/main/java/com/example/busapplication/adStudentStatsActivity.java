@@ -113,9 +113,12 @@ public class adStudentStatsActivity extends AppCompatActivity {
                     if(position==2){
                         BusSpinner10.setEnabled(false);
                         BusSpinner10.setClickable(false);
+                        BusSpinner10.setVisibility(View.INVISIBLE);
 
                         TimeSpinner10.setEnabled(false);
                         TimeSpinner10.setClickable(false);
+                        TimeSpinner10.setVisibility(View.INVISIBLE);
+
                         busText1.setText("ID");
                         peoText1.setText("호차");
                         timeText1.setText("시간");
@@ -124,12 +127,14 @@ public class adStudentStatsActivity extends AppCompatActivity {
                     else{
                         BusSpinner10.setEnabled(true);
                         BusSpinner10.setClickable(true);
+                        BusSpinner10.setVisibility(View.VISIBLE);
 
                         TimeSpinner10.setEnabled(true);
                         TimeSpinner10.setClickable(true);
+                        TimeSpinner10.setVisibility(View.VISIBLE);;
 
                         busText1.setText("호차");
-                        peoText1.setText("탐승자수");
+                        peoText1.setText("탑승자수");
                         timeText1.setText("시간");
                     }
 
@@ -299,7 +304,19 @@ public class adStudentStatsActivity extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, month);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            daySave=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(dayOfMonth);
+            if(month+1<9&&dayOfMonth>9){
+                daySave=String.valueOf(year)+"-0"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth);
+            }
+            else if(dayOfMonth<9&&month+1>9){
+                daySave=String.valueOf(year)+"-"+String.valueOf(month+1)+"-0"+String.valueOf(dayOfMonth);
+            }
+            else if(month+1<9&&dayOfMonth<9){
+                daySave=String.valueOf(year)+"-0"+String.valueOf(month+1)+"-0"+String.valueOf(dayOfMonth);
+            }
+            else{
+                daySave=String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(dayOfMonth);
+            }
+
             cheDayText.setText("선택한 날짜 : "+daySave);
         }
     };

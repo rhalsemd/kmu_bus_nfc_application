@@ -14,12 +14,12 @@ public class studentBookMangerRequest_cancelBook extends StringRequest {
     private Map<String, String> map;
 
 
-    public studentBookMangerRequest_cancelBook(String userID, Response.Listener<String> listener){
+    public studentBookMangerRequest_cancelBook(String userID, String canceled_time, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userID",userID);
-
+        map.put("canceled_time", canceled_time);
     }
 
     @Override

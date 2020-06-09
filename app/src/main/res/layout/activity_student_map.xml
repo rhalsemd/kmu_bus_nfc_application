@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/mapbutton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="117dp"
         android:background="@color/colorAccent"
         android:text="노선\n확인"
         android:textColor="@android:color/background_light"
@@ -18,19 +18,19 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintHorizontal_bias="0.887"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.177" />
+        app:layout_constraintVertical_bias="0.182" />
 
     <Spinner
         android:id="@+id/MapSpinner"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginEnd="140dp"
+        android:layout_marginEnd="168dp"
         android:background="@drawable/barrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,14 +38,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.164" />
 
     <Spinner
         android:id="@+id/TimeSpinner"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginEnd="140dp"
+        android:layout_marginEnd="168dp"
         android:background="@drawable/barrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,8 +59,7 @@
         android:id="@+id/studentbusMain1"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="4dp"
         android:foreground="@drawable/mainscreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +67,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <TextView
         android:id="@+id/noticeStudent"
@@ -79,12 +78,12 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011" />
+        app:layout_constraintVertical_bias="0.012" />
 
     <FrameLayout
         android:layout_width="396dp"

@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
@@ -45,9 +46,11 @@ public class DriverActivity extends AppCompatActivity {
     String adBusStr1;
     String adTimeStr1;
     //Adapter
-    spinnerRows_green DriadapterSpinner1;
+    spinnerRows_green DriBusadapterSpinner1;
+    spinnerRows_green DriTimeadapterSpinner1;
     //버스 spinner
     Spinner DriBusSpinner;
+    Spinner DriTimeSpinner;
     String DriStr;
 
     @Override
@@ -275,7 +278,7 @@ public class DriverActivity extends AppCompatActivity {
         }
     }
 
-    public void DriCallFunction(Context context ) {
+    public void DriCallFunction(Context context) {
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog Mapdlg2 = new Dialog(context);
         //모드 spinner
@@ -283,25 +286,28 @@ public class DriverActivity extends AppCompatActivity {
         Mapdlg2.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        Mapdlg2.setContentView(R.layout.movedialog);
+        Mapdlg2.setContentView(R.layout.move_reser_dialog);
 
         // 커스텀 다이얼로그를 노출한다.
         Mapdlg2.show();
 
+        final TextView TTtitle35 = (TextView) Mapdlg2.findViewById(R.id.TTtitle35);
+        TTtitle35.setBackgroundColor(Color.parseColor("#70AD47"));
         List<String> data1 = new ArrayList<>();
         data1.add("노선 선택");
-        data1.add("주간등교1 1호차");
-        data1.add("주간등교2 2호차");
-        DriBusSpinner = (Spinner) Mapdlg2.findViewById(R.id.Drispinner);
+        for(int i=0;i<10;i++){
+            data1.add(Integer.toString(i)+"호차");
+        }
+        DriBusSpinner=(Spinner)Mapdlg2.findViewById(R.id.adBusspinner1);
         //Adapter
-        DriadapterSpinner1 = new spinnerRows_green(context, data1);
+        DriBusadapterSpinner1 = new spinnerRows_green(context, data1);
         //Adapter 적용
-        DriBusSpinner.setAdapter(DriadapterSpinner1);
+        DriBusSpinner.setAdapter(DriBusadapterSpinner1);
         DriBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    DriStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                    adBusStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
                 } catch (Exception e) {
                 }
             }
@@ -310,26 +316,54 @@ public class DriverActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        final Button okButton3 = (Button) Mapdlg2.findViewById(R.id.okButton3);//변경 버튼
-        final Button cancelButton3 = (Button) Mapdlg2.findViewById(R.id.cancelButton3);//취소버튼
-        okButton3.setOnClickListener(new View.OnClickListener() {
+
+
+        List<String> data2 = new ArrayList<>();
+        data2.add("노선 선택");
+        data2.add("주간등교1");
+        data2.add("주간등교2");
+        data2.add("주간하교");
+        data2.add("야간하교");
+        DriTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
+        //Adapter
+        DriTimeadapterSpinner1 = new spinnerRows_green(context, data2);
+        //Adapter 적용
+        DriTimeSpinner.setAdapter(DriTimeadapterSpinner1);
+        DriTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    adTimeStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                } catch (Exception e) {
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        final Button cancelAdButton = (Button) Mapdlg2.findViewById(R.id.cancelAdButton);//변경 버튼
+        final Button cheAdButton = (Button) Mapdlg2.findViewById(R.id.cheAdButton);//취소버튼
+        cheAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (DriStr.equals("노선 선택")) {
+                if (adBusStr1.equals("노선 선택")||adTimeStr1.equals("노선 선택")) {
                     Toast.makeText(DriverActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     // TextView 클릭될 시 할 코드작
                     Intent intent_user = new Intent(DriverActivity.this, driverBookActivity.class);
                     intent_user.putExtra("value1",IDvalue);
-                    intent_user.putExtra("adBusStr", "확인입니다");
-                    intent_user.putExtra("adTimeStr", "확인이예요");
+                    intent_user.putExtra("adBusStr1", adBusStr1);
+                    intent_user.putExtra("adTimeStr1", adTimeStr1);
                     startActivity(intent_user);
                 }
                 // 커스텀 다이얼로그를 종료한다.
                 Mapdlg2.dismiss();
             }
         });
-        cancelButton3.setOnClickListener(new View.OnClickListener() {
+        cancelAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 커스텀 다이얼로그를 종료한다.
@@ -350,7 +384,8 @@ public class DriverActivity extends AppCompatActivity {
 
         // 커스텀 다이얼로그를 노출한다.
         Mapdlg2.show();
-
+        final TextView TTtitle35 = (TextView) Mapdlg2.findViewById(R.id.TTtitle35);
+        TTtitle35.setBackgroundColor(Color.parseColor("#7030A0"));
         List<String> data1 = new ArrayList<>();
         data1.add("노선 선택");
         for(int i=0;i<10;i++){

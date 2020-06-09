@@ -62,7 +62,8 @@
         android:layout_marginEnd="84dp"
         android:background="@drawable/bartext_purple"
         android:ems="10"
-        android:hint="제목작성"
+        android:gravity="center"
+        android:hint="제목을 작성해주세요."
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +77,7 @@
         android:id="@+id/textView27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="292dp"
+        android:layout_marginEnd="300dp"
         android:text="제목"
         android:textColor="#7030A0"
         android:textSize="18sp"
@@ -86,13 +87,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintVertical_bias="0.229" />
 
     <TextView
         android:id="@+id/textView28"
         android:layout_width="0dp"
         android:layout_height="43dp"
-        android:layout_marginEnd="292dp"
+        android:layout_marginEnd="300dp"
         android:text="내용"
         android:textColor="#7030A0"
         android:textSize="18sp"
@@ -118,10 +119,11 @@
         <EditText
             android:id="@+id/NoticeWriteEd"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="242dp"
             android:layout_margin="5dp"
             android:background="@null"
-            android:hint="내용작성"
+            android:gravity="center"
+            android:hint="내용을 작성해주세요."
             android:textSize="18dp" />
     </FrameLayout>
 

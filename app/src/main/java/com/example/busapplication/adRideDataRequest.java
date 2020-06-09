@@ -14,13 +14,14 @@ public class adRideDataRequest extends StringRequest {
     private Map<String, String> map;
 
 
-    public adRideDataRequest(String Timetext, String Bustext, String reasonWrite, Response.Listener<String> listener){
+    public adRideDataRequest(String Timetext, String Bustext, String reasonWrite, String isable, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("bus_type",Timetext);
         map.put("bus_name", Bustext);
         map.put("reason", reasonWrite);
+        map.put("able", isable);
 
     }
 

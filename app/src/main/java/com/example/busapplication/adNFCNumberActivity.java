@@ -271,7 +271,7 @@ public class adNFCNumberActivity extends AppCompatActivity {
 
                 }
             };
-            adNFCNumberRequest nfcrequest = new adNFCNumberRequest(IDvalue,text, responseListener);
+            adNFCNumberRequest nfcrequest = new adNFCNumberRequest(IDvalue, text, responseListener);
             RequestQueue queue = Volley.newRequestQueue(adNFCNumberActivity.this);
             queue.add(nfcrequest);
         }

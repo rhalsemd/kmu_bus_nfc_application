@@ -155,7 +155,7 @@ public class adRideDataActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Timetext = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                Toast.makeText(getApplicationContext(),Timetext, Toast.LENGTH_SHORT).show();
+
                 try{
                     Timenum=position;
                 }catch (Exception e)
@@ -198,7 +198,7 @@ public class adRideDataActivity extends AppCompatActivity {
                             }
                         };
                         //서버로 volley를 이용해서 요청
-                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, responseListener);
+                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "0", responseListener);
                         RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
                         queue.add(registerRequest);
                     }
@@ -225,7 +225,48 @@ public class adRideDataActivity extends AppCompatActivity {
         cancellation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //화면전환
+                try {
+                    //DB확인할때 불펼할까봐 화면 전환 막아둠
+                    String userID = value; //메인에서 넘어온 유저ID 값
+                    String Reason = reasonWrite.getText().toString();
+                    if(Timenum != 0 && Busnum != 0){
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) {
+                                        Intent intent = new Intent(adRideDataActivity.this, administratorActivity.class);
+                                        dialog("재개되었습니다.");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "DB관리자에게 연락바랍니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "1", responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
+                        queue.add(registerRequest);
+                    }
+                    else if(Busnum == 0)
+                    {
+                        Toast.makeText(getApplicationContext(), "호차를 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(Timenum == 0)
+                    {
+                        Toast.makeText(getApplicationContext(), "시간을 선택해주세요!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e){
+                    Excep(e);
+                }
             }
         });
         ADbusMain3.setOnClickListener(new View.OnClickListener() {
