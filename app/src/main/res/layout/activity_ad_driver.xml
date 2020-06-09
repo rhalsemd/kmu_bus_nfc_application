@@ -42,9 +42,9 @@
     <Button
         android:id="@+id/busRidebutton"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:background="#7030A0"
-        android:text="버스 운행"
+        android:text="버스 운행 관리"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,14 +54,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintVertical_bias="0.67" />
 
     <Button
         android:id="@+id/butBus"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:background="#7030A0"
-        android:text="버스 정보"
+        android:text="버스 정보 확인"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,12 +71,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.353" />
+        app:layout_constraintVertical_bias="0.27" />
 
     <Button
         android:id="@+id/DriManageButton"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:background="#FFB2F5"
         android:text="버스 기사 관리"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -88,6 +88,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.484" />
+        app:layout_constraintVertical_bias="0.47" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

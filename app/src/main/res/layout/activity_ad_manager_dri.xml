@@ -39,30 +39,31 @@
 
     <Spinner
         android:id="@+id/BUSSpinner3"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:layout_marginStart="36dp"
         android:background="@drawable/bartext_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.182"
+        app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintVertical_bias="0.162" />
 
     <EditText
         android:id="@+id/NameeditText"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:background="@drawable/bartext_purple"
         android:ems="10"
-        android:hint="기사ID를 입력해주세요"
+        android:gravity="center"
+        android:hint="ID를 입력해주세요"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintHorizontal_bias="0.307"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +73,7 @@
     <Button
         android:id="@+id/DelButton"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         android:background="@android:color/darker_gray"
         android:text="삭제"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -80,21 +81,21 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.824"
+        app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.326" />
+        app:layout_constraintVertical_bias="0.346" />
 
     <Spinner
         android:id="@+id/TIMESpinner3"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:background="@drawable/bartext_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintHorizontal_bias="0.311"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,7 @@
     <Button
         android:id="@+id/addButton"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         android:background="#7030A0"
         android:text="추가"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -112,12 +113,12 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.824"
+        app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
+        app:layout_constraintVertical_bias="0.258" />
 
     <FrameLayout
         android:id="@+id/TTtable10"

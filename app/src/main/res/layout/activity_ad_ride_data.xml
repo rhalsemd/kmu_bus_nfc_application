@@ -51,11 +51,13 @@
 
         <EditText
             android:id="@+id/reasonWrite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:layout_margin="5dp"
             android:background="@null"
-            android:hint="사유"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:hint="사유를 입력하세요."
             android:textSize="18dp" />
 
     </FrameLayout>
