@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 
@@ -56,6 +57,18 @@ public class adReservationActivity extends AppCompatActivity {
             }
         });
 //모드 spinner
+        final Button reserCheButton = (Button)findViewById(R.id.reserCheButton);//확인
+        reserCheButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(busStr.equals("노선 선택")||timeStr.equals("시간 선택")){
+                    Toast.makeText(getApplicationContext(), "시간이나 노선을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                //화면전환
+            }
+        });
+
+        //모드 spinner
         List<String> data1 = new ArrayList<>();
         data1.add("노선 선택");
         for(int i=0;i<10;i++){
@@ -103,7 +116,7 @@ public class adReservationActivity extends AppCompatActivity {
         //Adapter
         adapterSpinner2 = new spinnerRows(this, data2);
         //Adapter 적용
-        TimeSpinner.setAdapter(adapterSpinner1);
+        TimeSpinner.setAdapter(adapterSpinner2);
 
         TimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -149,22 +149,7 @@ public class adNFCNumberActivity extends AppCompatActivity {
                 //화면전환
             }
         });
-        nfcButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (cheNFC == false) {
-                        talk = "예약시간이나 버스를 확인해 주세요";
-                        dialog(talk);
-                    } else {//확인용 완성하면 지워야함
-                        talk = "NFC가 체크되었습니다.";
-                        dialog(talk);
-                    }
-                }catch (Exception e){
-                    Excep(e);
-                }
-            }
-        });
+        nfcButton.setEnabled(false);
 
     }
     //////////////////////////////////////////
