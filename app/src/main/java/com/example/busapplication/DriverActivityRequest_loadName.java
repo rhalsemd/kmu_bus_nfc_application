@@ -7,19 +7,18 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class adNFCNumberRequest extends StringRequest {
+public class DriverActivityRequest_loadName extends StringRequest {
 
     //서버 URL 설정 (PHP 파일 연동)
-    final static private String URL = "http://busapplication.dothome.co.kr/php/adNFCNumberRequest.php";
+    final static private String URL = "http://busapplication.dothome.co.kr/php/DriverActivityRequest/loadName.php";
     private Map<String, String> map;
 
-    public adNFCNumberRequest(String userID, String nfcID, String seated_time, Response.Listener<String> listener){
+
+    public DriverActivityRequest_loadName(String userID, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userID", userID);
-        map.put("nfcID", nfcID);
-        map.put("seated_time", seated_time);
     }
 
     @Override

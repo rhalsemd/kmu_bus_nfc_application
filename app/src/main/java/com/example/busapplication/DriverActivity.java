@@ -21,6 +21,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -52,6 +60,12 @@ public class DriverActivity extends AppCompatActivity {
     Spinner DriBusSpinner;
     Spinner DriTimeSpinner;
     String DriStr;
+
+    int Busnum=0;
+    int Timenum=0;
+
+    List<String> load_busName = new ArrayList<>(); //busspinner 값들
+    List<String> load_busType = new ArrayList<>(); //Timespinner 값들
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,63 +307,113 @@ public class DriverActivity extends AppCompatActivity {
 
         final TextView TTtitle35 = (TextView) Mapdlg2.findViewById(R.id.TTtitle35);
         TTtitle35.setBackgroundColor(Color.parseColor("#70AD47"));
-        List<String> data1 = new ArrayList<>();
-        data1.add("노선 선택");
-        for(int i=0;i<10;i++){
-            data1.add(Integer.toString(i)+"호차");
+        DriBusSpinner =  (Spinner) Mapdlg2.findViewById(R.id.adBusspinner1);
+        try {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray array = new JSONArray(response);
+
+                        load_busName.clear();
+                        load_busName.add("노선 선택");
+                        for(int i=0; i<array.length();i++){
+                            JSONObject bus_name = array.getJSONObject(i);
+                            load_busName.add(bus_name.getString("bus_name"));
+                        }
+
+                        //Adapter
+                        DriBusadapterSpinner1 = new spinnerRows_green(DriverActivity.this, load_busName);
+                        //Adapter 적용
+                        DriBusSpinner.setAdapter(DriBusadapterSpinner1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            DriverActivityRequest_loadName loadname = new DriverActivityRequest_loadName(IDvalue, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(DriverActivity.this);
+            queue.add(loadname);
+        }catch (Exception e){
+            Excep(e);
         }
-        DriBusSpinner=(Spinner)Mapdlg2.findViewById(R.id.adBusspinner1);
-        //Adapter
-        DriBusadapterSpinner1 = new spinnerRows_green(context, data1);
-        //Adapter 적용
-        DriBusSpinner.setAdapter(DriBusadapterSpinner1);
+
+//시간 spinner
+        DriTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
+
         DriBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                adBusStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try {
-                    adBusStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                    Busnum = position;
+                    try {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
+
+                                    load_busType.clear();
+                                    load_busType.add("시간 선택");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject bus_name = array.getJSONObject(i);
+                                        load_busType.add(bus_name.getString("bus_type"));
+                                    }
+
+                                    //Adapter
+                                    DriTimeadapterSpinner1 = new spinnerRows_green(DriverActivity.this, load_busType);
+                                    //Adapter 적용
+                                    DriTimeSpinner.setAdapter(DriTimeadapterSpinner1);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        DriverActivityRequest_loadType loadType = new DriverActivityRequest_loadType(DriBusSpinner.getSelectedItem().toString(),IDvalue, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(DriverActivity.this);
+                        queue.add(loadType);
+                    } catch (Exception e) {
+                        Excep(e);
+                    }
                 } catch (Exception e) {
+                    Excep(e);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
-
-        List<String> data2 = new ArrayList<>();
-        data2.add("노선 선택");
-        data2.add("주간등교1");
-        data2.add("주간등교2");
-        data2.add("주간하교");
-        data2.add("야간하교");
-        DriTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
-        //Adapter
-        DriTimeadapterSpinner1 = new spinnerRows_green(context, data2);
-        //Adapter 적용
-        DriTimeSpinner.setAdapter(DriTimeadapterSpinner1);
         DriTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    adTimeStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
+                adTimeStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                try{
+                    Timenum=position;
+                }catch (Exception e)
+                {
+                    Excep(e);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-
 
         final Button cancelAdButton = (Button) Mapdlg2.findViewById(R.id.cancelAdButton);//변경 버튼
         final Button cheAdButton = (Button) Mapdlg2.findViewById(R.id.cheAdButton);//취소버튼
         cheAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (adBusStr1.equals("노선 선택")||adTimeStr1.equals("노선 선택")) {
+                if (Busnum==0&&Timenum==0) {
                     Toast.makeText(DriverActivity.this, "버스를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     // TextView 클릭될 시 할 코드작
@@ -386,53 +450,104 @@ public class DriverActivity extends AppCompatActivity {
         Mapdlg2.show();
         final TextView TTtitle35 = (TextView) Mapdlg2.findViewById(R.id.TTtitle35);
         TTtitle35.setBackgroundColor(Color.parseColor("#7030A0"));
-        List<String> data1 = new ArrayList<>();
-        data1.add("노선 선택");
-        for(int i=0;i<10;i++){
-            data1.add(Integer.toString(i)+"호차");
+        adBusSpinner =  (Spinner) Mapdlg2.findViewById(R.id.adBusspinner1);
+        try {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray array = new JSONArray(response);
+
+                        load_busName.clear();
+                        load_busName.add("노선 선택");
+                        for(int i=0; i<array.length();i++){
+                            JSONObject bus_name = array.getJSONObject(i);
+                            load_busName.add(bus_name.getString("bus_name"));
+                        }
+
+                        //Adapter
+                        adAdapterSpinner1 = new spinnerRows(DriverActivity.this, load_busName);
+                        //Adapter 적용
+                        adBusSpinner.setAdapter(adAdapterSpinner1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            studentBookRequest_loadName loadname = new studentBookRequest_loadName(responseListener);
+            RequestQueue queue = Volley.newRequestQueue(DriverActivity.this);
+            queue.add(loadname);
+        }catch (Exception e){
+            Excep(e);
         }
-        adBusSpinner=(Spinner)Mapdlg2.findViewById(R.id.adBusspinner1);
-        //Adapter
-        adAdapterSpinner1 = new spinnerRows(context, data1);
-        //Adapter 적용
-        adBusSpinner.setAdapter(adAdapterSpinner1);
+
+//시간 spinner
+        adTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
+
         adBusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                adBusStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try {
-                    adBusStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                    Busnum = position;
+                    try {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
+
+                                    load_busType.clear();
+                                    load_busType.add("시간 선택");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject bus_name = array.getJSONObject(i);
+                                        load_busType.add(bus_name.getString("bus_type"));
+                                    }
+
+                                    //Adapter
+                                    adAdapterSpinner2 = new spinnerRows(DriverActivity.this, load_busType);
+                                    //Adapter 적용
+                                    adTimeSpinner.setAdapter(adAdapterSpinner2);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        studentBookRequest_loadType loadType = new studentBookRequest_loadType(adBusSpinner.getSelectedItem().toString(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(DriverActivity.this);
+                        queue.add(loadType);
+                    } catch (Exception e) {
+                        Excep(e);
+                    }
                 } catch (Exception e) {
+                    Excep(e);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
-
-        List<String> data2 = new ArrayList<>();
-        data2.add("노선 선택");
-        data2.add("주간등교1");
-        data2.add("주간등교2");
-        data2.add("주간하교");
-        data2.add("야간하교");
-        adTimeSpinner = (Spinner) Mapdlg2.findViewById(R.id.adTimespinner1);
-        //Adapter
-        adAdapterSpinner2 = new spinnerRows(context, data2);
-        //Adapter 적용
-        adTimeSpinner.setAdapter(adAdapterSpinner2);
         adTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    adTimeStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
-                } catch (Exception e) {
+                adTimeStr1 = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
+                try{
+                    Timenum=position;
+                }catch (Exception e)
+                {
+                    Excep(e);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 

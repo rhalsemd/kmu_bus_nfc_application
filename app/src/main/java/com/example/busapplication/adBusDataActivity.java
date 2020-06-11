@@ -79,7 +79,35 @@ public class adBusDataActivity extends AppCompatActivity {
         TimeDel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(Busnum!=0&&Timenum!=0)
+                {
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) {
+                                    Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Refresh();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                                return;
+                            }
+
+                        }
+                    };
+                    adBusDataRequest_delTime busDataRequest_delTime = new adBusDataRequest_delTime(Bustext, Timetext, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adBusDataActivity.this);
+                    queue.add(busDataRequest_delTime);
+
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "버스노선과 버스시간을 선택헤주세요", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
