@@ -31,7 +31,9 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.*;
@@ -101,10 +103,6 @@ public class driverBookActivity extends AppCompatActivity
         adBusStr1 = intent.getExtras().getString("adBusStr1");
         adTimeStr1 = intent.getExtras().getString("adTimeStr1");
 
-
-
-
-
         Button driverbusMain3=(Button)findViewById(R.id.driverbusMain3);//메인화면 전환
         //버스예약 - 수동승인 버튼
         final TextView count = (TextView)findViewById(R.id.count);
@@ -146,7 +144,7 @@ public class driverBookActivity extends AppCompatActivity
                 }
             };
             //서버로 volley를 이용해서 요청
-            driverBookRequest_setPersonnel setPersonnel = new driverBookRequest_setPersonnel(driverID, responseListener);
+            driverBookRequest_setPersonnel setPersonnel = new driverBookRequest_setPersonnel(driverID, adBusStr1, adTimeStr1, responseListener);
             RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
             queue.add(setPersonnel);
         }catch (Exception e){
@@ -174,7 +172,7 @@ public class driverBookActivity extends AppCompatActivity
                 }
             };
             //서버로 volley를 이용해서 요청
-            driverBookRequest_bookedPersonnel bookedPersonnel = new driverBookRequest_bookedPersonnel(driverID, responseListener);
+            driverBookRequest_bookedPersonnel bookedPersonnel = new driverBookRequest_bookedPersonnel(driverID, adBusStr1, adTimeStr1, responseListener);
             RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
             queue.add(bookedPersonnel);
 
@@ -248,8 +246,13 @@ public class driverBookActivity extends AppCompatActivity
 
                                 }
                             };
+                        long now = System.currentTimeMillis();
+                        Date mDate = new Date(now);
+                        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        String seated_time  = simpleDate.format(mDate);
+
                         //서버로 volley를 이용해서 요청
-                        driverBookRequest_checkVacant checkVacant = new driverBookRequest_checkVacant(userID, driverID, responseListener); //승인하면서 동시에 현재탑승인원 갱신
+                        driverBookRequest_checkVacant checkVacant = new driverBookRequest_checkVacant(userID, driverID, adBusStr1, adTimeStr1, seated_time, responseListener); //승인하면서 동시에 현재탑승인원 갱신
                         RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
                         queue.add(checkVacant);
                     }
@@ -296,7 +299,7 @@ public class driverBookActivity extends AppCompatActivity
                             }
                         };
                         //서버로 volley를 이용해서 요청
-                        driverBookRequest_cancelPersonnel cancelpersonnel = new driverBookRequest_cancelPersonnel(userID, driverID, responseListener);
+                        driverBookRequest_cancelPersonnel cancelpersonnel = new driverBookRequest_cancelPersonnel(userID, driverID, adBusStr1, adTimeStr1, responseListener);
                         RequestQueue queue = Volley.newRequestQueue(driverBookActivity.this);
                         queue.add(cancelpersonnel);
 

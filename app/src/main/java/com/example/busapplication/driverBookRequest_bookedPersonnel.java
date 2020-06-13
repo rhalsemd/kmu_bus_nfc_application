@@ -14,11 +14,13 @@ public class driverBookRequest_bookedPersonnel extends StringRequest {
     private Map<String, String> map;
 
 
-    public driverBookRequest_bookedPersonnel(String driverID, Response.Listener<String> listener){
+    public driverBookRequest_bookedPersonnel(String driverID, String bus_name, String bus_type, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("driverID",driverID);
+        map.put("bus_name",bus_name);
+        map.put("bus_type",bus_type);
     }
 
     @Override

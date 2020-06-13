@@ -14,12 +14,15 @@ public class driverBookRequest_checkVacant extends StringRequest {
     private Map<String, String> map;
 
 
-    public driverBookRequest_checkVacant(String userID, String driverID, Response.Listener<String> listener){
+    public driverBookRequest_checkVacant(String userID, String driverID, String bus_name, String bus_type,String seated_time, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
         map.put("userID",userID);
         map.put("driverID",driverID);
+        map.put("bus_name",bus_name);
+        map.put("bus_type",bus_type);
+        map.put("seated_time",seated_time);
     }
 
     @Override
