@@ -23,7 +23,9 @@ import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class adRideDataActivity extends AppCompatActivity {
@@ -197,8 +199,12 @@ public class adRideDataActivity extends AppCompatActivity {
 
                             }
                         };
+                        long now = System.currentTimeMillis();
+                        Date mDate = new Date(now);
+                        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        String uptime = simpleDate.format(mDate);
                         //서버로 volley를 이용해서 요청
-                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "0", responseListener);
+                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "0", uptime, responseListener);
                         RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
                         queue.add(registerRequest);
                     }
@@ -250,8 +256,13 @@ public class adRideDataActivity extends AppCompatActivity {
 
                             }
                         };
+                        long now = System.currentTimeMillis();
+                        Date mDate = new Date(now);
+                        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                        String uptime2 = simpleDate.format(mDate);
+
                         //서버로 volley를 이용해서 요청
-                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "1", responseListener);
+                        adRideDataRequest registerRequest = new adRideDataRequest(Timetext, Bustext, Reason, "1", uptime2, responseListener);
                         RequestQueue queue = Volley.newRequestQueue(adRideDataActivity.this);
                         queue.add(registerRequest);
                     }
