@@ -313,16 +313,16 @@ public class adReservationActivity extends AppCompatActivity {
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
         final TextView TTtitle20 = (TextView) dlg.findViewById(R.id.TTtitle20);
         final TextView IDreserText = (TextView) dlg.findViewById(R.id.IDreserText);
-        final Button cancelReverButton = (Button) dlg.findViewById(R.id.cancelReverButton);
-        final Button rideButton = (Button) dlg.findViewById(R.id.rideButton);//탑슴 버튼
+        final Button go_back_Button = (Button) dlg.findViewById(R.id.cancelReverButton);
+        final Button cancel_reservation_Button = (Button) dlg.findViewById(R.id.rideButton);//탑슴 버튼
         TTtitle20.setBackgroundColor(Color.parseColor("#7030A0"));
         IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
         IDreserText.setText(userID);
 
-        cancelReverButton.setText("확인");
-        rideButton.setText("예약 취소");
+        go_back_Button.setText("확인");
+        cancel_reservation_Button.setText("예약 취소");
 
-        cancelReverButton.setOnClickListener(new View.OnClickListener() {
+        go_back_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
@@ -333,15 +333,40 @@ public class adReservationActivity extends AppCompatActivity {
             }
         });
 
-        rideButton.setOnClickListener(new View.OnClickListener() {
+        cancel_reservation_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
-                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            if(success) {
+                                //DB에서 받은 값 각 변수에 저장
+                                Toast.makeText(getApplicationContext(), "예약이 취소되었습니다.", Toast.LENGTH_SHORT).show();
 
-                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
-                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
-                // 커스텀 다이얼로그를 종료한다.
+                            }
+                            else if(!success)
+                            {
+                                Toast.makeText(getApplicationContext(), "예약이 취소되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                            else{}
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                };
+                long now = System.currentTimeMillis();
+                Date mDate = new Date(now);
+                SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                String canceled_time  = simpleDate.format(mDate);
+
+                adReservationRequest cancel_reservation_user = new adReservationRequest(IDreserText.getText().toString(), canceled_time, busStr, timeStr, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(adReservationActivity.this) ;
+                queue.add(cancel_reservation_user);
                 Refresh();
                 dlg.dismiss();
             }
