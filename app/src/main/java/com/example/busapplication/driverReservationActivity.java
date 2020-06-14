@@ -203,10 +203,14 @@ public class driverReservationActivity extends AppCompatActivity {
         final TextView IDreserText = (TextView) dlg.findViewById(R.id.IDreserText);
         final Button cancelReverButton = (Button) dlg.findViewById(R.id.cancelReverButton);
         final Button rideButton = (Button) dlg.findViewById(R.id.rideButton);//탑슴 버튼
+        final TextView TTtitle20 = (TextView) dlg.findViewById(R.id.TTtitle20);
+        TTtitle20.setBackgroundColor(Color.parseColor("#70AD47"));
 
         IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
         IDreserText.setText(userID);
 
+        cancelReverButton.setText("취소");
+        rideButton.setText("탑승");
 
         cancelReverButton.setOnClickListener(new View.OnClickListener() {
             @Override

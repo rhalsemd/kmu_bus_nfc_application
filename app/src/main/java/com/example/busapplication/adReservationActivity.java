@@ -319,6 +319,8 @@ public class adReservationActivity extends AppCompatActivity {
         IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
         IDreserText.setText(userID);
 
+        cancelReverButton.setText("확인");
+        rideButton.setText("예약 취소");
 
         cancelReverButton.setOnClickListener(new View.OnClickListener() {
             @Override
