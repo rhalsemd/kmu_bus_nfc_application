@@ -3,20 +3,27 @@ package com.example.busapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +31,9 @@ import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class adReservationActivity extends AppCompatActivity {
@@ -40,6 +49,14 @@ public class adReservationActivity extends AppCompatActivity {
     //시간 spinner
     Spinner TimeSpinner;
     String timeStr;
+    int Busnum=0;
+    int Timenum=0;
+
+    private ArrayList<driverReservationActivityDTO> suggestions = new ArrayList<>();
+    driverReservationActivityDTO suggestion_check = new driverReservationActivityDTO();
+
+    List<String> load_busName = new ArrayList<>(); //busspinner 값들
+    List<String> load_busType = new ArrayList<>(); //Timespinner 값들
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,39 +75,171 @@ public class adReservationActivity extends AppCompatActivity {
         });
 //모드 spinner
         final Button reserCheButton = (Button)findViewById(R.id.reserCheButton);//확인
+        final TableLayout tableLayout = (TableLayout) findViewById(R.id.adReverTable);
+
         reserCheButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(busStr.equals("노선 선택")||timeStr.equals("시간 선택")){
+                if(Busnum==0&&Timenum==0){
                     Toast.makeText(getApplicationContext(), "시간이나 노선을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                //화면전환
+                else if(Busnum!=0 && Timenum!=0){
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+
+                                for(int i=0; i<array.length();i++){
+                                    JSONObject student_suggestions = array.getJSONObject(i);
+
+                                    suggestions.add(new driverReservationActivityDTO(
+                                            student_suggestions.getString("userID")
+                                    ));
+                                }
+                                for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
+                                    TableRow tableRow = new TableRow(adReservationActivity.this);//컬럼
+                                    tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+
+                                    for(int j = 0 ; j < 2 ; j++){//컬럼임
+                                        final int cun=i;
+                                        Button rowButton = new Button(adReservationActivity.this);
+                                        rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
+                                        suggestion_check = suggestions.get(cun);
+
+                                        if(j==0)
+                                        {
+                                            rowButton.setText(Integer.toString(i+1));
+                                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                            rowButton.setWidth(100);
+                                            rowButton.setHeight(50);
+                                        }
+
+                                        else if(j==1)
+                                        {
+                                            rowButton.setText(suggestion_check.getUserID());
+                                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                            rowButton.setWidth(100);
+                                            rowButton.setHeight(50);
+                                            rowButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    //버튼 클릭될 시 할 코드작성
+                                                    title=suggestion_check.getUserID();//제목 제목 DB값
+                                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                                    // 커스텀 다이얼로그를 호출한다.
+                                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                                    // customDialog.callFunction();
+                                                    callFunction(adReservationActivity.this,cun, suggestion_check.getUserID());
+
+
+                                                }
+                                            });
+                                        }
+
+                                        rowButton.setTextColor(Color.BLACK);
+                                        rowButton.setTextSize(12);                     // 폰트사이즈
+                                        rowButton.setTypeface(null, Typeface.BOLD);
+                                        rowButton.setEnabled(true);
+
+
+                                        tableRow.addView(rowButton);
+                                    }
+                                    tableLayout.addView(tableRow);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    };
+                    //서버로 volley를 이용해서 요청
+
+                    driverReservationRequest_load_bookedUser load_bookeduser = new driverReservationRequest_load_bookedUser(busStr, timeStr, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(adReservationActivity.this);
+                    queue.add(load_bookeduser);
+                }
+                else{}
             }
         });
 
-        //모드 spinner
-        List<String> data1 = new ArrayList<>();
-        data1.add("노선 선택");
-        for(int i=0;i<10;i++){
 
-            data1.add(Integer.toString(i)+"호차");
+        //버스 spinner
+        BusSpinner = (Spinner)findViewById(R.id.BUSSpinner7);
+        try {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray array = new JSONArray(response);
+
+                        load_busName.clear();
+                        load_busName.add("노선 선택");
+                        for(int i=0; i<array.length();i++){
+                            JSONObject bus_name = array.getJSONObject(i);
+                            load_busName.add(bus_name.getString("bus_name"));
+                        }
+
+                        //Adapter
+                        adapterSpinner1 = new spinnerRows(adReservationActivity.this, load_busName);
+                        //Adapter 적용
+                        BusSpinner.setAdapter(adapterSpinner1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            //서버로 volley를 이용해서 요청
+            studentBookRequest_loadName loadname = new studentBookRequest_loadName(responseListener);
+            RequestQueue queue = Volley.newRequestQueue(adReservationActivity.this);
+            queue.add(loadname);
+        }catch (Exception e){
+            Excep(e);
         }
 
-        //UI생성
-        //UI생성
-        //버스 스피너
-        BusSpinner = (Spinner)findViewById(R.id.BUSSpinner7);
-        //Adapter
-        adapterSpinner1 = new spinnerRows(this, data1);
-        //Adapter 적용
-        BusSpinner.setAdapter(adapterSpinner1);
+        //시간 spinner
+        TimeSpinner = (Spinner)findViewById(R.id.TIMESpinner7);
 
         BusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                busStr = parent.getItemAtPosition(position).toString();// 무엇을 선탣했는지 보여준다
                 try{
+                    Busnum=position;
+                    try {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
 
-                    busStr=parent.getItemAtPosition(position).toString();
+                                    load_busType.clear();
+                                    load_busType.add("시간 선택");
+                                    for(int i=0; i<array.length();i++){
+                                        JSONObject bus_name = array.getJSONObject(i);
+                                        load_busType.add(bus_name.getString("bus_type"));
+                                    }
+
+                                    //Adapter
+                                    adapterSpinner2 = new spinnerRows(adReservationActivity.this, load_busType);
+                                    //Adapter 적용
+                                    TimeSpinner.setAdapter(adapterSpinner2);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        //서버로 volley를 이용해서 요청
+                        studentBookRequest_loadType loadType = new studentBookRequest_loadType(BusSpinner.getSelectedItem().toString(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(adReservationActivity.this);
+                        queue.add(loadType);
+                    }catch (Exception e){
+                        Excep(e);
+                    }
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -101,29 +250,12 @@ public class adReservationActivity extends AppCompatActivity {
 
             }
         });
-        //모드 spinner
-        List<String> data2 = new ArrayList<>();
-        data2.add("시간 선택");
-        data2.add("주간등교1");
-        data2.add("주간등교2");
-        data2.add("주간하교");
-        data2.add("야간하교");
-
-        //UI생성
-        //UI생성
-        //버스 스피너
-        TimeSpinner = (Spinner)findViewById(R.id.TIMESpinner7);
-        //Adapter
-        adapterSpinner2 = new spinnerRows(this, data2);
-        //Adapter 적용
-        TimeSpinner.setAdapter(adapterSpinner2);
-
         TimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                timeStr = parent.getItemAtPosition(position).toString();// 무엇을 선택했는지 보여준다
                 try{
-                    timeStr=parent.getItemAtPosition(position).toString();
-
+                    Timenum=position;
                 }catch (Exception e)
                 {
                     Excep(e);
@@ -134,50 +266,7 @@ public class adReservationActivity extends AppCompatActivity {
 
             }
         });
-        final TableLayout tableLayout = (TableLayout) findViewById(R.id.adReverTable);
-        for (int i = 0; i < 100; i++) {//  row 임 대신에 컬럼갯
-            TableRow tableRow = new TableRow(adReservationActivity.this);//컬럼
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
-
-            for(int j = 0 ; j < 2 ; j++){//컬럼임
-                final int cun=i;
-                Button rowButton = new Button(adReservationActivity.this);
-                rowButton.setBackgroundResource(R.drawable.bartext_purple);//버튼배경
-                if(j==0)
-                {
-                    rowButton.setText(Integer.toString(i));
-                    //rowButton.setText(suggestion_check.getTitle());
-                    rowButton.setWidth(150);
-                    rowButton.setHeight(50);
-                }
-                else if(j==1)
-                {
-                    rowButton.setText(Integer.toString(cun));
-                    rowButton.setWidth(350);
-                    rowButton.setHeight(50);
-
-                }
-                rowButton.setTextSize(12);                     // 폰트사이즈
-                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                rowButton.setTypeface(null, Typeface.BOLD);
-                rowButton.setEnabled(true);
-                rowButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //버튼 클릭될 시 할 코드작성
-                        title=Integer.toString(cun);//제목 제목 DB값
-                        Content=Integer.toString(cun);
-                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                        // 커스텀 다이얼로그를 호출한다.
-                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                        // customDialog.callFunction();
-                    }
-                });
-                tableRow.addView(rowButton);
-            }
-            tableLayout.addView(tableRow);
-        }
     }
     void Excep(Exception e)//예외처리를 부르는 코드
     {
@@ -206,5 +295,60 @@ public class adReservationActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();
+    }
+    public void callFunction(Context context, int num, String userID) {
+
+        // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
+        final Dialog dlg = new Dialog(context);
+
+        // 액티비티의 타이틀바를 숨긴다.
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // 커스텀 다이얼로그의 레이아웃을 설정한다.
+        dlg.setContentView(R.layout.reservationdialog);
+
+        // 커스텀 다이얼로그를 노출한다.
+        dlg.show();
+
+        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
+        final TextView TTtitle20 = (TextView) dlg.findViewById(R.id.TTtitle20);
+        final TextView IDreserText = (TextView) dlg.findViewById(R.id.IDreserText);
+        final Button cancelReverButton = (Button) dlg.findViewById(R.id.cancelReverButton);
+        final Button rideButton = (Button) dlg.findViewById(R.id.rideButton);//탑슴 버튼
+        TTtitle20.setBackgroundColor(Color.parseColor("#7030A0"));
+        IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
+        IDreserText.setText(userID);
+
+
+        cancelReverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
+                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                // 커스텀 다이얼로그를 종료한다.
+                Refresh();
+                dlg.dismiss();
+            }
+        });
+
+        rideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
+                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+
+                // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
+                // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
+                // 커스텀 다이얼로그를 종료한다.
+                Refresh();
+                dlg.dismiss();
+            }
+        });
+    }
+    void Refresh()//세로고침
+    {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }

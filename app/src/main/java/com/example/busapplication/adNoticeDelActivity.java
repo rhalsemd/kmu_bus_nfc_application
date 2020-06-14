@@ -213,6 +213,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                 adNoticeDelRequest_DeleteNotice deletenotice = new adNoticeDelRequest_DeleteNotice(title_call, Content_call, time_call, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(adNoticeDelActivity.this) ;
                 queue.add(deletenotice);
+                Refresh();
                 dlg.dismiss();
             }
         });
@@ -234,5 +235,11 @@ public class adNoticeDelActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();
+    }
+    void Refresh()//세로고침
+    {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }
