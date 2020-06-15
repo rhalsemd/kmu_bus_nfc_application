@@ -149,14 +149,14 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             }
                             if(j==0)
                             {
-                                rowButton.setText(suggestion_check.getTitle());
+                                rowButton.setText(Integer.toString(i+1));
                                 //rowButton.setText(suggestion_check.getTitle());
                                 rowButton.setWidth(200);
                                 rowButton.setHeight(50);
                             }
                             else if(j==1)
                             {
-                                rowButton.setText(suggestion_check.getuserID());
+                                rowButton.setText(suggestion_check.getTitle());
                                 rowButton.setWidth(300);
                                 rowButton.setHeight(50);
 
