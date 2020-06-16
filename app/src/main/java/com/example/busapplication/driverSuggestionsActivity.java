@@ -181,7 +181,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             }
 
                                 if (j == 0) {
-                                    rowButton.setText(Integer.toString(i ));
+                                    rowButton.setText(Integer.toString(i +1));
                                     //rowButton.setText(suggestion_check.getTitle());
                                     rowButton.setWidth(200);
                                     rowButton.setHeight(50);

@@ -125,7 +125,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
 
 
                                 if (j == 0) {
-                                    rowButton.setText(String.valueOf(cun));
+                                    rowButton.setText(String.valueOf(cun+1));
                                     //rowButton.setText(suggestion_check.getTitle());
                                     rowButton.setWidth(30);
                                     rowButton.setHeight(50);

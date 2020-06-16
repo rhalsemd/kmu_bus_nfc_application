@@ -145,7 +145,7 @@ public class adReservationActivity extends AppCompatActivity {
 
 
                                             if (j == 0) {
-                                                rowButton.setText(Integer.toString(i ));
+                                                rowButton.setText(Integer.toString(i+1 ));
                                                 rowButton.setTextColor(Color.BLACK);     // 폰트컬러
                                                 rowButton.setWidth(100);
                                                 rowButton.setHeight(50);

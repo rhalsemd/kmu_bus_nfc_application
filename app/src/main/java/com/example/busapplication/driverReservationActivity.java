@@ -85,7 +85,7 @@ public class driverReservationActivity extends AppCompatActivity {
                             final int cun=i;
                             Button rowButton = new Button(driverReservationActivity.this);
                             if (i == 0) {
-                                rowButton.setBackgroundColor(Color.parseColor("#008E40"));
+                                rowButton.setBackgroundColor(Color.parseColor("#70AD47"));
                                 rowButton.setTextColor(Color.WHITE);
                                 if (j == 0) {
                                     rowButton.setText("순번");
@@ -119,7 +119,7 @@ public class driverReservationActivity extends AppCompatActivity {
 
 
                                 if (j == 0) {
-                                    rowButton.setText(Integer.toString(i ));
+                                    rowButton.setText(Integer.toString(i+1 ));
                                     rowButton.setTextColor(Color.BLACK);     // 폰트컬러
                                     rowButton.setWidth(100);
                                     rowButton.setHeight(50);

@@ -150,7 +150,7 @@ public class AppNoticeActivity extends AppCompatActivity {
 
 
                                 if (j == 0) {
-                                    rowButton.setText(String.valueOf(cun));
+                                    rowButton.setText(String.valueOf(cun+1));
                                     rowButton.setWidth(10);
                                     rowButton.setHeight(50);
                                 } else if (j == 1) {

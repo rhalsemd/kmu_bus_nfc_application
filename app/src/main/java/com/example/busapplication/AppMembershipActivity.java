@@ -84,8 +84,6 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         final EditText RRNtext1 = (EditText)findViewById(R.id.RRNtext1);//주민번호 앞자리
         final EditText RRNtext2 = (EditText)findViewById(R.id.RRNtext2);//주민번호 뒤자리
 
-        final TextView UseUsertext = (TextView)findViewById(R.id.UseUsertext);
-
          NameTextsId = NameText.getText().toString();//이름값 string에 저장
          IdTextsId = IdText.getText().toString();//ID값 string에 저장
          PWTextsld = PWText.getText().toString();//PW값 string에 저장
@@ -99,17 +97,6 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         ////아래의 onClick(View v)로 정의
         confirm.setOnClickListener(this);
 
-        UseUsertext.setOnClickListener(new View.OnClickListener() {//이용약관
-            @Override
-            public void onClick(View v) {
-                try {
-                    callFunction(AppMembershipActivity.this);
-                }catch (Exception e)
-                {
-                    Excep(e);
-                }
-            }
-        });
         approvalbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
