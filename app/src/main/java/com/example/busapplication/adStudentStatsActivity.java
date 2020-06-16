@@ -287,7 +287,6 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                             TableRow tableRow = new TableRow(adStudentStatsActivity.this);//컬럼
                                             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
                                             for(int j = 0 ; j < 3 ; j++){//컬럼임
-                                                final int cun=i;
                                                 Button rowButton = new Button(adStudentStatsActivity.this);
                                                 if(i==0){
                                                     rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
@@ -417,6 +416,58 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                                     student_suggestions_reserver.getString("bus_name"),
                                                     student_suggestions_reserver.getString("bus_type")
                                             ));
+                                        }
+                                        for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+                                            TableRow tableRow = new TableRow(adStudentStatsActivity.this);//컬럼
+                                            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                                            for(int j = 0 ; j < 3 ; j++){//컬럼임
+                                                Button rowButton = new Button(adStudentStatsActivity.this);
+                                                if(i==0){
+                                                    rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
+                                                    rowButton.setTextColor(Color.WHITE);
+                                                    if (j == 0) {
+                                                        if(Modenum==2){
+                                                            rowButton.setText("ID");
+                                                        }
+                                                        else{
+                                                            rowButton.setText("호차");
+                                                        }
+
+                                                        rowButton.setWidth(100);
+                                                        rowButton.setHeight(50);
+
+                                                    } else if (j == 1) {
+                                                        if(Modenum==2){
+                                                            rowButton.setText("호차");
+                                                        }
+                                                        else{
+                                                            rowButton.setText("탐승자수");
+                                                        }
+
+
+                                                        rowButton.setWidth(100);
+                                                        rowButton.setHeight(50);
+                                                    }
+                                                    else if (j == 2) {
+                                                        if(Modenum==2){
+                                                            rowButton.setText("시간");
+                                                        }
+                                                        else{
+                                                            rowButton.setText("시간");
+                                                        }
+
+
+                                                        rowButton.setWidth(100);
+                                                        rowButton.setHeight(50);
+                                                    }
+                                                    rowButton.setEnabled(false);
+
+                                                }
+                                                rowButton.setTextSize(12);                     // 폰트사이즈
+                                                rowButton.setTypeface(null, Typeface.BOLD);
+                                                tableRow.addView(rowButton);
+                                            }
+                                            tableLayout.addView(tableRow);
                                         }
                                         for (int i = 0; i < suggestions_reserver.size(); i++) {//  row 임 대신에 컬럼갯
 
