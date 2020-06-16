@@ -43,7 +43,7 @@ public class studentBookActivity extends AppCompatActivity {
 
     String talk;
     String value;
-    String ad = "3";
+    String ad = "admin";
 
     String SpinnerValue;
     TextView Datacheck20;

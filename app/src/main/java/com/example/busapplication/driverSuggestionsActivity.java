@@ -72,7 +72,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
 
     //DB에 넣을 때 아래의 변수 지우기
     String value;
-    String ad="3";
+    String ad="admin";
     int i;
 
     String title;

@@ -36,7 +36,7 @@ import java.util.List;
 
 public class DriverActivity extends AppCompatActivity {
     String IDvalue;
-    String ad="3";//관리자
+    String ad="admin";//관리자
     ImageView myStar;
     //예외처리 다이얼로그에 쓰임
     String whoSLD;

@@ -30,7 +30,7 @@ public class studentBookMangerActivity extends AppCompatActivity {
     private Button buschoicebutton;
 
     String value;
-    String ad="3";
+    String ad="admin";
     String talk;
     Boolean reserve_able = false;
 

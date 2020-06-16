@@ -80,6 +80,9 @@ public class adReservationActivity extends AppCompatActivity {
         reserCheButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tableLayout.removeAllViews();
+                suggestions.clear();
+
                 if(Busnum==0&&Timenum==0){
                     Toast.makeText(getApplicationContext(), "시간이나 노선을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }

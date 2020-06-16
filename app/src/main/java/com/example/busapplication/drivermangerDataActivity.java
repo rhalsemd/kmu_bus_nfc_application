@@ -40,7 +40,7 @@ import java.util.Random;
 public class drivermangerDataActivity extends AppCompatActivity  implements View.OnClickListener, Dialog.OnCancelListener {
 
     String value;
-    String ad="3";
+    String ad="admin";
 
     //DB에 저장할 휴대폰 변경 변수
     String changPho;

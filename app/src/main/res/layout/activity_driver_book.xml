@@ -165,7 +165,7 @@
         android:layout_height="50dp"
         android:background="@drawable/barrow2"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
