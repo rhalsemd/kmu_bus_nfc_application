@@ -337,7 +337,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                                                                 public void run() {
                                                                     NowBus.remove();
                                                                     //  googleMap.clear();
-                                                                    mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                                                                   // mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
                                                                     //37.56 + a, 126.97 + a 대신 Db죄표
                                                                     LatLng SEOUL = new LatLng(35.8772531 + a, 128.5582868 + a);
                                                                     LatLng SEOUL12 = new LatLng(35.8772531 , 128.5582868 );
