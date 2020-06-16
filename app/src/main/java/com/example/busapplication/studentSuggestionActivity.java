@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 public class studentSuggestionActivity extends AppCompatActivity {
 
     String talk;
-    String ad="3";
+    String ad="admin";
     String value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

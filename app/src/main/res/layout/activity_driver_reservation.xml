@@ -49,7 +49,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.378">
+        app:layout_constraintVertical_bias="0.385">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -67,38 +67,6 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView64"
-        android:layout_width="133dp"
-        android:layout_height="50dp"
-        android:background="#70AD47"
-        android:gravity="center"
-        android:text="ID"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.607"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
 
-    <TextView
-        android:id="@+id/textView66"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
-        android:background="#70AD47"
-        android:gravity="center"
-        android:text="순번"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,14 +71,11 @@ public class AppNoticeActivity extends AppCompatActivity {
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.AppNoticeTable); // 테이블 id 명
 
         final ConstraintLayout mylayout = (ConstraintLayout)findViewById(R.id.backNotice);
-        final TextView textView48 = (TextView)findViewById(R.id.textView48);//
-        final TextView textView49 = (TextView)findViewById(R.id.textView49);//
+
         if(strValue.equals("버스기사"))
         {
             mylayout.setBackgroundResource(R.drawable.background2dri);
             noticeMain.setBackgroundResource(R.drawable.mainscreen2);
-            textView48.setBackgroundColor(Color.parseColor("#008E40"));
-            textView49.setBackgroundColor(Color.parseColor("#008E40"));
 
         }
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -96,6 +93,40 @@ public class AppNoticeActivity extends AppCompatActivity {
                                 student_suggestions.getString("time"),
                                 student_suggestions.getString("user")
                         ));
+                    }
+                    for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+                        TableRow tableRow = new TableRow(AppNoticeActivity.this);//컬럼
+                        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        for(int j = 0 ; j < 2 ; j++){//컬럼임
+                            final int cun=i;
+                            Button rowButton = new Button(AppNoticeActivity.this);
+                            if(i==0){
+                                if(strValue.equals("버스기사"))
+                                {
+                                    rowButton.setBackgroundColor(Color.parseColor("#70AD47"));
+                                }
+                                else if(strValue.equals("학생"))
+                                {
+                                    rowButton.setBackgroundColor(Color.parseColor("#003399"));
+                                }
+
+                                rowButton.setTextColor(Color.WHITE);
+                                if (j == 0) {
+                                    rowButton.setText("번호");
+                                    rowButton.setWidth(10);
+                                    rowButton.setHeight(50);
+
+                                } else if (j == 1) {
+                                    rowButton.setText("제목");
+                                    rowButton.setWidth(400);
+                                    rowButton.setHeight(50);
+                                }
+                            }
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                            rowButton.setTypeface(null, Typeface.BOLD);
+                            tableRow.addView(rowButton);
+                        }
+                        tableLayout.addView(tableRow);
                     }
                     for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(AppNoticeActivity.this);//컬럼
@@ -117,40 +148,39 @@ public class AppNoticeActivity extends AppCompatActivity {
                             }
                             suggestion_check = suggestions.get(cun);
 
-                            if(j==0)
-                            {
-                                rowButton.setText(String.valueOf(cun));
-                                rowButton.setWidth(10);
-                                rowButton.setHeight(50);
-                            }
 
-                            else if(j==1)
-                            {
-                                rowButton.setText(suggestion_check.getTitle());
-                                //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(400);
-                                rowButton.setHeight(50);
-                                rowButton.setTextColor(Color.BLACK);
+                                if (j == 0) {
+                                    rowButton.setText(String.valueOf(cun));
+                                    rowButton.setWidth(10);
+                                    rowButton.setHeight(50);
+                                } else if (j == 1) {
+                                    rowButton.setText(suggestion_check.getTitle());
+                                    //rowButton.setText(suggestion_check.getTitle());
+                                    rowButton.setWidth(400);
+                                    rowButton.setHeight(50);
+                                    rowButton.setTextColor(Color.BLACK);
 
-                            }
+                                }
+                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                rowButton.setEnabled(true);
+                                rowButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //버튼 클릭될 시 할 코드작성
+                                        title=suggestion_check.getTitle();//제목 제목 DB값
+                                        Content= suggestion_check.getContent();
+                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                        // 커스텀 다이얼로그를 호출한다.
+                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                        // customDialog.callFunction();
+                                        callFunction(AppNoticeActivity.this,cun);
+                                    }
+                                });
 
                             rowButton.setTextSize(12);                     // 폰트사이즈
-                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+
                             rowButton.setTypeface(null, Typeface.BOLD);
-                            rowButton.setEnabled(true);
-                            rowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //버튼 클릭될 시 할 코드작성
-                                    title=suggestion_check.getTitle();//제목 제목 DB값
-                                    Content= suggestion_check.getContent();
-                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                    // 커스텀 다이얼로그를 호출한다.
-                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                    // customDialog.callFunction();
-                                    callFunction(AppNoticeActivity.this,cun);
-                                }
-                            });
+
                             tableRow.addView(rowButton);
                         }
                         tableLayout.addView(tableRow);

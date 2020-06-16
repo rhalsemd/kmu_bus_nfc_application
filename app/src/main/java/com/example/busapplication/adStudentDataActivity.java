@@ -61,6 +61,40 @@ public class adStudentDataActivity extends AppCompatActivity {
         //db자료를 2차원 배열같은데 넣고 setText에 db가 들어간 배열 출력
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.studentCheTable); // 테이블 id 명
 
+        for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+            TableRow tableRow = new TableRow(adStudentDataActivity.this);//컬럼
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            for(int j = 0 ; j < 3 ; j++){//컬럼임
+                final int cun=i;
+                Button rowButton = new Button(adStudentDataActivity.this);
+                if(i==0){
+                    rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
+                    rowButton.setTextColor(Color.WHITE);
+                    if (j == 0) {
+                        rowButton.setText("ID");
+                        rowButton.setWidth(100);
+                        rowButton.setHeight(50);
+
+                    } else if (j == 1) {
+                        rowButton.setText("이름");
+                        rowButton.setWidth(100);
+                        rowButton.setHeight(50);
+                    }
+                    else if (j == 2) {
+                        rowButton.setText("제재횟수");
+                        rowButton.setWidth(100);
+                        rowButton.setHeight(50);
+                    }
+                    rowButton.setEnabled(false);
+                }
+                rowButton.setTextSize(12);                     // 폰트사이즈
+                rowButton.setTypeface(null, Typeface.BOLD);
+                tableRow.addView(rowButton);
+            }
+            tableLayout.addView(tableRow);
+        }
+
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -75,6 +109,7 @@ public class adStudentDataActivity extends AppCompatActivity {
                                 student_suggestions.getString("userName"),
                                 student_suggestions.getString("sanctions")
                         ));
+
                     }
                     for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(adStudentDataActivity.this);//컬럼
@@ -87,45 +122,42 @@ public class adStudentDataActivity extends AppCompatActivity {
                             rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
                             suggestion_check = suggestions.get(cun);
 
-                            if(j==0)
-                            {
-                                rowButton.setText(suggestion_check.getUserID());
-                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(100);
-                                rowButton.setHeight(50);
-                            }
+                                if (j == 0) {
+                                    rowButton.setText(suggestion_check.getUserID());
+                                    rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+                                } else if (j == 1) {
+                                    rowButton.setText(suggestion_check.getUserName());
+                                    rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
 
-                            else if(j==1)
-                            {
-                                rowButton.setText(suggestion_check.getUserName());
-                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(100);
-                                rowButton.setHeight(50);
+                                } else if (j == 2) {
+                                    rowButton.setText(suggestion_check.getSanctions());
+                                    rowButton.setTextColor(Color.RED);     // 폰트컬러
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
 
-                            }
-                            else if(j==2)
-                            {
-                                rowButton.setText(suggestion_check.getSanctions());
-                                rowButton.setTextColor(Color.RED);     // 폰트컬러
-                                rowButton.setWidth(100);
-                                rowButton.setHeight(50);
+                                }
+                                rowButton.setEnabled(true);
+                                rowButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //버튼 클릭될 시 할 코드작성
+                                        title=suggestion_check.getUserID();//제목 제목 DB값
+                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                        // 커스텀 다이얼로그를 호출한다.
+                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                        // customDialog.callFunction();
+                                        callFunction(adStudentDataActivity.this,cun);
+                                    }
+                                });
 
-                            }
                             rowButton.setTextSize(12);                     // 폰트사이즈
                             rowButton.setTypeface(null, Typeface.BOLD);
-                            rowButton.setEnabled(true);
-                            rowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //버튼 클릭될 시 할 코드작성
-                                    title=suggestion_check.getUserID();//제목 제목 DB값
-                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                    // 커스텀 다이얼로그를 호출한다.
-                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                    // customDialog.callFunction();
-                                    callFunction(adStudentDataActivity.this,cun);
-                                }
-                            });
+
+
                             tableRow.addView(rowButton);
                         }
                         tableLayout.addView(tableRow);

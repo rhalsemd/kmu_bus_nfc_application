@@ -36,7 +36,7 @@ import java.util.List;
 
 public class DriverActivity extends AppCompatActivity {
     String IDvalue;
-    String ad="3";//관리자
+    String ad="admin";//관리자
     ImageView myStar;
     //예외처리 다이얼로그에 쓰임
     String whoSLD;
@@ -307,6 +307,7 @@ public class DriverActivity extends AppCompatActivity {
 
         final TextView TTtitle35 = (TextView) Mapdlg2.findViewById(R.id.TTtitle35);
         TTtitle35.setBackgroundColor(Color.parseColor("#70AD47"));
+        TTtitle35.setText("운행할 버스 선택");
         DriBusSpinner =  (Spinner) Mapdlg2.findViewById(R.id.adBusspinner1);
         try {
             Response.Listener<String> responseListener = new Response.Listener<String>() {

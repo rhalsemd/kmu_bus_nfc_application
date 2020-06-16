@@ -7,23 +7,17 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class adRideDataRequest extends StringRequest {
+public class adStudentStatsRequest_load_reserver extends StringRequest {
 
     //서버 URL 설정 (PHP 파일 연동)
-    final static private String URL = "http://busapplication.dothome.co.kr/php/adRideDataRequest.php";
+    final static private String URL = "http://busapplication.dothome.co.kr/php/adStudentStatsRequest/load_reserver.php";
     private Map<String, String> map;
 
 
-    public adRideDataRequest(String Timetext, String Bustext, String reasonWrite, String isable, String uptime, Response.Listener<String> listener){
+    public adStudentStatsRequest_load_reserver(String date, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
-
         map = new HashMap<>();
-        map.put("bus_type",Timetext);
-        map.put("bus_name", Bustext);
-        map.put("reason", reasonWrite);
-        map.put("able", isable);
-        map.put("uptime", uptime);
-
+        map.put("date", date);
     }
 
     @Override

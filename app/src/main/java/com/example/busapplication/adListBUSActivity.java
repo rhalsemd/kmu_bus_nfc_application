@@ -108,6 +108,7 @@ public class adListBUSActivity extends AppCompatActivity {
         //표
         //컬럼으로 (내용,날짜, 제목, 내용)으로하고 Content에 내용부분 넣기
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.BUStestTable); // 테이블 id 명
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -135,12 +136,45 @@ public class adListBUSActivity extends AppCompatActivity {
                     bus_route.add(new MarkerItem(Double.parseDouble(route_DTO.getRoute8_la()),Double.parseDouble(route_DTO.getRoute8_lo()), route_DTO.getRoute8()));
                     bus_route.add(new MarkerItem(Double.parseDouble(route_DTO.getRoute9_la()),Double.parseDouble(route_DTO.getRoute9_lo()), route_DTO.getRoute9()));
                     bus_route.add(new MarkerItem(Double.parseDouble(route_DTO.getRoute10_la()),Double.parseDouble(route_DTO.getRoute10_lo()), route_DTO.getRoute10()));
+                    for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+                        TableRow tableRow = new TableRow(adListBUSActivity.this);//컬럼
+                        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        for(int j = 0 ; j < 3 ; j++){//컬럼임
+                            final int cun=i;
+                            Button rowButton = new Button(adListBUSActivity.this);
+                            if(i==0){
+                                rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
+                                rowButton.setTextColor(Color.WHITE);
+                                if (j == 0) {
+                                    rowButton.setText("제목");
+                                    rowButton.setWidth(300);
+                                    rowButton.setHeight(100);
 
+                                } else if (j == 1) {
+                                    rowButton.setText("위치");
+                                    rowButton.setWidth(150);
+                                    rowButton.setHeight(100);
+
+                                } else if (j == 2) {
+                                    rowButton.setText("경도");
+                                    rowButton.setWidth(150);
+                                    rowButton.setHeight(100);
+                                }
+                                rowButton.setEnabled(false);
+                            }
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                            rowButton.setTypeface(null, Typeface.BOLD);
+                            tableRow.addView(rowButton);
+                        }
+                        tableLayout.addView(tableRow);
+                    }
                     for (int i = 0; i < bus_route.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(adListBUSActivity.this);//컬럼
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
+
                         for(int j = 0 ; j < 3 ; j++){//컬럼임
+
                             final int cun=i;
                             markeritem = bus_route.get(cun);
                             final String destination = markeritem.getdestination();
@@ -155,11 +189,10 @@ public class adListBUSActivity extends AppCompatActivity {
                                 rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
 
                                 if (j == 0) {
-                                    if(destination.length()>=7){
-                                        destinationTen=destination.substring(0, 7)+"...";
-                                    }
-                                    else{
-                                        destinationTen=destination;
+                                    if (destination.length() >= 7) {
+                                        destinationTen = destination.substring(0, 7) + "...";
+                                    } else {
+                                        destinationTen = destination;
                                     }
                                     rowButton.setText(destinationTen);
 
@@ -169,12 +202,11 @@ public class adListBUSActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             //버튼 클릭될 시 할 코드작성
-                                            callFunction(cun, destination, route_column, adListBUSActivity.this);
+                                            callFunction(cun-1, destination, route_column, adListBUSActivity.this);
                                         }
                                     });
 
-                                }
-                                else if (j == 1) {
+                                } else if (j == 1) {
                                     rowButton.setText(latitude);
                                     rowButton.setWidth(150);
                                     rowButton.setHeight(100);
@@ -182,7 +214,7 @@ public class adListBUSActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             //버튼 클릭될 시 할 코드작성
-                                            callFunction(cun, latitude, lat_column, adListBUSActivity.this);
+                                            callFunction(cun-1, latitude, lat_column, adListBUSActivity.this);
                                         }
                                     });
                                 } else if (j == 2) {
@@ -193,13 +225,14 @@ public class adListBUSActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             //버튼 클릭될 시 할 코드작성
-                                            callFunction(cun, longtitude, long_column, adListBUSActivity.this);
+                                            callFunction(cun-1, longtitude, long_column, adListBUSActivity.this);
                                         }
                                     });
-
                                 }
+                                rowButton.setTextColor(Color.BLACK);
+
                                 rowButton.setTextSize(12);                     // 폰트사이즈
-                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                            // 폰트컬러
                                 rowButton.setTypeface(null, Typeface.BOLD);
                                 rowButton.setEnabled(true);
 

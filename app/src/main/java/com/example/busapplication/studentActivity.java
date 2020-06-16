@@ -17,7 +17,7 @@ import java.io.StringWriter;
 public class studentActivity extends AppCompatActivity {
 
     String IDvalue;
-    String ad="3";
+    String ad="admin";
     String checkUser="학생";
     //예외처리 다이얼로그에 쓰임
     String whoSLD;

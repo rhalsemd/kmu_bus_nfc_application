@@ -78,49 +78,77 @@ public class driverReservationActivity extends AppCompatActivity {
                                 student_suggestions.getString("userID")
                         ));
                     }
+                    for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+                        TableRow tableRow = new TableRow(driverReservationActivity.this);//컬럼
+                        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        for(int j = 0 ; j < 2 ; j++){//컬럼임
+                            final int cun=i;
+                            Button rowButton = new Button(driverReservationActivity.this);
+                            if (i == 0) {
+                                rowButton.setBackgroundColor(Color.parseColor("#008E40"));
+                                rowButton.setTextColor(Color.WHITE);
+                                if (j == 0) {
+                                    rowButton.setText("순번");
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+
+                                } else if (j == 1) {
+                                    rowButton.setText("ID");
+                                    rowButton.setWidth(150);
+                                    rowButton.setHeight(50);
+                                }
+                                rowButton.setEnabled(false);
+
+                            }
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                            rowButton.setTypeface(null, Typeface.BOLD);
+                            tableRow.addView(rowButton);
+                        }
+                        tableLayout.addView(tableRow);
+                    }
                     for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(driverReservationActivity.this);//컬럼
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
 
-                        for(int j = 0 ; j < 2 ; j++){//컬럼임
-                            final int cun=i;
+                        for(int j = 0 ; j < 2 ; j++) {//컬럼임
+                            final int cun = i;
                             Button rowButton = new Button(driverReservationActivity.this);
                             rowButton.setBackgroundResource(R.drawable.barrow2);//버튼배경
                             suggestion_check = suggestions.get(cun);
 
-                            if(j==0)
-                            {
-                                rowButton.setText(Integer.toString(i+1));
-                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(100);
-                                rowButton.setHeight(50);
-                            }
 
-                            else if(j==1)
-                            {
-                                rowButton.setText(suggestion_check.getUserID());
-                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                rowButton.setWidth(100);
-                                rowButton.setHeight(50);
-                                rowButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //버튼 클릭될 시 할 코드작성
-                                        title=suggestion_check.getUserID();//제목 제목 DB값
-                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                        // 커스텀 다이얼로그를 호출한다.
-                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                        // customDialog.callFunction();
-                                        callFunction(driverReservationActivity.this,cun, suggestion_check.getUserID());
-                                    }
-                                });
-                            }
+                                if (j == 0) {
+                                    rowButton.setText(Integer.toString(i ));
+                                    rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+                                } else if (j == 1) {
+                                    rowButton.setText(suggestion_check.getUserID());
+                                    rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                    rowButton.setWidth(150);
+                                    rowButton.setHeight(50);
+                                    rowButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //버튼 클릭될 시 할 코드작성
+                                            title = suggestion_check.getUserID();//제목 제목 DB값
+                                            // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                            // 커스텀 다이얼로그를 호출한다.
+                                            // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                            // customDialog.callFunction();
+                                            callFunction(driverReservationActivity.this, cun, suggestion_check.getUserID());
+                                        }
+                                    });
+                                }
+                                rowButton.setEnabled(true);
+                                rowButton.setTextColor(Color.BLACK);
 
-                            rowButton.setTextColor(Color.BLACK);
+
+
                             rowButton.setTextSize(12);                     // 폰트사이즈
                             rowButton.setTypeface(null, Typeface.BOLD);
-                            rowButton.setEnabled(true);
+
 
                             tableRow.addView(rowButton);
                         }

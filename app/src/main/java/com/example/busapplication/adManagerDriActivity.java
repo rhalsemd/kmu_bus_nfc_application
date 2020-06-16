@@ -265,6 +265,7 @@ public class adManagerDriActivity extends AppCompatActivity {
         //db자료를 2차원 배열같은데 넣고 setText에 db가 들어간 배열 출력
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.DriverMagTable); // 테이블 id 명
 
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -280,19 +281,51 @@ public class adManagerDriActivity extends AppCompatActivity {
                                 student_suggestions.getString("userID")
                         ));
                     }
+                    for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+                        TableRow tableRow = new TableRow(adManagerDriActivity.this);//컬럼
+                        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        for(int j = 0 ; j < 3 ; j++){//컬럼임
+                            final int cun=i;
+                            Button rowButton = new Button(adManagerDriActivity.this);
+                            if(i==0){
+                                rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
+                                rowButton.setTextColor(Color.WHITE);
+                                if (j == 0) {
+                                    rowButton.setText("기사ID");
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+
+                                } else if (j == 1) {
+                                    rowButton.setText("버스호차");
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+
+                                } else if (j == 2) {
+                                    rowButton.setText("시간");
+                                    rowButton.setWidth(100);
+                                    rowButton.setHeight(50);
+                                }
+                                rowButton.setEnabled(false);
+                            }
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                            rowButton.setTypeface(null, Typeface.BOLD);
+                            tableRow.addView(rowButton);
+                        }
+                        tableLayout.addView(tableRow);
+                    }
                     for (int i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(adManagerDriActivity.this);//컬럼
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
 
-                        for(int j = 0 ; j < 3 ; j++){//컬럼임
-                            final int cun= i;
+                        for (int j = 0; j < 3; j++) {//컬럼임
+                            final int cun = i;
                             Button rowButton = new Button(adManagerDriActivity.this);
                             rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
                             suggestion_check = suggestions.get(cun);
 
-                            if(j==0)
-                            {
+
+                            if (j == 0) {
                                 rowButton.setText(suggestion_check.getUserID());
                                 //rowButton.setText(suggestion_check.getTitle());
                                 rowButton.setWidth(100);
@@ -303,36 +336,32 @@ public class adManagerDriActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         //버튼 클릭될 시 할 코드작성
 
-                                      //  callNameDialog(suggestion_check.getUserID(),suggestion_check.getBus_name(),suggestion_check.getBus_type(), adManagerDriActivity.this);
+                                        //  callNameDialog(suggestion_check.getUserID(),suggestion_check.getBus_name(),suggestion_check.getBus_type(), adManagerDriActivity.this);
                                     }
                                 });
-                            }
-
-                            else if(j==1)
-                            {
+                            } else if (j == 1) {
 
                                 rowButton.setText(suggestion_check.getBus_name());
                                 rowButton.setWidth(100);
                                 rowButton.setHeight(50);
 
-                            }
-
-                            else if(j==2)
-                            {
+                            } else if (j == 2) {
 
                                 rowButton.setText(suggestion_check.getBus_type());
                                 rowButton.setWidth(100);
                                 rowButton.setHeight(50);
 
                             }
-
-                            rowButton.setTextSize(12);                     // 폰트사이즈
                             rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                            rowButton.setTypeface(null, Typeface.BOLD);
-                            rowButton.setEnabled(true);
 
-                            tableRow.addView(rowButton);
-                        }
+
+                        rowButton.setTextSize(12);                     // 폰트사이즈
+
+                        rowButton.setTypeface(null, Typeface.BOLD);
+                        rowButton.setEnabled(true);
+
+                        tableRow.addView(rowButton);
+                    }
                         tableLayout.addView(tableRow);
                     }
 

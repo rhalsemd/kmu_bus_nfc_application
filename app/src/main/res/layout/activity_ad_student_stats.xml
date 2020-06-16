@@ -123,6 +123,21 @@
         android:id="@+id/cheDayText10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#7030A0"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cheDayText2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:id="@+id/cheDayText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="선택한 날짜 : "
         android:textColor="#7030A0"
         android:textSize="18sp"
@@ -164,55 +179,5 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/busText1"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
-        android:background="#7030A0"
-        android:gravity="center"
-        android:text="호차"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.199"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
-
-    <TextView
-        android:id="@+id/timeText1"
-        android:layout_width="89dp"
-        android:layout_height="50dp"
-        android:background="#7030A0"
-        android:gravity="center"
-        android:text="시간"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
-
-    <TextView
-        android:id="@+id/peoText1"
-        android:layout_width="86dp"
-        android:layout_height="50dp"
-        android:background="#7030A0"
-        android:gravity="center"
-        android:text="탑승자수"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.745"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

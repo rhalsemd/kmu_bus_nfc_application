@@ -69,38 +69,6 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView48"
-        android:layout_width="87dp"
-        android:layout_height="50dp"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:text="번호"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.194"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17" />
 
-    <TextView
-        android:id="@+id/textView49"
-        android:layout_width="158dp"
-        android:layout_height="50dp"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:text="제목"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.574"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

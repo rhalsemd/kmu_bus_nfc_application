@@ -108,7 +108,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
 
 
     String value;
-    String ad="3";
+    String ad="admin";
 
     String nowMap;
 

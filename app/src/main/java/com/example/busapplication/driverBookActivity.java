@@ -63,7 +63,7 @@ public class driverBookActivity extends AppCompatActivity
     boolean cheMap=false;
 
     String value;
-    String ad="3";//관리자
+    String ad="admin";//관리자
     String count_personnel="0"; //DB에서 불러오는 탑승인원 수 (예약수 X 실제 탑승인원수 표시)
     String booked_personnel="0";
 

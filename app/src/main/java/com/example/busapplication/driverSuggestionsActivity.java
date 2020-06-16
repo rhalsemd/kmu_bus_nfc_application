@@ -72,7 +72,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
 
     //DB에 넣을 때 아래의 변수 지우기
     String value;
-    String ad="3";
+    String ad="admin";
     int i;
 
     String title;
@@ -91,15 +91,13 @@ public class driverSuggestionsActivity extends AppCompatActivity {
         check_admin = intent.getExtras().getString("value"); //메인에서 넘어온 아이디값
 
         Button driverbusMain2=(Button)findViewById(R.id.driverbusMain2);//메인화면으로
-        final TextView textView55 = (TextView)findViewById(R.id.textView55);//
-        final TextView textView59 = (TextView)findViewById(R.id.textView59);//
+
         final ConstraintLayout mylayout = (ConstraintLayout)findViewById(R.id.backSuggestions5);
         if(check_admin.equals("어드민"))
         {
             driverbusMain2.setBackgroundResource(R.drawable.mainscreen3);
             mylayout.setBackgroundResource(R.drawable.background3);
-            textView59.setBackgroundColor(Color.parseColor("#7030A0"));
-            textView55.setBackgroundColor(Color.parseColor("#7030A0"));
+
 
         }
 
@@ -112,6 +110,39 @@ public class driverSuggestionsActivity extends AppCompatActivity {
         //컬럼으로 (내용,날짜, 제목, 내용)으로하고 Content에 내용부분 넣기
         //db자료를 2차원 배열같은데 넣고 setText에 db가 들어간 배열 출력
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.testTable); // 테이블 id 명
+
+        for (int i = 0; i < 1; i++) {//  row 임 대신에 컬럼갯
+            TableRow tableRow = new TableRow(driverSuggestionsActivity.this);//컬럼
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            for(int j = 0 ; j < 2 ; j++){//컬럼임
+                final int cun=i;
+                Button rowButton = new Button(driverSuggestionsActivity.this);
+                if (i == 0) {
+                    rowButton.setBackgroundColor(Color.parseColor("#008E40"));
+                    rowButton.setTextColor(Color.WHITE);
+                    if (check_admin.equals("어드민")) {
+                        rowButton.setBackgroundColor(Color.parseColor("#7030A0"));
+                    } else if (check_admin.equals("버스기사")) {
+                        rowButton.setBackgroundColor(Color.parseColor("#70AD47"));
+                    }
+                    if (j == 0) {
+                        rowButton.setText("순번");
+                        rowButton.setWidth(200);
+                        rowButton.setHeight(50);
+
+                    } else if (j == 1) {
+                        rowButton.setText("ID");
+                        rowButton.setWidth(300);
+                        rowButton.setHeight(50);
+                    }
+                    rowButton.setEnabled(false);
+                }
+                rowButton.setTextSize(12);                     // 폰트사이즈
+                rowButton.setTypeface(null, Typeface.BOLD);
+                tableRow.addView(rowButton);
+            }
+            tableLayout.addView(tableRow);
+        }
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -129,6 +160,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                                 student_suggestions.getString("userID")
                         ));
                     }
+
                     for (i = 0; i < suggestions.size(); i++) {//  row 임 대신에 컬럼갯
                         TableRow tableRow = new TableRow(driverSuggestionsActivity.this);//컬럼
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
@@ -147,37 +179,38 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             {
                                 rowButton.setBackgroundResource(R.drawable.barrow2);//버튼배경
                             }
-                            if(j==0)
-                            {
-                                rowButton.setText(suggestion_check.getTitle());
-                                //rowButton.setText(suggestion_check.getTitle());
-                                rowButton.setWidth(200);
-                                rowButton.setHeight(50);
-                            }
-                            else if(j==1)
-                            {
-                                rowButton.setText(suggestion_check.getuserID());
-                                rowButton.setWidth(300);
-                                rowButton.setHeight(50);
 
-                            }
-                            rowButton.setTextSize(12);                     // 폰트사이즈
-                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                            rowButton.setTypeface(null, Typeface.BOLD);
-                            rowButton.setEnabled(true);
-                            rowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //버튼 클릭될 시 할 코드작성
-                                    title=suggestion_check.getTitle();//제목 제목 DB값
-                                    Content= suggestion_check.getContent();
-                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                    // 커스텀 다이얼로그를 호출한다.
-                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                    // customDialog.callFunction();
-                                    callFunction(driverSuggestionsActivity.this,cun);
+                                if (j == 0) {
+                                    rowButton.setText(Integer.toString(i ));
+                                    //rowButton.setText(suggestion_check.getTitle());
+                                    rowButton.setWidth(200);
+                                    rowButton.setHeight(50);
+                                } else if (j == 1) {
+                                    rowButton.setText(suggestion_check.getTitle());
+                                    rowButton.setWidth(300);
+                                    rowButton.setHeight(50);
+
                                 }
-                            });
+                                rowButton.setTextColor(Color.BLACK);
+                                rowButton.setEnabled(true);
+                                rowButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //버튼 클릭될 시 할 코드작성
+                                        title=suggestion_check.getTitle();//제목 제목 DB값
+                                        Content= suggestion_check.getContent();
+                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                        // 커스텀 다이얼로그를 호출한다.
+                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                        // customDialog.callFunction();
+                                        callFunction(driverSuggestionsActivity.this,cun);
+                                    }
+                                });
+
+                            rowButton.setTextSize(12);                     // 폰트사이즈
+                                // 폰트컬러
+                            rowButton.setTypeface(null, Typeface.BOLD);
+
                             tableRow.addView(rowButton);
                         }
                         tableLayout.addView(tableRow);
