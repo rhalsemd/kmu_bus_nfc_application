@@ -2,19 +2,16 @@ package com.example.busapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,7 +31,6 @@ import java.util.Date;
 
 public class driverReservationActivity extends AppCompatActivity {
 
-    String title;
     String Content;
     String value;
     String adBusStr2;//관리자만 쓰는 변수, 버스를 받음
@@ -132,12 +128,11 @@ public class driverReservationActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             //버튼 클릭될 시 할 코드작성
-                                            title = suggestion_check.getUserID();//제목 제목 DB값
                                             // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
                                             // 커스텀 다이얼로그를 호출한다.
                                             // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
                                             // customDialog.callFunction();
-                                            callFunction(driverReservationActivity.this, cun, suggestion_check.getUserID());
+                                            callFunction(driverReservationActivity.this, cun);
                                         }
                                     });
                                 }
@@ -213,7 +208,7 @@ public class driverReservationActivity extends AppCompatActivity {
         }*/
     }
 
-    public void callFunction(Context context, int num, String userID) {
+    public void callFunction(Context context, int cun) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog dlg = new Dialog(context);
@@ -234,8 +229,10 @@ public class driverReservationActivity extends AppCompatActivity {
         final TextView TTtitle20 = (TextView) dlg.findViewById(R.id.TTtitle20);
         TTtitle20.setBackgroundColor(Color.parseColor("#70AD47"));
 
+        suggestion_check = suggestions.get(cun);
+
         IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
-        IDreserText.setText(userID);
+        IDreserText.setText(suggestion_check.getUserID());
 
         cancelReverButton.setText("취소");
         rideButton.setText("탑승");

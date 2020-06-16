@@ -101,7 +101,7 @@ public class adNFCNumberActivity extends AppCompatActivity {
 
 
     String talk;
-    String ad="3";
+    String ad="admin";
     String value;
 
 

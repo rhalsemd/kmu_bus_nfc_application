@@ -123,15 +123,10 @@ public class studentBookMangerActivity extends AppCompatActivity {
                                         SimpleDateFormat for_date = new SimpleDateFormat("yyyy-MM-dd");
 
                                         Calendar time = Calendar.getInstance();
-                                        Calendar before_time = Calendar.getInstance();
 
-                                        if(is_before){  //등교일때 하루를 빼주어 이전날짜의 시작시간부터 데이터 타입을 설정한다
-                                            before_time.add(Calendar.DATE, -1);
-                                        }
-                                        String date_type_before = for_date.format(before_time.getTime());
                                         String date_type = for_date.format(time.getTime());
 
-                                        String time_start = date_type_before +" "+ start_time;
+                                        String time_start = date_type +" "+ start_time;
                                         String time_end = date_type +" "+ end_time;
 
                                         Date date_start = transFormat.parse(time_start);
