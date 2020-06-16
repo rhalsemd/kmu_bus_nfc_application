@@ -133,6 +133,7 @@ public class AppNoticeActivity extends AppCompatActivity {
                         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
 
+                        String destin;
                         for(int j = 0 ; j < 2 ; j++){//컬럼임
                             final int cun= i;
                             Button rowButton = new Button(AppNoticeActivity.this);
@@ -154,7 +155,13 @@ public class AppNoticeActivity extends AppCompatActivity {
                                     rowButton.setWidth(10);
                                     rowButton.setHeight(50);
                                 } else if (j == 1) {
-                                    rowButton.setText(suggestion_check.getTitle());
+                                    if (suggestion_check.getTitle().length() >= 7) {
+                                        destin = suggestion_check.getTitle().substring(0, 7) + "...";
+                                    } else {
+                                        destin = suggestion_check.getTitle();
+                                    }
+
+                                    rowButton.setText(destin);
                                     //rowButton.setText(suggestion_check.getTitle());
                                     rowButton.setWidth(400);
                                     rowButton.setHeight(50);

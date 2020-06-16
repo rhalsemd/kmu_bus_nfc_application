@@ -10,7 +10,7 @@
         android:layout_height="60dp"
         android:background="#7030A0"
         android:gravity="center"
-        android:text="확인할 운행 버스 확인"
+        android:text="운행할 버스 확인"
         android:textColor="#ffffff"
         android:textSize="16dp" />
 

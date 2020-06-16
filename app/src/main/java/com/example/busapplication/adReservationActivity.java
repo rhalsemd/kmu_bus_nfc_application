@@ -144,32 +144,32 @@ public class adReservationActivity extends AppCompatActivity {
 
 
 
-                                            if (j == 0) {
-                                                rowButton.setText(Integer.toString(i+1 ));
-                                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                                rowButton.setWidth(100);
-                                                rowButton.setHeight(50);
-                                            } else if (j == 1) {
-                                                rowButton.setText(suggestion_check.getUserID());
-                                                rowButton.setTextColor(Color.BLACK);     // 폰트컬러
-                                                rowButton.setWidth(100);
-                                                rowButton.setHeight(50);
-                                                rowButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        //버튼 클릭될 시 할 코드작성
-                                                        title = suggestion_check.getUserID();//제목 제목 DB값
-                                                        // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
-                                                        // 커스텀 다이얼로그를 호출한다.
-                                                        // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
-                                                        // customDialog.callFunction();
-                                                        callFunction(adReservationActivity.this, cun, suggestion_check.getUserID());
+                                        if (j == 0) {
+                                            rowButton.setText(Integer.toString(i+1 ));
+                                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                            rowButton.setWidth(100);
+                                            rowButton.setHeight(50);
+                                        } else if (j == 1) {
+                                            rowButton.setText(suggestion_check.getUserID());
+                                            rowButton.setTextColor(Color.BLACK);     // 폰트컬러
+                                            rowButton.setWidth(100);
+                                            rowButton.setHeight(50);
+                                            rowButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    //버튼 클릭될 시 할 코드작성
+                                                    title = suggestion_check.getUserID();//제목 제목 DB값
+                                                    // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);
+                                                    // 커스텀 다이얼로그를 호출한다.
+                                                    // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
+                                                    // customDialog.callFunction();
+                                                    callFunction(adReservationActivity.this, cun);
 
 
-                                                    }
-                                                });
-                                            }
-                                            rowButton.setTextColor(Color.BLACK);
+                                                }
+                                            });
+                                        }
+                                        rowButton.setTextColor(Color.BLACK);
 
 
                                         rowButton.setTextSize(12);                     // 폰트사이즈
@@ -329,7 +329,7 @@ public class adReservationActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
-    public void callFunction(Context context, int num, String userID) {
+    public void callFunction(Context context, int i) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog dlg = new Dialog(context);
@@ -349,8 +349,10 @@ public class adReservationActivity extends AppCompatActivity {
         final Button go_back_Button = (Button) dlg.findViewById(R.id.cancelReverButton);
         final Button cancel_reservation_Button = (Button) dlg.findViewById(R.id.rideButton);//탑슴 버튼
         TTtitle20.setBackgroundColor(Color.parseColor("#7030A0"));
+
+        suggestion_check = suggestions.get(i);
         IDreserText.setMovementMethod(ScrollingMovementMethod.getInstance());
-        IDreserText.setText(userID);
+        IDreserText.setText(suggestion_check.getUserID());
 
         go_back_Button.setText("확인");
         cancel_reservation_Button.setText("예약 취소");
@@ -361,7 +363,6 @@ public class adReservationActivity extends AppCompatActivity {
                 // '확인' 버튼 클릭시 메인 액티비티에서 설정한 main_label에
                 // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
                 // 커스텀 다이얼로그를 종료한다.
-                Refresh();
                 dlg.dismiss();
             }
         });
@@ -412,3 +413,4 @@ public class adReservationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+

@@ -65,27 +65,7 @@ public class studentActivity extends AppCompatActivity {
         if(IDvalue.equals(ad))//3은 관리자 ID, 관리자인경우 버튼 보이게
         {
             adStudentButton.setVisibility(View.VISIBLE);
-            adStudentButton.setEnabled(true);
-            adStudentButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new AlertDialog.Builder(studentActivity.this)
-                            .setMessage("원하는 기능을 확인했습니까?")
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    Intent i = new Intent(studentActivity.this/*현재 액티비티 위치*/ , administratorActivity.class/*이동 액티비티 위치*/);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    startActivity(i);
-                                }
-                            })
-                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-
-                                }
-                            }).show();
-                    //화면전환
-                }
-            });
+            adStudentButton.setEnabled(false);
         }
         else {//관리자가 아닌경우 버튼 안보이게
             adStudentButton.setVisibility(View.INVISIBLE);

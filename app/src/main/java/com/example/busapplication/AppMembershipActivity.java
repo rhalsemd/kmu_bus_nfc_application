@@ -84,9 +84,9 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         final EditText RRNtext1 = (EditText)findViewById(R.id.RRNtext1);//주민번호 앞자리
         final EditText RRNtext2 = (EditText)findViewById(R.id.RRNtext2);//주민번호 뒤자리
 
-         NameTextsId = NameText.getText().toString();//이름값 string에 저장
-         IdTextsId = IdText.getText().toString();//ID값 string에 저장
-         PWTextsld = PWText.getText().toString();//PW값 string에 저장
+        NameTextsId = NameText.getText().toString();//이름값 string에 저장
+        IdTextsId = IdText.getText().toString();//ID값 string에 저장
+        PWTextsld = PWText.getText().toString();//PW값 string에 저장
 
 
         Button approvalbutton=(Button)findViewById(R.id.approvalbutton);//회원가입 승인
@@ -109,7 +109,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     String userBirth = RRNtext1.getText().toString() + RRNtext2.getText().toString();
 
                     if(userName.length() != 0 && userID.length() != 0 && userPassword.length() != 0  && userPhone.length() != 0
-                        && userBirth.length() != 0 && /*PhoneCheck != false && */PWText.getText().toString().equals(PwTextche.getText().toString()) &&Useche==true) {
+                            && userBirth.length() != 0 && /*PhoneCheck != false && */PWText.getText().toString().equals(PwTextche.getText().toString())) {
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -137,9 +137,6 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     }
                     //else if(PhoneCheck == false) {Toast.makeText(getApplicationContext(), "휴대폰인증을 해주세요!", Toast.LENGTH_SHORT).show(); }
                     else if(!(PWText.getText().toString().equals(PwTextche.getText().toString()))){Toast.makeText(getApplicationContext(), "비밀번호가 같지 않습니다.", Toast.LENGTH_SHORT).show();}
-                   else if(Useche==false){
-                        Toast.makeText(getApplicationContext(), "회원약관을 확인해주세요", Toast.LENGTH_SHORT).show();
-                    }
                     else{Toast.makeText(getApplicationContext(), "제대로 입력해주세요!", Toast.LENGTH_SHORT).show(); }
 
                 }catch (Exception e)
@@ -275,8 +272,8 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     countDownTimer();
                 }
                 else {
-                        Edialog("번호를 적어두세요");
-                    }
+                    Edialog("번호를 적어두세요");
+                }
                 break;
 
             case R.id.emailAuth_btn : //다이얼로그 내의 인증번호 인증 버튼을 눌렀을 시
@@ -293,7 +290,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
                     }
                     else {
                         Edialog("번호를 적어두세요");
-                        }
+                    }
                 }catch (Exception e)
                 {
                     Chedialog( "인증번호를 적어주세요");
@@ -383,7 +380,7 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         // TODO Auto-generated method stub
         super.onDestroy();
     }
-//램덤함수
+    //램덤함수
     public String getRandomPassword( int length ){
         char[] charaters = {
                 '0','1','2','3','4','5','6','7','8','9'};
@@ -452,8 +449,6 @@ public class AppMembershipActivity extends AppCompatActivity  implements View.On
         cancelButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Useche=true;
-                Toast.makeText(getApplicationContext(), String.valueOf(Useche), Toast.LENGTH_SHORT).show();
                 dlg.dismiss();
             }
 

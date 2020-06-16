@@ -106,7 +106,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
         //모드 spinner
         List<String> data1 = new ArrayList<>();
         data1.add("모드 선택");
-        data1.add("일일 탑승객수");
+        data1.add("일일 탑승객 수");
         data1.add("예약자별 탑승 호차");
 
 
@@ -307,7 +307,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                                             rowButton.setText("호차");
                                                         }
                                                         else{
-                                                            rowButton.setText("탐승자수");
+                                                            rowButton.setText("탑승자 수");
                                                         }
 
 
@@ -441,7 +441,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                                             rowButton.setText("호차");
                                                         }
                                                         else{
-                                                            rowButton.setText("탐승자수");
+                                                            rowButton.setText("탑승자 수");
                                                         }
 
 
