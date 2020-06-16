@@ -208,7 +208,6 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
 
                                     load_busType.clear();
                                     load_busType.add("시간 선택");
-                                    load_busType.add("현재위치");
                                     for(int i=0; i<array.length();i++){
                                         JSONObject bus_name = array.getJSONObject(i);
                                         load_busType.add(bus_name.getString("bus_type"));
@@ -278,7 +277,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                             e.printStackTrace();
                         }
                     }
-                    if (TimeStr != 0 && TimeStr != 1 && Position != 0 ) {
+                    if (TimeStr != 0 && TimeStr != 0 && Position != 0 ) {
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -387,61 +386,6 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                         studentMapRequest maprequest = new studentMapRequest(MapTime, MapName, responseListener);
                         RequestQueue queue = Volley.newRequestQueue(studentMapActivity.this);
                         queue.add(maprequest);
-                    }
-                    else if (TimeStr == 1){
-
-                        ThreadCheck=true;
-
-                        thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                while (ThreadCheck) {
-                                    try {
-                                        Thread.sleep(2000); //2초 간격으로 실행
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                                    @Override
-                                                    public void onMapReady(GoogleMap googleMap) {
-                                                        googleMap.clear();
-                                                        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                                                        //37.56 + a, 126.97 + a 대신 Db죄표
-                                                        LatLng SEOUL = new LatLng(37.56 + a, 126.97 + a);
-
-                                                        MarkerOptions markerOptions = new MarkerOptions();
-                                                        markerOptions.position(SEOUL);
-                                                        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.schooolbusshow);
-                                                        Bitmap b = bitmapdraw.getBitmap();
-                                                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
-                                                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-
-                                                        googleMap.addMarker(markerOptions);
-
-                                                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-                                                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-                                                        //확인용으로 a += 0.1를 찍음
-                                                        a += 0.1;
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    } catch (InterruptedException e) {
-                                        StringWriter sw = new StringWriter();
-                                        e.printStackTrace(new PrintWriter(sw));
-                                        String exceptionAsStrting = sw.toString();
-                                        if(value.equals(ad))
-                                        {
-                                            dialog("기능고장",exceptionAsStrting);
-                                        }
-                                        else{
-                                            dialog("오류", exceptionAsStrting);
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                        thread.start();
                     }
 
                 } catch (Exception e) {
