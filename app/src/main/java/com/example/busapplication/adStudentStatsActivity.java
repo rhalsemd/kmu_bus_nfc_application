@@ -307,7 +307,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                                             rowButton.setText("호차");
                                                         }
                                                         else{
-                                                            rowButton.setText("탑승자 수");
+                                                            rowButton.setText("시간");
                                                         }
 
 
@@ -319,7 +319,7 @@ public class adStudentStatsActivity extends AppCompatActivity {
                                                             rowButton.setText("시간");
                                                         }
                                                         else{
-                                                            rowButton.setText("시간");
+                                                            rowButton.setText("탑승자 수");
                                                         }
 
 
