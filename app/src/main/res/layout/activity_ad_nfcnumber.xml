@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="112dp"
         android:layout_marginRight="112dp"
-        android:text="1. NFC를 카드모드로 켜주세요"
+        android:text="1. NFC를 기본 모드로 켜주세요"
         android:textColor="@color/design_default_color_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/textView21"
-        android:layout_width="98dp"
+        android:layout_width="119dp"
         android:layout_height="33dp"
         android:text="버스 탑승"
         android:textColor="@android:color/background_light"
