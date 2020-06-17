@@ -147,7 +147,7 @@
         android:id="@+id/GPStextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GPS수신대기..."
+        android:text="GPS송신대기..."
         android:textColor="#70AD47"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
