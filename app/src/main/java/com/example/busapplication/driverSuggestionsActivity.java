@@ -131,7 +131,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                         rowButton.setHeight(50);
 
                     } else if (j == 1) {
-                        rowButton.setText("ID");
+                        rowButton.setText("제목");
                         rowButton.setWidth(300);
                         rowButton.setHeight(50);
                     }
