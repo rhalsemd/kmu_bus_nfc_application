@@ -115,7 +115,7 @@ public class adBusDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(load_busName.size()!=0&&Timenum!=0) {
+                if(load_busName.size()!=0&&changeditText.length()!=0) {
                     String add_bus = Integer.toString(load_busName.size()) + "호차";
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
@@ -136,12 +136,12 @@ public class adBusDataActivity extends AppCompatActivity {
 
                         }
                     };
-                    adBusDataRequest_addBus busdatarequest_addBus = new adBusDataRequest_addBus(Timetext, add_bus, responseListener);
+                    adBusDataRequest_addBus busdatarequest_addBus = new adBusDataRequest_addBus(changeditText.getText().toString(), add_bus, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(adBusDataActivity.this);
                     queue.add(busdatarequest_addBus);
                 }
-                else if (Timenum == 0) {
-                    Toast.makeText(getApplicationContext(), "새로운 호차를 선택할시에는 무조건 시간을 선택하여야합니다. 시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                else if (changeditText.getText().length()==0) {
+                    Toast.makeText(getApplicationContext(), "새로운 호차를 선택할시에는 무조건 시간을 입력하여야합니다. 시간을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                 }
 

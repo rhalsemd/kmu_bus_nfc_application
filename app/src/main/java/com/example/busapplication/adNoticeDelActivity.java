@@ -122,6 +122,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                             rowButton.setBackgroundResource(R.drawable.barrow3);//버튼배경
                             suggestion_check = suggestions.get(cun);
 
+                            String cheTitle;
 
 
                                 if (j == 0) {
@@ -130,7 +131,12 @@ public class adNoticeDelActivity extends AppCompatActivity {
                                     rowButton.setWidth(30);
                                     rowButton.setHeight(50);
                                 } else if (j == 1) {
-                                    rowButton.setText(suggestion_check.getTitle());
+                                    if (suggestion_check.getTitle().length() >= 5) {
+                                        cheTitle = suggestion_check.getTitle().substring(0, 5) + "...";
+                                    } else {
+                                        cheTitle = suggestion_check.getTitle();
+                                    }
+                                    rowButton.setText(cheTitle);
                                     rowButton.setWidth(150);
                                     rowButton.setHeight(50);
                                     rowButton.setTextColor(Color.RED);
@@ -138,6 +144,7 @@ public class adNoticeDelActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v) {
                                             //버튼 클릭될 시 할 코드작성
+
                                             title = suggestion_check.getTitle();//제목 제목 DB값
                                             Content = suggestion_check.getContent();
                                             // CustomDialogRead customDialog = new CustomDialogRead(title,Content,driverSuggestionsActivity.this);

@@ -131,7 +131,7 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                         rowButton.setHeight(50);
 
                     } else if (j == 1) {
-                        rowButton.setText("ID");
+                        rowButton.setText("제목");
                         rowButton.setWidth(300);
                         rowButton.setHeight(50);
                     }
@@ -179,14 +179,19 @@ public class driverSuggestionsActivity extends AppCompatActivity {
                             {
                                 rowButton.setBackgroundResource(R.drawable.barrow2);//버튼배경
                             }
-
+                            String cheTitle1;
                                 if (j == 0) {
                                     rowButton.setText(Integer.toString(i +1));
                                     //rowButton.setText(suggestion_check.getTitle());
                                     rowButton.setWidth(200);
                                     rowButton.setHeight(50);
                                 } else if (j == 1) {
-                                    rowButton.setText(suggestion_check.getTitle());
+                                    if (suggestion_check.getTitle().length() >= 7) {
+                                        cheTitle1 = suggestion_check.getTitle().substring(0, 7) + "...";
+                                    } else {
+                                        cheTitle1 = suggestion_check.getTitle();
+                                    }
+                                    rowButton.setText(cheTitle1);
                                     rowButton.setWidth(300);
                                     rowButton.setHeight(50);
 

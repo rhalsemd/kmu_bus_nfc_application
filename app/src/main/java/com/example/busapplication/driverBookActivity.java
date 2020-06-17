@@ -367,7 +367,7 @@ public class driverBookActivity extends AppCompatActivity
        if(busStop==true)
        {
            countFinsh=0;
-           GPStextView.setText("GPS 수신전...");
+           GPStextView.setText("GPS 송신전...");
            lm.removeUpdates(mLocationListener);
        }
     }
@@ -396,7 +396,7 @@ public class driverBookActivity extends AppCompatActivity
             longitudeDB=Double.toString(longitude);
             latitudeDB=Double.toString(latitude);
 
-            GPStextView.setText("GPS 수신중...");
+            GPStextView.setText("GPS 송신중...");
             //목적지 도착시 gps종료
             if(countFinsh>=7200)
             {

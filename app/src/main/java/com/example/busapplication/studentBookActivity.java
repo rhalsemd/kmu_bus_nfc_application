@@ -226,9 +226,11 @@ public class studentBookActivity extends AppCompatActivity {
 
                                             String time_start = date_type +" "+ start_time;
                                             String time_end = date_type +" "+ end_time;
+                                            String check_time = date_type +" "+ "10:00:00";
 
                                             Date date_start = transFormat.parse(time_start);
                                             Date date_end = transFormat.parse(time_end);
+                                            Date date_check = transFormat.parse(check_time);
 
                                             Calendar cal_start = Calendar.getInstance();
                                             Calendar cal_end = Calendar.getInstance();
@@ -236,7 +238,10 @@ public class studentBookActivity extends AppCompatActivity {
 
                                             cal_start.setTime(date_start);
                                             cal_end.setTime(date_end);
+
+                                            if(!cal_end.before(date_check)){
                                             cal_end.add(Calendar.HOUR, -2);
+                                            }
 
                                             String cal_now_text = transFormat.format(cal_now.getTime());
                                             Date cal_now_date = transFormat.parse(cal_now_text);
