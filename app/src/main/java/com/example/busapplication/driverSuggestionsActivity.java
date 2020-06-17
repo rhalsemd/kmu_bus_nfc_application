@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -92,9 +93,11 @@ public class driverSuggestionsActivity extends AppCompatActivity {
 
         Button driverbusMain2=(Button)findViewById(R.id.driverbusMain2);//메인화면으로
 
+        final TextView activity_title = (TextView)findViewById(R.id.textView19);
         final ConstraintLayout mylayout = (ConstraintLayout)findViewById(R.id.backSuggestions5);
         if(check_admin.equals("어드민"))
         {
+            activity_title.setText("건의사항 확인");
             driverbusMain2.setBackgroundResource(R.drawable.mainscreen3);
             mylayout.setBackgroundResource(R.drawable.background3);
 
