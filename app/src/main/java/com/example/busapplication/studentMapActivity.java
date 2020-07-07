@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.Console;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
 
@@ -235,7 +237,7 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
 
 
 
-        Button mapbutton=(Button)findViewById(R.id.mapbutton);//PW찾기
+        Button mapbutton=(Button)findViewById(R.id.mapbutton);
         mapbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,26 +312,38 @@ public class studentMapActivity extends AppCompatActivity implements OnMapReadyC
                                                                 @Override
                                                                 public void run() {
                                                                     NowBus.remove();
-                                                                    //  googleMap.clear();
-                                                                   // mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                                                                    //37.56 + a, 126.97 + a 대신 Db죄표
-                                                                    LatLng SEOUL = new LatLng(35.8772531 + a, 128.5582868 + a);
-                                                                    LatLng SEOUL12 = new LatLng(35.8772531 , 128.5582868 );
-                                                                    MarkerOptions markerOptions = new MarkerOptions();
-                                                                    markerOptions.position(SEOUL);
-                                                                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.schooolbusshow);
-                                                                    Bitmap b = bitmapdraw.getBitmap();
-                                                                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
-                                                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
 
-                                                                    //  googleMap.addMarker(markerOptions);
-                                                                    // Marker markerName = googleMap.addMarker(markerOptions);
-                                                                    NowBus = mMap.addMarker(markerOptions);
-                                                                    //  googleMap.addMarker(markerOptions);
-                                                                    //     mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-                                                                    //  googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
-                                                                    //확인용으로 a += 0.1를 찍음
-                                                                    a += 0.001;
+                                                                        String BusTime = TimeSpinner.getSelectedItem().toString();
+                                                                        String BusName = spinner1.getSelectedItem().toString();
+                                                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                                            @Override
+                                                                            public void onResponse(String response) {
+                                                                                try {
+                                                                                    JSONObject jsonObject = new JSONObject(response);
+                                                                                    Double Buslat = Double.parseDouble(jsonObject.getString("latitude"));
+                                                                                    Double Buslo = Double.parseDouble(jsonObject.getString("longitude"));
+                                                                                    Boolean success = jsonObject.getBoolean("success");
+
+                                                                                    if(success) {
+                                                                                        LatLng SEOUL = new LatLng(Buslat, Buslo);
+                                                                                        MarkerOptions markerOptions = new MarkerOptions();
+                                                                                        markerOptions.position(SEOUL);
+                                                                                        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.schooolbusshow);
+                                                                                        Bitmap b = bitmapdraw.getBitmap();
+                                                                                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 50, 50, false);
+                                                                                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+
+                                                                                        NowBus = mMap.addMarker(markerOptions);
+                                                                                    } else { Toast.makeText(getApplicationContext(), "현재 버스위치를 확인할 수 없습니다.", Toast.LENGTH_SHORT).show();}
+                                                                                } catch (JSONException e) {
+                                                                                    e.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        };
+                                                                        //서버로 volley를 이용해서 요청
+                                                                        studentMapRequest_load_now_location load_now_location = new studentMapRequest_load_now_location(BusTime, BusName, responseListener);
+                                                                        RequestQueue queue = Volley.newRequestQueue(studentMapActivity.this);
+                                                                        queue.add(load_now_location);
 
                                                                 }
                                                             });
